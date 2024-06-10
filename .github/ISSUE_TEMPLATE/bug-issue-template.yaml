@@ -1,0 +1,22 @@
+name: 버그 템플릿
+
+title: '[버그] '
+labels: ['생성페이지']
+body:
+  - type: input
+    attributes:
+      label: 🗺️ 문제 발생 위치
+      description: 문제가 발생한 위치의 URL을 입력해주세요 !
+      placeholder: ex) http://localhost:8001/event
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: ☠️ 문제 내용
+      description: 문제의 내용을 작성해주세요 !
+      placeholder: ex) 이러한 기대값이 나와야 하는데 이러한 결과가 나왔다.
+      render: plain text
+  - type: textarea
+    attributes:
+      label: 📸 스크린샷 || 영상
+      description: 문제가 발생한 스크린샷이나 영상을 업로드해주세요 !
