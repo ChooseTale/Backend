@@ -34,6 +34,9 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# sripts
+/scripts/docker-setting.js
+
 # environment
 .env
 /src/config/development.ts
