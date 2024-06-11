@@ -4,10 +4,6 @@ import { PrismaService } from '@@prisma/prisma.service';
 export class AppController {
   constructor(private readonly prismaService: PrismaService) {}
 
-  /**
-   *
-   * @
-   */
   @Get('/ping')
   ping(): { key: string } {
     let number = 1;
@@ -19,7 +15,8 @@ export class AppController {
   }
 
   @Get('/db')
-  db() {
-    return this.prismaService.$queryRaw`SELECT 1`;
+  async db() {
+    await this.prismaService.$queryRaw`SELECT 1`;
+    return 'success';
   }
 }
