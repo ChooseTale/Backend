@@ -35,7 +35,7 @@ jobs:
 
       - name: npx nestia
 
-        run: mkdir nestia && npx nestia swagger
+        run: npx prisma generate && mkdir nestia && npx nestia swagger
 
       - name: Update SwaggerHub definition
         env:
