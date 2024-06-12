@@ -5,12 +5,18 @@ export class AppController {
   constructor(private readonly prismaService: PrismaService) {}
 
   @Get('/ping')
-  ping(): string {
-    return 'pong';
+  ping(): { key: string } {
+    let number = 1;
+    if (number === 2) {
+      throw new Error('error');
+    }
+
+    return { key: 'pong' };
   }
 
   @Get('/db')
-  db() {
-    return this.prismaService.$queryRaw`SELECT 1`;
+  async db() {
+    await this.prismaService.$queryRaw`SELECT 1`;
+    return 'success';
   }
 }
