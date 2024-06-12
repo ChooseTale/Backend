@@ -1,0 +1,47 @@
+name: Update Swagger
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  update-swagger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # yarn
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Restore Yarn cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.yarn/cache
+            node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: npx nestia
+
+        run: mkdir nestia && npx nestia swagger
+
+      - name: Update SwaggerHub definition
+        env:
+          SWAGGERHUB_API_KEY: ${{ secrets.SWAGGERHUB_API_KEY }}
+        run: |
+          curl -X POST "https://api.swaggerhub.com/apis/rnjsdud980/choosetale?version=0.0.1" \
+          -H "Authorization: $SWAGGERHUB_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d @nestia/swagger.json

@@ -18,7 +18,7 @@ const NESTIA_CONFIG: INestiaConfig = {
   output: 'nestia/sdk',
   clone: true,
   swagger: {
-    output: 'dist/swagger.json',
+    output: 'nestia/swagger.json',
     security: {},
     servers: [
       {
