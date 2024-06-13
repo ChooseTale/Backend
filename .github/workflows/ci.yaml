@@ -36,3 +36,10 @@ jobs:
 
       - name: unit test
         run: yarn test
+
+      - name: Send Slack Message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL_WEBHOOK }}
+
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text": "Success unit test!"}' $SLACK_WEBHOOK_URL
