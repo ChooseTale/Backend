@@ -44,7 +44,7 @@ jobs:
         env:
           SWAGGERHUB_API_KEY: ${{ secrets.SWAGGERHUB_API_KEY }}
         run: |
-          curl -X POST "https://api.swaggerhub.com/apis/rnjsdud980/choosetale?version=$SWAGGER_VERSION" \
+          curl -X POST "https://api.swaggerhub.com/apis/rnjsdud980/choosetale?version=" + $SWAGGER_VERSION. \
           -H "Authorization: $SWAGGERHUB_API_KEY" \
           -H "Content-Type: application/json" \
           -d @nestia/swagger.json
@@ -54,4 +54,4 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL_WEBHOOK }}
           SWAGGER_HUB_URI: ${{ secrets.SWAGGER_HUB_URI }}
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"Swagger updated : $SWAGGER_HUB_URI/$SWAGGER_VERSION"}' $SLACK_WEBHOOK_URL
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Swagger updated : " + $SWAGGER_HUB_URI/$SWAGGER_VERSION}' $SLACK_WEBHOOK_URL
