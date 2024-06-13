@@ -1,7 +1,7 @@
 name: Update Swagger
 
 on:
-  push:
+  pull_request:
     branches:
       - dev
 
@@ -9,6 +9,9 @@ jobs:
   update-swagger:
     runs-on: ubuntu-latest
 
+    # version 환경변수
+    env:
+      SWAGGER_VERSION: 0.0.1
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -41,7 +44,14 @@ jobs:
         env:
           SWAGGERHUB_API_KEY: ${{ secrets.SWAGGERHUB_API_KEY }}
         run: |
-          curl -X POST "https://api.swaggerhub.com/apis/rnjsdud980/choosetale?version=0.0.1" \
+          curl -X POST "https://api.swaggerhub.com/apis/rnjsdud980/choosetale?version=$SWAGGER_VERSION" \
           -H "Authorization: $SWAGGERHUB_API_KEY" \
           -H "Content-Type: application/json" \
           -d @nestia/swagger.json
+
+      - name: Send Slack Message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL_WEBHOOK }}
+          SWAGGER_HUB_URI: ${{ secrets.SWAGGER_HUB_URI }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Swagger updated : $SWAGGER_HUB_URI/$SWAGGER_VERSION"}' $SLACK_WEBHOOK_URL
