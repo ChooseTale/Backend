@@ -14,8 +14,115 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  deletedAt  DateTime?
+  UserChoice UserChoice[]
+}
+
+model UserChoice {
+  id Int @id @default(autoincrement())
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  choicePage   ChoicePage @relation(fields: [choicePageId], references: [id])
+  choicePageId Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+// novel Janre
+enum Janre {
+  FANTASY
+  SCI_FI
+  HORROR
+  MYSTERY
+  ROMANCE
+  THRILLER
+  HISTORICAL
+  WESTERN
+  DYSTOPIA
+  SATIRE
+  BIOGRAPHY
+  AUTOBIOGRAPHY
+  ESSAY
+  DRAMA
+  POETRY
+  COMIC
+  NON_FICTION
+  FICTION
+  OTHER
+}
+
+model Game {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  isPrivate   Boolean
+  janre       Janre   @default(OTHER)
+
+  thumbnailId Int?    @unique
+  thumbnail   Image?  @relation("thumbnail", fields: [thumbnailId], references: [id])
+  Image       Image[]
+  Page        Page[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model Page {
+  id Int @id @default(autoincrement())
+
+  content String
+
+  abridgement String
+
+  Game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
+
+  fromPage ChoicePage[] @relation("fromPage")
+  toPage   ChoicePage[] @relation("toPage")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model ChoicePage {
+  id Int @id @default(autoincrement())
+
+  fromPage   Page @relation("fromPage", fields: [fromPageId], references: [id], onDelete: Cascade)
+  fromPageId Int
+
+  toPage   Page @relation("toPage", fields: [toPageId], references: [id])
+  toPageId Int
+
+  title       String
+  description String
+  order       Int
+
+  UserChoice UserChoice[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  deletedAt  DateTime?
+}
+
+model Image {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  Game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
+
+  thumbnail Game? @relation("thumbnail")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 }
