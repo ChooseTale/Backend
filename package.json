@@ -72,7 +72,6 @@
     ],
     "moduleNameMapper": {
       "^@@prisma/(.*)$": "<rootDir>/../prisma/$1",
-      "^@app/nestia/types(|/.*)$": "<rootDir>/libs/nestia/types/src/$1",
       "^@app/types(|/.*)$": "<rootDir>/libs/types/src/$1"
     },
     "rootDir": ".",

@@ -1,21 +1,35 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
 import { CreateGameReqDto, CreateGameResDto } from './dto/create-game.dto';
 
 @Controller('game')
 export class GameController {
-  private id: number = 1;
-  private db: any = [];
   constructor() {}
 
   @Post()
   async create(
     @Body() createGameReqDto: CreateGameReqDto,
   ): Promise<CreateGameResDto> {
-    const game = {
-      id: this.id++,
-      ...createGameReqDto,
+    return {
+      id: 1,
+      title: 'Game Title',
+      description: 'Game Description',
     };
-    this.db.push(game);
-    return game;
+  }
+
+  @Patch(':gameId')
+  async update(
+    @Param('gameId') gameId: number,
+    @Body() updateGameReqDto: CreateGameReqDto,
+  ): Promise<CreateGameResDto> {
+    return {
+      id: 1,
+      title: 'Updated Game Title',
+      description: 'Updated Game Description',
+    };
+  }
+
+  @Post(':gameId/recommend-image')
+  async recommendImage(@Param('gameId') gameId: number): Promise<string> {
+    return 'https://www.example.com/image.jpg';
   }
 }
