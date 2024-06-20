@@ -1,4 +1,7 @@
 export class UpdateChoiceReqDto {
+  /**
+   * Title of the choice
+   */
   title: string;
   description: string;
   parentPageId: number;

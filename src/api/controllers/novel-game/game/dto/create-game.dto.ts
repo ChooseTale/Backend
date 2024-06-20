@@ -6,18 +6,17 @@ export class CreateGameReqDto {
   @IsString()
   title: string;
 
+  @IsNotEmpty()
   @IsString()
-  description: string;
-
-  genre: Genres;
-
-  thumbnailImageId: number;
-
-  isPrivate: boolean;
+  pageOneContent: string;
 }
 
 export class CreateGameResDto {
   id: number;
-  title: string;
-  description: string;
+
+  page: {
+    id: number;
+    title: string;
+    content: string;
+  };
 }

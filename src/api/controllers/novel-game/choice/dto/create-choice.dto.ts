@@ -1,6 +1,6 @@
 export class CreateChoiceReqDto {
   parentPageId: number;
-  childPageId: number;
+  childPageId?: number;
 }
 
 export class CreateChoiceResDto {

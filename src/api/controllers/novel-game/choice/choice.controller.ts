@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -6,16 +7,34 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
-import { CreateChoiceResDto } from './dto/create-choice.dto';
+import {
+  CreateChoiceReqDto,
+  CreateChoiceResDto,
+} from './dto/create-choice.dto';
 import { DeleteChoiceResDto } from './dto/delete-choice.dto';
-import { UpdateChoiceResDto } from './dto/update-choice.dto';
+import {
+  UpdateChoiceReqDto,
+  UpdateChoiceResDto,
+} from './dto/update-choice.dto';
 
 @Controller('/game/:gameId/choice')
 export class ChoiceController {
+  /**
+   *
+   * 선택지 생성하기
+   *
+   * 선택지를 생성하고 parentPageId와 childPageId를 받아 페이지와 연결합니다.
+   *
+   * @param gameId 현재 작성중인
+   * @tag Choice
+   * @summary Create a choice
+   */
   @Post()
   async create(
     @Param('gameId', ParseIntPipe) gameId: number,
+    @Body() body: CreateChoiceReqDto,
   ): Promise<CreateChoiceResDto> {
     return {
       id: 1,
@@ -23,10 +42,21 @@ export class ChoiceController {
     };
   }
 
-  @Patch(':choiceId')
+  /**
+   * 선택지 수정
+   *
+   * 선택지의 제목과 설명을 수정합니다.
+   * parentPageId와 childPageId를 수정하면 페이지와 연결이 변경됩니다.
+   * 클라이언트에서 받은값으로 덮어씌워서 수정합니다. (모든 값 필요)
+   *
+   * @summary Update a choice
+   * @tag Choice
+   */
+  @Put(':choiceId')
   async update(
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('choiceId', ParseIntPipe) choiceId: number,
+    @Body() body: UpdateChoiceReqDto,
   ): Promise<UpdateChoiceResDto> {
     return {
       id: 1,
@@ -37,6 +67,13 @@ export class ChoiceController {
     };
   }
 
+  /**
+   *
+   * 선택지 삭제
+   * 선택지를 삭제합니다. 연결 된 페이지는 삭제되지 않습니다.
+   *
+   * @tag Choice
+   */
   @Delete(':choiceId')
   async delete(
     @Param('choiceId', ParseIntPipe) choiceId: number,
