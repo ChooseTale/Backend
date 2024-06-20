@@ -71,8 +71,7 @@
       "ts"
     ],
     "moduleNameMapper": {
-      "^@@prisma/(.*)$": "<rootDir>/../prisma/$1",
-      "^@app/types(|/.*)$": "<rootDir>/libs/types/src/$1"
+      "^@@prisma/(.*)$": "<rootDir>/../prisma/$1"
     },
     "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
@@ -85,8 +84,7 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/src/",
-      "<rootDir>/libs/"
+      "<rootDir>/src/"
     ]
   }
 }
