@@ -38,6 +38,9 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
 
+      - name: set-config
+        run: cd src/config && cat development.ts > ${{ secrets.DEV_CONFIG }}
+
       - name: npx nestia
 
         run: npx prisma generate && mkdir nestia && npx nestia swagger
