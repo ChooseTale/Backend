@@ -36,8 +36,8 @@ model UserChoice {
   deletedAt DateTime?
 }
 
-// novel Janre
-enum Janre {
+// novel Genres
+enum Genres {
   FANTASY
   SCI_FI
   HORROR
@@ -64,7 +64,7 @@ model Game {
   title       String
   description String
   isPrivate   Boolean
-  janre       Janre   @default(OTHER)
+  genre       Genres  @default(OTHER)
 
   thumbnailId Int?    @unique
   thumbnail   Image?  @relation("thumbnail", fields: [thumbnailId], references: [id])

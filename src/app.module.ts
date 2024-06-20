@@ -6,8 +6,10 @@ import { GameController } from './api/controllers/novel-game/game/game.controlle
 import { GameModule } from './api/controllers/novel-game/game/game.module';
 import { PageModule } from './api/controllers/novel-game/page/page.module';
 
+import { ChoiceModule } from './api/controllers/novel-game/choice/choice.module';
+
 @Module({
-  imports: [UserModule, GameModule, PageModule],
+  imports: [UserModule, GameModule, PageModule, ChoiceModule],
   controllers: [AppController, GameController],
   providers: [PrismaService],
 })

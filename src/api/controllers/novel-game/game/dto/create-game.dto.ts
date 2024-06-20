@@ -1,10 +1,22 @@
+import { Genres } from '@prisma/client';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+
 export class CreateGameReqDto {
+  @IsNotEmpty()
+  @IsString()
   title: string;
-  description: string;
+
+  @IsNotEmpty()
+  @IsString()
+  pageOneContent: string;
 }
 
 export class CreateGameResDto {
   id: number;
-  title: string;
-  description: string;
+
+  page: {
+    id: number;
+    title: string;
+    content: string;
+  };
 }
