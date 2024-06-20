@@ -42,6 +42,7 @@ export class PageController {
   //
   @Post('/check-spelling')
   async checkSpellingByExternalService(
+    @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: CheckSpellingByExternalServiceReqDto,
   ): Promise<CheckSpellingByExternalServiceResDto> {
     // req : 이게 맛는 맞춤뻡
@@ -61,6 +62,7 @@ export class PageController {
 
   @Patch('/:pageId')
   async update(
+    @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
   ): Promise<UpdatePageResDto> {
     return {
@@ -72,6 +74,7 @@ export class PageController {
 
   @Delete('/:pageId')
   async delete(
+    @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
   ): Promise<{ message: string }> {
     return {

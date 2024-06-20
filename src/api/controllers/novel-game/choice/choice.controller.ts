@@ -14,7 +14,9 @@ import { UpdateChoiceResDto } from './dto/update-choice.dto';
 @Controller('/game/:gameId/choice')
 export class ChoiceController {
   @Post()
-  async create(): Promise<CreateChoiceResDto> {
+  async create(
+    @Param('gameId', ParseIntPipe) gameId: number,
+  ): Promise<CreateChoiceResDto> {
     return {
       id: 1,
       title: 'Choice Title',
@@ -23,6 +25,7 @@ export class ChoiceController {
 
   @Patch(':choiceId')
   async update(
+    @Param('gameId', ParseIntPipe) gameId: number,
     @Param('choiceId', ParseIntPipe) choiceId: number,
   ): Promise<UpdateChoiceResDto> {
     return {
