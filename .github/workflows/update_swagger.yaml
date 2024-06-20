@@ -39,7 +39,7 @@ jobs:
         run: yarn install
 
       - name: set-config
-        run: cd src/config && cat development.ts > ${{ secrets.DEV_CONFIG }}
+        run: echo "${{ secrets.DEV_CONFIG }}" > src/config/development.ts
 
       - name: npx nestia
 
