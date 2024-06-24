@@ -1,7 +1,7 @@
 export type ConfigType = {
   port: number;
   slack: {
-    githubActionsChnnelWebhookUrl: string;
+    githubActionsChannelWebhookUrl: string;
   };
   openAi: {
     openAiApiKey: string;

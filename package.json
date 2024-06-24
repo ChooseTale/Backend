@@ -16,7 +16,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "docker:setup": "npx tsc ./scripts/docker-setting.ts && node ./scripts/docker-setting.js",
-    "prepare": "ts-patch install && typia patch"
+    "prepare": "ts-patch install && typia patch",
+    "type-publish": "chmod 775 ./scripts/types-publish.sh && ./scripts/types-publish.sh"
   },
   "dependencies": {
     "@nestia/core": "^3.2.1",
