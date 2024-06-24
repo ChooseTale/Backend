@@ -15,7 +15,7 @@ const NESTIA_CONFIG: INestiaConfig = {
     // })
     return app;
   },
-  output: 'nestia/sdk',
+  output: 'libs/types',
   clone: true,
   swagger: {
     output: 'nestia/swagger.json',
