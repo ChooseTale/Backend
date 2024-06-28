@@ -20,6 +20,7 @@ model User {
   updatedAt  DateTime     @updatedAt
   deletedAt  DateTime?
   UserChoice UserChoice[]
+  Game       Game[]
 }
 
 model UserChoice {
@@ -70,6 +71,9 @@ model Game {
   thumbnail   Image?  @relation("thumbnail", fields: [thumbnailId], references: [id])
   Image       Image[]
   Page        Page[]
+
+  User   User @relation(fields: [userId], references: [id])
+  userId Int
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

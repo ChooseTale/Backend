@@ -1,6 +1,6 @@
 import { INestiaConfig } from '@nestia/sdk';
 import { NestFactory } from '@nestjs/core';
-// import { FastifyAdaptor } from "@nestjs/platform-fastify";
+// import { FastifyAdapter } from '@nestjs/platform-fastify';
 
 import { AppModule } from './src/app.module';
 
@@ -15,8 +15,10 @@ const NESTIA_CONFIG: INestiaConfig = {
     // })
     return app;
   },
+
   output: 'libs/types',
   clone: true,
+  distribute: 'libs/nestia-sdk',
   swagger: {
     output: 'nestia/swagger.json',
     security: {},
