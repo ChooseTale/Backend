@@ -15,11 +15,11 @@ else
 
     npx nestia sdk
 
-    cd libs/types
+    cd libs/nestia-sdk
 
     npm version patch
 
-    npm publish
+    npm run deploy
 
     echo "배포 완료!"
 
