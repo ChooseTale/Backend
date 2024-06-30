@@ -1,10 +1,112 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateGameReqDto, CreateGameResDto } from './dto/create-game.dto';
 import { UpdateGameReqDto, UpdateGameResDto } from './dto/update-game.dto';
+import { GetAllGameResDto } from './dto/get-all-game.dto';
 
 @Controller('game')
 export class GameController {
   constructor() {}
+
+  /**
+   * 게임 전체 불러오기
+   *
+   * 게임의 유지보수를 위해 게임의 정보 전체를 불러옵니다.
+   * choice가 없다면 `엔딩`으로 처리합니다.
+   *
+   *
+   * @param gameId
+   * @returns
+   */
+  @Get('/:gameId')
+  async getAll(@Param('gameId') gameId: number): Promise<GetAllGameResDto> {
+    return {
+      id: 1,
+      title: 'title',
+      pages: [
+        {
+          id: 1,
+          abridgement: '요약 1',
+          createdAt: new Date(),
+          depth: 1,
+          choices: [
+            {
+              id: 1,
+              fromPageId: 1,
+              toPageId: 2,
+              createdAt: new Date(),
+            },
+            {
+              id: 2,
+              fromPageId: 1,
+              toPageId: 3,
+              createdAt: new Date(),
+            },
+          ],
+        },
+        {
+          id: 2,
+          abridgement: '요약 2',
+          createdAt: new Date(),
+          depth: 2,
+          choices: [
+            {
+              id: 3,
+              fromPageId: 2,
+              toPageId: 4,
+              createdAt: new Date(),
+            },
+            {
+              id: 4,
+              fromPageId: 3,
+              toPageId: 5,
+              createdAt: new Date(),
+            },
+          ],
+        },
+        {
+          id: 3,
+          abridgement: '요약 3',
+          createdAt: new Date(),
+          depth: 2,
+          choices: [
+            {
+              id: 5,
+              fromPageId: 3,
+              toPageId: 5,
+              createdAt: new Date(),
+            },
+            {
+              id: 6,
+              fromPageId: 3,
+              toPageId: 6,
+              createdAt: new Date(),
+            },
+          ],
+        },
+        {
+          id: 4,
+          abridgement: '요약 4',
+          createdAt: new Date(),
+          depth: 3,
+          choices: [], // choice가 없다면 ending
+        },
+        {
+          id: 5,
+          abridgement: '요약 5',
+          createdAt: new Date(),
+          depth: 3,
+          choices: [], // choice가 없다면 ending
+        },
+        {
+          id: 6,
+          abridgement: '요약 6',
+          createdAt: new Date(),
+          depth: 3,
+          choices: [], // choice가 없다면 ending
+        },
+      ],
+    };
+  }
 
   /**
    * 게임 생성하기
