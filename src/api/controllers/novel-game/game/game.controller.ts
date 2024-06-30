@@ -8,6 +8,45 @@ export class GameController {
   constructor() {}
 
   /**
+   * 게임 데이터 불러오기
+   *
+   * 메인(리스트) 페이지에 출력 할 게임의 정보를 관리하는 데이터를 불러옵니다.
+   *
+   * isPrivate가 true라면 리스트페이지에 출력되지 않습니다.
+   * genre는 nestia sdk를 참고해 enum값만을 가져야합니다.
+   * thumbnails는 사용자가 가질 수 있는 이미지들입니다. `index 0의 이미지`가 게임이 가지는 메인이미지입니다.
+   *
+   * @param gameId
+   * @returns
+   */
+  @Get('/:gameId/data')
+  async getData(@Param('gameId') gameId: number) {
+    return {
+      id: 1,
+      title: 'Game Title',
+      description: 'Game Description',
+      isPrivate: true,
+      genre: 'OTHER',
+      thumbnails: [
+        {
+          id: 1,
+          url: `https://www.google.com/imgres?q=lol&imgurl=https%3A%2F%2Fcdn1.epicgames.com%2Foffer%2F24b9b5e323bc40eea252a10cdd3b2f10%2FEGS_LeagueofLegends_RiotGames_S1_2560x1440-80471666c140f790f28dff68d72c384b&imgrefurl=https%3A%2F%2Fstore.epicgames.com%2Fko%2Fp%2Fleague-of-legends&docid=XzNCAy9WkYmi7M&tbnid=RHVexfuwUGmwaM&vet=12ahUKEwiI7YG7k4OHAxVebPUHHXFMDOgQM3oECB0QAA..i&w=2560&h=1440&hcb=2&ved=2ahUKEwiI7YG7k4OHAxVebPUHHXFMDOgQM3oECB0QAA`,
+        },
+        {
+          id: 2,
+          url: `https://www.google.com/imgres?q=battleground&imgurl=https%3A%2F%2Fcdn1.epicgames.com%2Fspt-assets%2F53ec4985296b4facbe3a8d8d019afba9%2Fpubg-battlegrounds-1e9a7.jpg&imgrefurl=https%3A%2F%2Fstore.epicgames.com%2Fko%2Fp%2Fpubg-59c1d9&docid=XNRd0HG1OuVLVM&tbnid=daYKOkvfY85WjM&vet=12ahUKEwiEm-6wlIOHAxV0cfUHHRLiAtkQM3oECBQQAA..i&w=1920&h=1080&hcb=2&ved=2ahUKEwiEm-6wlIOHAxV0cfUHHRLiAtkQM3oECBQQAA`,
+        },
+      ],
+      createdAt: new Date(),
+      counts: {
+        pages: 6,
+        choices: 10,
+        ending: 4,
+      },
+    };
+  }
+
+  /**
    * 게임 전체 불러오기
    *
    * 게임의 유지보수를 위해 게임의 정보 전체를 불러옵니다.
