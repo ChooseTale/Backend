@@ -50,9 +50,9 @@ export class GameController {
    * 게임 전체 불러오기
    *
    * 게임의 유지보수를 위해 게임의 정보 전체를 불러옵니다.
-   * choice가 없다면 `엔딩`으로 처리합니다.
    *
    *
+   * 0630 page isEnding 추가
    * @param gameId
    * @returns
    */

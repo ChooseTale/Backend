@@ -93,6 +93,8 @@ model Page {
   fromPage ChoicePage[] @relation("fromPage")
   toPage   ChoicePage[] @relation("toPage")
 
+  isEnding Boolean
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
