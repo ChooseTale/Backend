@@ -8,6 +8,7 @@ type Choice = {
 type Page = {
   id: number;
   abridgement: string;
+  description: string;
   createdAt: Date;
   depth: number;
   choices: Choice[];

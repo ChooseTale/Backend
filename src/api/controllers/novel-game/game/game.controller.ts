@@ -65,6 +65,7 @@ export class GameController {
         {
           id: 1,
           abridgement: '요약 1',
+          description: '설명 1',
           createdAt: new Date(),
           depth: 1,
           choices: [
@@ -85,6 +86,7 @@ export class GameController {
         {
           id: 2,
           abridgement: '요약 2',
+          description: '설명 2',
           createdAt: new Date(),
           depth: 2,
           choices: [
@@ -105,6 +107,7 @@ export class GameController {
         {
           id: 3,
           abridgement: '요약 3',
+          description: '설명 3',
           createdAt: new Date(),
           depth: 2,
           choices: [
@@ -125,13 +128,16 @@ export class GameController {
         {
           id: 4,
           abridgement: '요약 4',
+          description: '설명 4',
           createdAt: new Date(),
           depth: 3,
           choices: [], // choice가 없다면 ending
         },
         {
           id: 5,
+
           abridgement: '요약 5',
+          description: '설명 5',
           createdAt: new Date(),
           depth: 3,
           choices: [], // choice가 없다면 ending
@@ -139,6 +145,7 @@ export class GameController {
         {
           id: 6,
           abridgement: '요약 6',
+          description: '설명 6',
           createdAt: new Date(),
           depth: 3,
           choices: [], // choice가 없다면 ending
