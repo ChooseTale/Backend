@@ -9,7 +9,7 @@ type Counts = {
   ending: number;
 };
 
-type GetDataGameResDto = {
+export type GetDataGameResDto = {
   id: number;
   title: string;
   description: string;

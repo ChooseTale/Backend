@@ -72,7 +72,8 @@
       "ts"
     ],
     "moduleNameMapper": {
-      "^@@prisma/(.*)$": "<rootDir>/../prisma/$1"
+      "^@@prisma/(.*)$": "<rootDir>/prisma/$1",
+      "^@@src/(.*)$": "<rootDir>/src/$1"
     },
     "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
