@@ -2,7 +2,7 @@ import { Genres } from '@prisma/client';
 
 export class GameDomainEntity {
   constructor(
-    public id: number | null,
+    public id: number,
     public title: string,
     public description: string,
     public isPrivate: boolean,
