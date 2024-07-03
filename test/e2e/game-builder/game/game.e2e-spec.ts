@@ -37,7 +37,23 @@ describe('Test', () => {
       expect(statusCode).toEqual(201);
     });
 
-    it('🟢 게임이 생성되면 첫 페이지가 함께 생성되어야 한다.', async () => {});
+    it('🟢 게임이 생성되면 첫 페이지가 함께 생성되어야 한다.', async () => {
+      const { error, body } = await request(app.getHttpServer())
+        .post('/game')
+        .send({
+          title: 'test title',
+          pageOneContent: 'test content',
+        });
+
+      if (error) {
+        console.log(error);
+      }
+
+      expect(body).toEqual({
+        id: expect.any(Number),
+        page: expect.any(Object),
+      });
+    });
   });
 
   afterAll(async () => {
