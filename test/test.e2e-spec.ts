@@ -1,6 +1,5 @@
 import { PrismaService } from '@@prisma/prisma.service';
 import {
-  setMockupData,
   setupPrismaService,
   setupTestModule,
 } from './utils/setup-prisma-service';
@@ -18,12 +17,11 @@ describe('Test', () => {
       'test',
     ));
     app = await setupTestModule(AppModule, prisma);
-    await setMockupData(databaseUrl);
   });
 
   it('should be defined', async () => {
     const user = await prisma.user.findMany();
-    console.log(user);
+
     expect(user).not.toBeNull();
   });
 

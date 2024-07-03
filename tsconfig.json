@@ -17,6 +17,9 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+
     "paths": {
       "@@prisma/*": ["./prisma/*"],
       "@@src/*": ["./src/*"],
