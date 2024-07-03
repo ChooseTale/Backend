@@ -1,9 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PageDomainEntity } from '../domain/entities/page.entity';
-import {
-  CreatePageReqDto,
-  CreatePageResDto,
-} from '../controllers/dto/create-page.dto';
+import { CreatePageReqDto } from '../controllers/dto/create-page.dto';
 import { IPageRepository } from '../domain/repositories/page.repository.interface';
 
 @Injectable()
@@ -14,20 +11,18 @@ export class PageService {
 
   async create(
     gameId: number,
-    createPageReqDto: CreatePageReqDto,
-  ): Promise<CreatePageResDto> {
+    createPageReqDto?: CreatePageReqDto,
+  ): Promise<PageDomainEntity> {
     const page = new PageDomainEntity(
       0,
-      createPageReqDto.content ?? '',
+      createPageReqDto?.content ?? '',
       '요약',
       gameId,
-      createPageReqDto.isEnding ?? false,
+      createPageReqDto?.isEnding ?? false,
       new Date(),
       new Date(),
     );
     const newPage = await this.pageRepository.create(page);
-    return {
-      id: newPage.id,
-    };
+    return newPage;
   }
 }

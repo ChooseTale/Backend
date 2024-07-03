@@ -14,5 +14,6 @@ import { PrismaService } from '@@prisma/prisma.service';
     },
     PrismaService,
   ],
+  exports: [PageService],
 })
 export class PageModule {}

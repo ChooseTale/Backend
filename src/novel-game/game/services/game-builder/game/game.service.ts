@@ -1,7 +1,3 @@
-import {
-  CreateGameReqDto,
-  CreateGameResDto,
-} from '@@src/novel-game/game/application/controllers/dto/create-game.dto';
 import { GameDomainEntity } from '@@src/novel-game/game/domain/entities/game.entity';
 import { IGameRepository } from '@@src/novel-game/game/domain/repositories/game.repository.interface';
 import { Inject, Injectable } from '@nestjs/common';
@@ -12,13 +8,10 @@ export class GameService {
     @Inject('IGameRepository') private readonly gameRepository: IGameRepository,
   ) {}
 
-  async create(
-    userId: number,
-    createGameReqDto: CreateGameReqDto,
-  ): Promise<CreateGameResDto> {
+  async create(userId: number, title: string): Promise<GameDomainEntity> {
     const game = new GameDomainEntity(
       0,
-      createGameReqDto.title,
+      title,
       '',
       true,
       'OTHER',
@@ -28,15 +21,8 @@ export class GameService {
       new Date(),
     );
 
-    await this.gameRepository.create(game);
+    const newGame = await this.gameRepository.create(game);
 
-    return {
-      id: game.id,
-      page: {
-        id: 1,
-        abridgement: '요약',
-        content: 'hi',
-      },
-    };
+    return newGame;
   }
 }

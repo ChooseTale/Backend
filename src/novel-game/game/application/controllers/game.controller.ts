@@ -2,11 +2,12 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateGameReqDto, CreateGameResDto } from './dto/create-game.dto';
 import { UpdateGameReqDto, UpdateGameResDto } from './dto/update-game.dto';
 import { GetAllGameResDto } from './dto/get-all-game.dto';
-import { GameService } from '../../services/game-builder/game/game.service';
+
+import { CreateGameUsecase } from '../usecases/create-game.usecase';
 
 @Controller('game')
 export class GameController {
-  constructor(private readonly gameService: GameService) {}
+  constructor(private readonly createGameUsecase: CreateGameUsecase) {}
 
   /**
    * 게임 데이터 불러오기
@@ -170,7 +171,7 @@ export class GameController {
   async create(
     @Body() createGameReqDto: CreateGameReqDto,
   ): Promise<CreateGameResDto> {
-    return await this.gameService.create(1, createGameReqDto);
+    return await this.createGameUsecase.excute(1, createGameReqDto);
   }
 
   /**
