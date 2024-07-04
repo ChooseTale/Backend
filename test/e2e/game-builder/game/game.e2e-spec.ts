@@ -54,6 +54,60 @@ describe('Test', () => {
         page: expect.any(Object),
       });
     });
+
+    describe('🔴 게임 생성 실패', () => {
+      it('🔴 제목은 1글자 이상이어야 한다.', async () => {
+        const title = '';
+
+        // title이 1자 이하일 때
+        const { error, statusCode } = await request(app.getHttpServer())
+          .post('/game')
+          .send({
+            title: '',
+            pageOneContent: 'test content',
+          });
+
+        expect(statusCode).toEqual(400);
+      });
+      it('🔴 제목은 30자 이하이어야 한다.', async () => {
+        let title = '';
+        for (let i = 0; i < 31; i++) {
+          title += 'a';
+        }
+        const { statusCode } = await request(app.getHttpServer())
+          .post('/game')
+          .send({
+            title: title,
+            pageOneContent: 'test content',
+          });
+
+        expect(statusCode).toEqual(400);
+      });
+      it('🔴 페이지 내용은 1글자 이상이어야 한다.', async () => {
+        const { statusCode } = await request(app.getHttpServer())
+          .post('/game')
+          .send({
+            title: 'test title',
+            pageOneContent: '',
+          });
+
+        expect(statusCode).toEqual(400);
+      });
+      it('🔴 페이지 내용은 2000자 이하이어야 한다.', async () => {
+        let pageOneContent = '';
+        for (let i = 0; i < 2001; i++) {
+          pageOneContent += 'a';
+        }
+        const { statusCode } = await request(app.getHttpServer())
+          .post('/game')
+          .send({
+            title: 'test title',
+            pageOneContent,
+          });
+
+        expect(statusCode).toEqual(400);
+      });
+    });
   });
 
   afterAll(async () => {
