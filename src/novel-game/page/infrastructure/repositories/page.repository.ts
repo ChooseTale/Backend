@@ -3,14 +3,20 @@ import { IPageRepository } from '../../domain/repositories/page.repository.inter
 import { PageDomainEntity } from '../../domain/entities/page.entity';
 import { PrismaService } from '@@prisma/prisma.service';
 import { toDomain, toEntityForCreate } from '../mappeer/page.mapper';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PageRepository implements IPageRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(page: PageDomainEntity): Promise<PageDomainEntity> {
+  async create(
+    page: PageDomainEntity,
+    transaction: Prisma.TransactionClient,
+  ): Promise<PageDomainEntity> {
     const pageEntity = toEntityForCreate(page);
-    const newPage = await this.prisma.page.create({ data: pageEntity });
+    const newPage = await (transaction ?? this.prisma).page.create({
+      data: pageEntity,
+    });
     return toDomain(newPage);
   }
 }
