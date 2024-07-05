@@ -23,7 +23,7 @@
     "paths": {
       "@@prisma/*": ["./prisma/*"],
       "@@src/*": ["./src/*"],
-      "@@conifg/*": ["./config/*"]
+      "@@config/*": ["./src/config/*"]
     },
     "plugins": [
       {

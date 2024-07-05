@@ -6,6 +6,7 @@ import {
 } from '../controllers/dto/create-game.dto';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@@prisma/prisma.service';
+import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
 
 @Injectable()
 export class CreateGameUsecase {
@@ -19,6 +20,12 @@ export class CreateGameUsecase {
     userId: number,
     createGameReqDto: CreateGameReqDto,
   ): Promise<CreateGameResDto> {
+    // const chatGPT = new ChatGPT();
+    // const abridgedContent = await chatGPT.getAbridgedContent(
+    //   createGameReqDto.pageOneContent,
+    // );
+    // console.log(abridgedContent.choices[0].message);
+
     return await this.prismaService.$transaction(async (transaction) => {
       const newGame = await this.gameService.create(
         userId,

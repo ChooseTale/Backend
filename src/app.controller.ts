@@ -9,11 +9,6 @@ export class AppController {
 
   @Get('/ping')
   ping(): { key: string } {
-    let number = 1;
-    if (number === 2) {
-      throw new Error('error');
-    }
-
     return { key: 'pong' };
   }
 
