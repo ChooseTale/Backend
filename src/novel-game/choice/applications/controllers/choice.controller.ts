@@ -18,9 +18,12 @@ import {
   UpdateChoiceReqDto,
   UpdateChoiceResDto,
 } from './dto/update-choice.dto';
+import { CreateChoiceUseCase } from '../usecases/create-choice.usecase';
 
 @Controller('/game/:gameId/choice')
 export class ChoiceController {
+  constructor(private readonly createChoiceUsecase: CreateChoiceUseCase) {}
+
   /**
    *
    * 선택지 생성하기

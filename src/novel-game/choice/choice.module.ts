@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ChoiceController } from './choice.controller';
+import { ChoiceController } from './applications/controllers/choice.controller';
 
 @Module({
-  controllers: [ChoiceController]
+  controllers: [ChoiceController],
 })
 export class ChoiceModule {}
