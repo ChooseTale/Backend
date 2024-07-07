@@ -10,6 +10,10 @@ export class PageService {
     @Inject('IPageRepository') private readonly pageRepository: IPageRepository,
   ) {}
 
+  async getById(id: number) {
+    return await this.pageRepository.getById(id);
+  }
+
   async create(
     gameId: number,
     createPageReqDto?: CreatePageReqDto,
