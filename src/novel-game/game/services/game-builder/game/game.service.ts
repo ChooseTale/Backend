@@ -9,6 +9,10 @@ export class GameService {
     @Inject('IGameRepository') private readonly gameRepository: IGameRepository,
   ) {}
 
+  async getById(id: number) {
+    return await this.gameRepository.getById(id);
+  }
+
   async create(
     userId: number,
     title: string,

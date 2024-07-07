@@ -39,6 +39,8 @@ export class ChoiceController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: CreateChoiceReqDto,
   ): Promise<CreateChoiceResDto> {
+    await this.createChoiceUsecase.execute(gameId, body);
+
     return {
       id: 1,
       title: 'Choice Title',

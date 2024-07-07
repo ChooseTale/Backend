@@ -8,6 +8,13 @@ import { Prisma } from '@prisma/client';
 export class GameRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getById(id: number) {
+    const game = await this.prisma.game.findUnique({
+      where: { id },
+    });
+    return game ? toDomain(game) : null;
+  }
+
   async create(game: GameDomainEntity, transaction: Prisma.TransactionClient) {
     const gameEntity = toEntityForCreate(game);
     const newGame = await (transaction ?? this.prisma).game.create({

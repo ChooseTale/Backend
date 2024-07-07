@@ -4,9 +4,10 @@ import { CreateChoiceUseCase } from './usecases/create-choice.usecase';
 import { PrismaService } from '@@prisma/prisma.service';
 import { ChoiceService } from '../services/choice.service';
 import { ChoiceRepository } from '../infrastructure/repositories/choice.repository';
+import { GameModule } from '@@src/novel-game/game/application/controllers/game.module';
 
 @Module({
-  imports: [],
+  imports: [GameModule],
   controllers: [ChoiceController],
   providers: [
     CreateChoiceUseCase,
