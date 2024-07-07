@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { PrismaService } from '@@prisma/prisma.service';
 import OpenAI from 'openai';
 
@@ -7,13 +7,22 @@ import config from '@@src/config/index';
 export class AppController {
   constructor(private readonly prismaService: PrismaService) {}
 
+  @Post('/test-user')
+  async testUser(@Query('count', ParseIntPipe) count: number) {
+    // 유저가 존재하면 이메일 뒤에 숫자를 붙임. 숫자는 1부터 시작
+
+    for (let i = 0; i < count; i++) {
+      await this.prismaService.user.create({
+        data: {
+          email: `test${i}@test.com`,
+        },
+      });
+    }
+    return 'success';
+  }
+
   @Get('/ping')
   ping(): { key: string } {
-    let number = 1;
-    if (number === 2) {
-      throw new Error('error');
-    }
-
     return { key: 'pong' };
   }
 

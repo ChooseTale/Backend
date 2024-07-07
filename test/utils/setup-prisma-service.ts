@@ -2,14 +2,9 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import { PrismaService } from '@@prisma/prisma.service';
 import { Test } from '@nestjs/testing';
-import {
-  INestApplication,
-  NotFoundException,
-  ValidationPipe,
-} from '@nestjs/common';
+import { NotFoundException, ValidationPipe } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-
-import request from 'supertest';
+import { createMockData } from 'test/mock/create-mock';
 
 const execAsync = promisify(exec);
 
@@ -50,15 +45,7 @@ export async function setupTestModule(module: any, prisma: PrismaClient) {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   await app.init();
 
-  return app;
-}
+  await createMockData(prisma);
 
-export async function setMockupData(databaseUrl: string) {
-  const prisma = new PrismaService({
-    datasources: {
-      db: {
-        url: databaseUrl,
-      },
-    },
-  });
+  return app;
 }
