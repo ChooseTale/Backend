@@ -4,7 +4,7 @@ import { CreateGameReqDto } from '@@src/novel-game/game/application/controllers/
 
 describe('GameService', () => {
   let service: GameService;
-
+  const transaction: any = {};
   beforeEach(async () => {
     service = new GameService(IGameStupRepository);
   });
@@ -16,7 +16,7 @@ describe('GameService', () => {
       pageOneContent: 'test content',
     };
     it('call create', async () => {
-      await service.create(userId, createGameReqDto);
+      await service.create(userId, createGameReqDto.title, transaction);
       expect(IGameStupRepository.create).toHaveBeenCalledTimes(1);
     });
   });
