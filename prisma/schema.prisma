@@ -106,8 +106,8 @@ model ChoicePage {
   fromPage   Page @relation("fromPage", fields: [fromPageId], references: [id], onDelete: Cascade)
   fromPageId Int
 
-  toPage   Page @relation("toPage", fields: [toPageId], references: [id])
-  toPageId Int
+  toPage   Page? @relation("toPage", fields: [toPageId], references: [id])
+  toPageId Int?
 
   title       String
   description String
