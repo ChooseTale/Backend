@@ -2,10 +2,8 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
   Put,
 } from '@nestjs/common';
@@ -29,6 +27,7 @@ export class ChoiceController {
    * 선택지 생성하기
    *
    * 선택지를 생성하고 parentPageId와 childPageId를 받아 페이지와 연결합니다.
+   * childPageId는 null일 수 있습니다.
    *
    * @param gameId 현재 작성중인
    * @tag Choice
@@ -39,12 +38,7 @@ export class ChoiceController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: CreateChoiceReqDto,
   ): Promise<CreateChoiceResDto> {
-    await this.createChoiceUsecase.execute(gameId, body);
-
-    return {
-      id: 1,
-      title: 'Choice Title',
-    };
+    return await this.createChoiceUsecase.execute(gameId, body);
   }
 
   /**

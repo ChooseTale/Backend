@@ -1,4 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { CreateChoiceReqDto } from '../../applications/controllers/dto/create-choice.dto';
+import { ChoiceDomainEntity } from '../entities/choice.entity';
 
-@Injectable()
-export class ChoiceRepositoryInterface {}
+export interface ChoiceRepositoryInterface {
+  getAllByPageId(
+    pageId: number,
+    transaction: Prisma.TransactionClient,
+  ): Promise<ChoiceDomainEntity[]>;
+  create(
+    order: number,
+    createChoiceReqDto: CreateChoiceReqDto,
+    transaction: Prisma.TransactionClient,
+  ): Promise<ChoiceDomainEntity>;
+}
