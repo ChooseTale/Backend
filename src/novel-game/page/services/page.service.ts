@@ -10,8 +10,8 @@ export class PageService {
     @Inject('IPageRepository') private readonly pageRepository: IPageRepository,
   ) {}
 
-  async getById(id: number) {
-    return await this.pageRepository.getById(id);
+  async getOneById(id: number, transaction?: Prisma.TransactionClient) {
+    return await this.pageRepository.getOneById(id, transaction);
   }
 
   async create(

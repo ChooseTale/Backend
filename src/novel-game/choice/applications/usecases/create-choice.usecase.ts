@@ -20,7 +20,7 @@ export class CreateChoiceUseCase {
         const game = await this.gameService.getById(gameId);
         if (!game) throw new NotFoundException(`game is null`);
 
-        const parentPage = await this.pageService.getById(
+        const parentPage = await this.pageService.getOneById(
           createChoiceReqDto.parentPageId,
         );
         if (!parentPage) throw new NotFoundException(`parentPage is null`);

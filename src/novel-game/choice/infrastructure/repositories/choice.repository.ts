@@ -22,6 +22,18 @@ export class ChoiceRepository implements ChoiceRepositoryInterface {
     return choices.map((choice) => toDomain(choice));
   }
 
+  async getOneById(
+    id: number,
+    transaction: Prisma.TransactionClient,
+  ): Promise<ChoiceDomainEntity | null> {
+    const choice = await (transaction ?? this.prisma).choicePage.findUnique({
+      where: {
+        id,
+      },
+    });
+    return choice ? toDomain(choice) : null;
+  }
+
   async create(
     order: number,
     createChoiceReqDto: CreateChoiceReqDto,
