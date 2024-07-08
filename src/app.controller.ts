@@ -3,9 +3,15 @@ import { PrismaService } from '@@prisma/prisma.service';
 import OpenAI from 'openai';
 
 import config from '@@src/config/index';
+import { createMockData } from 'test/mock/create-mock';
 @Controller()
 export class AppController {
   constructor(private readonly prismaService: PrismaService) {}
+
+  @Post('/mock')
+  async mock() {
+    await createMockData(this.prismaService);
+  }
 
   @Post('/test-user')
   async testUser(@Query('count', ParseIntPipe) count: number) {
