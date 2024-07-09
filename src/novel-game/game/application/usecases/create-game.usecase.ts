@@ -6,7 +6,7 @@ import {
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '@@prisma/prisma.service';
 import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
-import { IPageService } from '@@src/novel-game/page/controllers/services/page.service.interface';
+import { IPageService } from '@@src/novel-game/page/application/usecases/services/page.service.interface';
 
 @Injectable()
 export class CreateGameUsecase {
@@ -24,7 +24,6 @@ export class CreateGameUsecase {
     const abridgedContent = await chatGPT.getAbridgedContent(
       createGameReqDto.pageOneContent,
     );
-    console.log(abridgedContent.choices[0].message);
 
     return await this.prismaService.$transaction(async (transaction) => {
       const newGame = await this.gameService.create(
@@ -34,6 +33,7 @@ export class CreateGameUsecase {
       );
       const newPage = await this.pageService.create(
         newGame.id,
+        abridgedContent,
         {
           content: createGameReqDto.pageOneContent,
         },

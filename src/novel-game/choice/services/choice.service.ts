@@ -7,7 +7,7 @@ import {
 import { IChoiceRepository } from '../domain/repositories/choice.repository.interface';
 import { CreateChoiceReqDto } from '../applications/controllers/dto/create-choice.dto';
 import { Prisma } from '@prisma/client';
-import { IPageService } from '@@src/novel-game/page/controllers/services/page.service.interface';
+import { IPageService } from '@@src/novel-game/page/application/usecases/services/page.service.interface';
 
 @Injectable()
 export class ChoiceService {

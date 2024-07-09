@@ -3,7 +3,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateChoiceReqDto } from '../controllers/dto/create-choice.dto';
 import { ChoiceService } from '../../services/choice.service';
 import { GameService } from '@@src/novel-game/game/services/game-builder/game/game.service';
-import { IPageService } from '@@src/novel-game/page/controllers/services/page.service.interface';
+import { IPageService } from '@@src/novel-game/page/application/usecases/services/page.service.interface';
 
 @Injectable()
 export class CreateChoiceUseCase {
