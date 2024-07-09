@@ -2,8 +2,8 @@ import { ChoiceService } from './choice.service';
 
 import { IChoiceRepository } from '../domain/repositories/choice.repository.interface';
 import { IChoiceStubRepository } from '../domain/repositories/choice.repository.stub';
-import { IPageService } from '@@src/novel-game/page/application/usecases/services/page.service.interface';
-import { PageStubService } from '@@src/novel-game/page/application/usecases/services/page.stub.service';
+import { IPageService } from '@@src/novel-game/page/application/services/page.service.interface';
+import { PageStubService } from '@@src/novel-game/page/application/services/page.stub.service';
 import { PageStubEntity } from '@@src/novel-game/page/domain/entities/page.stub.entity';
 
 describe('ChoiceService', () => {

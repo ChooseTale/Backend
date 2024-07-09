@@ -3,7 +3,7 @@ import { PageDomainEntity } from '../domain/entities/page.entity';
 import { CreatePageReqDto } from '../application/controllers/dto/create-page.dto';
 import { IPageRepository } from '../domain/repositories/page.repository.interface';
 import { Prisma } from '@prisma/client';
-import { IPageService } from '../application/usecases/services/page.service.interface';
+import { IPageService } from '../application/services/page.service.interface';
 
 @Injectable()
 export class PageService implements IPageService {

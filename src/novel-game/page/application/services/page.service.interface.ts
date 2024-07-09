@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
-import { CreatePageReqDto } from '../../controllers/dto/create-page.dto';
-import { PageDomainEntity } from '../../../domain/entities/page.entity';
+import { CreatePageReqDto } from '../controllers/dto/create-page.dto';
+import { PageDomainEntity } from '../../domain/entities/page.entity';
 
 export interface IPageService {
   getOneById(

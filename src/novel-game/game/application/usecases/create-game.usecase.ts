@@ -6,7 +6,7 @@ import {
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '@@prisma/prisma.service';
 import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
-import { IPageService } from '@@src/novel-game/page/application/usecases/services/page.service.interface';
+import { IPageService } from '@@src/novel-game/page/application/services/page.service.interface';
 
 @Injectable()
 export class CreateGameUsecase {
