@@ -1,6 +1,10 @@
+import { IsBoolean, IsString } from 'class-validator';
+
 export class CreatePageReqDto {
+  @IsBoolean()
   isEnding?: boolean;
-  content?: string;
+  @IsString()
+  content: string;
 }
 
 export class CreatePageResDto {

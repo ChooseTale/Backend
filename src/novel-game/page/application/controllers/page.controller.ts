@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   ParseIntPipe,
   Patch,
@@ -16,14 +15,11 @@ import {
 } from './dto/check-spelling-by-external-service.dto';
 import { RecommendChoiceByGPTResDto } from './dto/recommend-choice-by-GPT.dto';
 import { UpdatePageResDto } from './dto/update-page.dto';
-import { IPageService } from './services/page.service.interface';
+import { CreatePageUsecase } from '../usecases/create-page.usecase';
 
 @Controller('/game/:gameId/page')
 export class PageController {
-  constructor(
-    @Inject('IPageService')
-    private readonly pageService: IPageService,
-  ) {}
+  constructor(private readonly createPageUsecase: CreatePageUsecase) {}
 
   /**
    * 선택지 추천받기
@@ -31,8 +27,7 @@ export class PageController {
    * `pageId`에 해당하는 페이지의 내용을 이용해 (그리고 이전의 이야기를 이용해) 추천 선택지를 받습니다.
    * response의 title과 description은 선택지의 내용들이며, 사용자가 선택지 생성을 선택하면 다음과 같은 프로세스를 따릅니다.
    * 1. 페이지 생성하기
-      -
-      고민좀 해볼게요
+
    * @tag Page
    */
   @Get(':pageId/recommend-choices')
@@ -90,9 +85,7 @@ export class PageController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: CreatePageReqDto,
   ): Promise<CreatePageResDto> {
-    return {
-      id: 1,
-    };
+    return await this.createPageUsecase.create(gameId, body);
   }
 
   /**

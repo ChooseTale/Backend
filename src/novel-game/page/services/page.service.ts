@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PageDomainEntity } from '../domain/entities/page.entity';
-import { CreatePageReqDto } from '../controllers/dto/create-page.dto';
+import { CreatePageReqDto } from '../application/controllers/dto/create-page.dto';
 import { IPageRepository } from '../domain/repositories/page.repository.interface';
 import { Prisma } from '@prisma/client';
-import { IPageService } from '../controllers/services/page.service.interface';
+import { IPageService } from '../application/services/page.service.interface';
 
 @Injectable()
 export class PageService implements IPageService {
@@ -17,13 +17,14 @@ export class PageService implements IPageService {
 
   async create(
     gameId: number,
+    abridgement: string,
     createPageReqDto?: CreatePageReqDto,
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity> {
     const page = new PageDomainEntity(
       0,
       createPageReqDto?.content ?? '',
-      '요약',
+      abridgement,
       gameId,
       createPageReqDto?.isEnding ?? false,
       new Date(),

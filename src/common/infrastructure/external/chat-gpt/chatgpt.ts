@@ -10,7 +10,7 @@ export class ChatGPT {
     this.openAI = new OpenAI({ apiKey: this.apiKey });
   }
 
-  async getAbridgedContent(content: string) {
+  async getAbridgedContent(content: string): Promise<string> {
     //return abridged content
     const completion = await this.openAI.chat.completions.create({
       messages: [
@@ -22,6 +22,6 @@ export class ChatGPT {
       ],
       model: 'gpt-4o',
     });
-    return completion;
+    return completion.choices[0].message.content ?? '';
   }
 }

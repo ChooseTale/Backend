@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { CreatePageReqDto } from '../dto/create-page.dto';
+import { CreatePageReqDto } from '../controllers/dto/create-page.dto';
 import { PageDomainEntity } from '../../domain/entities/page.entity';
 
 export interface IPageService {
@@ -9,6 +9,7 @@ export interface IPageService {
   ): Promise<PageDomainEntity | null>;
   create(
     gameId: number,
+    abridgement: string,
     createPageReqDto: CreatePageReqDto,
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity>;
