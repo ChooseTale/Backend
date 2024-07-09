@@ -1,18 +1,18 @@
-import { PageService } from '@@src/novel-game/page/services/page.service';
 import { GameService } from '../../services/game-builder/game/game.service';
 import {
   CreateGameReqDto,
   CreateGameResDto,
 } from '../controllers/dto/create-game.dto';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '@@prisma/prisma.service';
 import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
+import { IPageService } from '@@src/novel-game/page/controllers/services/page.service.interface';
 
 @Injectable()
 export class CreateGameUsecase {
   constructor(
     private readonly gameService: GameService,
-    private readonly pageService: PageService,
+    @Inject('IPageService') private readonly pageService: IPageService,
     private readonly prismaService: PrismaService,
   ) {}
 
@@ -20,11 +20,11 @@ export class CreateGameUsecase {
     userId: number,
     createGameReqDto: CreateGameReqDto,
   ): Promise<CreateGameResDto> {
-    // const chatGPT = new ChatGPT();
-    // const abridgedContent = await chatGPT.getAbridgedContent(
-    //   createGameReqDto.pageOneContent,
-    // );
-    // console.log(abridgedContent.choices[0].message);
+    const chatGPT = new ChatGPT();
+    const abridgedContent = await chatGPT.getAbridgedContent(
+      createGameReqDto.pageOneContent,
+    );
+    console.log(abridgedContent.choices[0].message);
 
     return await this.prismaService.$transaction(async (transaction) => {
       const newGame = await this.gameService.create(

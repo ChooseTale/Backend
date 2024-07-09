@@ -19,5 +19,6 @@ import { CreateGameUsecase } from '../usecases/create-game.usecase';
     },
     PrismaService,
   ],
+  exports: [GameService],
 })
 export class GameModule {}

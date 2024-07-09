@@ -7,13 +7,16 @@ import { PrismaService } from '@@prisma/prisma.service';
 @Module({
   controllers: [PageController],
   providers: [
-    PageService,
+    {
+      provide: 'IPageService',
+      useClass: PageService,
+    },
     {
       provide: 'IPageRepository',
       useClass: PageRepository,
     },
     PrismaService,
   ],
-  exports: [PageService],
+  exports: [{ provide: 'IPageService', useClass: PageService }],
 })
 export class PageModule {}
