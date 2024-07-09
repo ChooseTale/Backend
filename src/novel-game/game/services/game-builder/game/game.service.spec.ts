@@ -1,4 +1,4 @@
-import { IGameStupRepository } from '@@src/novel-game/game/domain/repositories/game.stup.repository';
+import { IGameStupRepository } from '@@src/novel-game/game/domain/repositories/game.stub.repository';
 import { GameService } from './game.service';
 import { CreateGameReqDto } from '@@src/novel-game/game/application/controllers/dto/create-game.dto';
 
