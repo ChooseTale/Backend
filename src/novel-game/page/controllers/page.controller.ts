@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   ParseIntPipe,
   Patch,
@@ -15,9 +16,15 @@ import {
 } from './dto/check-spelling-by-external-service.dto';
 import { RecommendChoiceByGPTResDto } from './dto/recommend-choice-by-GPT.dto';
 import { UpdatePageResDto } from './dto/update-page.dto';
+import { IPageService } from './services/page.service.interface';
 
 @Controller('/game/:gameId/page')
 export class PageController {
+  constructor(
+    @Inject('IPageService')
+    private readonly pageService: IPageService,
+  ) {}
+
   /**
    * 선택지 추천받기
    *

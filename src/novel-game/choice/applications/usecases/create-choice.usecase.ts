@@ -1,9 +1,9 @@
 import { PrismaService } from '@@prisma/prisma.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateChoiceReqDto } from '../controllers/dto/create-choice.dto';
 import { ChoiceService } from '../../services/choice.service';
 import { GameService } from '@@src/novel-game/game/services/game-builder/game/game.service';
-import { PageService } from '@@src/novel-game/page/services/page.service';
+import { IPageService } from '@@src/novel-game/page/controllers/services/page.service.interface';
 
 @Injectable()
 export class CreateChoiceUseCase {
@@ -11,7 +11,7 @@ export class CreateChoiceUseCase {
     private readonly prisma: PrismaService,
     private readonly choiceService: ChoiceService,
     private readonly gameService: GameService,
-    private readonly pageService: PageService,
+    @Inject('IPageService') private readonly pageService: IPageService,
   ) {}
 
   async execute(gameId: number, createChoiceReqDto: CreateChoiceReqDto) {
