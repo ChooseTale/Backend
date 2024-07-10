@@ -16,4 +16,8 @@ export interface IChoiceRepository {
     createChoiceReqDto: CreateChoiceReqDto,
     transaction: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity>;
+  update(
+    choice: ChoiceDomainEntity,
+    transaction: Prisma.TransactionClient,
+  ): Promise<ChoiceDomainEntity>;
 }

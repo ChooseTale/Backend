@@ -8,9 +8,15 @@ import { IChoiceRepository } from '../domain/repositories/choice.repository.inte
 import { CreateChoiceReqDto } from '../applications/controllers/dto/create-choice.dto';
 import { Prisma } from '@prisma/client';
 import { IPageService } from '@@src/novel-game/page/application/services/page.service.interface';
+import { IChoiceService } from '../applications/services/choice.service.interface';
+import {
+  UpdateChoiceReqDto,
+  UpdateChoiceResDto,
+} from '../applications/controllers/dto/update-choice.dto';
+import { ChoiceDomainEntity } from '../domain/entities/choice.entity';
 
 @Injectable()
-export class ChoiceService {
+export class ChoiceService implements IChoiceService {
   constructor(
     @Inject('choiceRepositoryInterface')
     private readonly choiceRepository: IChoiceRepository,
@@ -65,5 +71,27 @@ export class ChoiceService {
       transaction,
     );
     return choice;
+  }
+
+  async update(
+    id: number,
+    body: UpdateChoiceReqDto,
+    transaction: Prisma.TransactionClient,
+  ): Promise<ChoiceDomainEntity> {
+    const choice = await this.choiceRepository.getOneById(id, transaction);
+    if (!choice) {
+      throw new NotFoundException('해당 선택지가 존재하지 않습니다.');
+    }
+
+    choice.setTitle(body.title);
+    choice.setDescription(body.description);
+    choice.setParentPageId(body.parentPageId);
+    choice.setChildPageId(body.childPageId);
+
+    const updatedChoice = await this.choiceRepository.update(
+      choice,
+      transaction,
+    );
+    return updatedChoice;
   }
 }

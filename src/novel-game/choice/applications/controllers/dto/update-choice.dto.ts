@@ -5,7 +5,7 @@ export class UpdateChoiceReqDto {
   title: string;
   description: string;
   parentPageId: number;
-  childPageId: number;
+  childPageId: number | null;
 }
 
 export class UpdateChoiceResDto {
@@ -13,5 +13,5 @@ export class UpdateChoiceResDto {
   title: string;
   description: string;
   parentPageId: number;
-  childPageId: number;
+  childPageId: number | null;
 }

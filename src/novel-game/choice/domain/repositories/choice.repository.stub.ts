@@ -10,4 +10,5 @@ export const IChoiceStubRepository: IChoiceRepository = {
       return null;
     }
   }),
+  update: jest.fn(),
 };

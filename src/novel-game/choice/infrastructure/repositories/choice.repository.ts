@@ -3,7 +3,7 @@ import { IChoiceRepository } from '../../domain/repositories/choice.repository.i
 import { PrismaService } from '@@prisma/prisma.service';
 import { CreateChoiceReqDto } from '../../applications/controllers/dto/create-choice.dto';
 import { ChoiceDomainEntity } from '../../domain/entities/choice.entity';
-import { toDomain } from '../mapper/choice.mapper';
+import { toDomain, toEntity } from '../mapper/choice.mapper';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
@@ -49,5 +49,19 @@ export class ChoiceRepository implements IChoiceRepository {
       },
     });
     return toDomain(choice);
+  }
+
+  async update(
+    choice: ChoiceDomainEntity,
+    transaction: Prisma.TransactionClient,
+  ): Promise<ChoiceDomainEntity> {
+    const choiceEntity = toEntity(choice);
+    const updatedChoice = await (transaction ?? this.prisma).choicePage.update({
+      where: {
+        id: choice.id,
+      },
+      data: choiceEntity,
+    });
+    return toDomain(updatedChoice);
   }
 }
