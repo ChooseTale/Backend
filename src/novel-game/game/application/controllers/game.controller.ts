@@ -171,7 +171,7 @@ export class GameController {
   async create(
     @Body() createGameReqDto: CreateGameReqDto,
   ): Promise<CreateGameResDto> {
-    return await this.createGameUsecase.excute(1, createGameReqDto);
+    return await this.createGameUsecase.execute(1, createGameReqDto);
   }
 
   /**

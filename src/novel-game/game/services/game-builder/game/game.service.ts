@@ -1,15 +1,16 @@
+import { IGameService } from '@@src/novel-game/game/application/services/game.service.interface';
 import { GameDomainEntity } from '@@src/novel-game/game/domain/entities/game.entity';
 import { IGameRepository } from '@@src/novel-game/game/domain/repositories/game.repository.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
-export class GameService {
+export class GameService implements IGameService {
   constructor(
     @Inject('IGameRepository') private readonly gameRepository: IGameRepository,
   ) {}
 
-  async getById(id: number) {
+  async getOneById(id: number) {
     return await this.gameRepository.getById(id);
   }
 

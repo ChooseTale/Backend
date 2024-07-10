@@ -11,7 +11,10 @@ import { CreateGameUsecase } from '../usecases/create-game.usecase';
   controllers: [GameController],
   providers: [
     CreateGameUsecase,
-    GameService,
+    {
+      provide: 'IGameService',
+      useClass: GameService,
+    },
 
     {
       provide: 'IGameRepository',
@@ -19,6 +22,11 @@ import { CreateGameUsecase } from '../usecases/create-game.usecase';
     },
     PrismaService,
   ],
-  exports: [GameService],
+  exports: [
+    {
+      provide: 'IGameService',
+      useClass: GameService,
+    },
+  ],
 })
 export class GameModule {}

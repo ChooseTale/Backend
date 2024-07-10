@@ -1,4 +1,3 @@
-import { GameService } from '../../services/game-builder/game/game.service';
 import {
   CreateGameReqDto,
   CreateGameResDto,
@@ -7,16 +6,17 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '@@prisma/prisma.service';
 import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
 import { IPageService } from '@@src/novel-game/page/application/services/page.service.interface';
+import { IGameService } from '../services/game.service.interface';
 
 @Injectable()
 export class CreateGameUsecase {
   constructor(
-    private readonly gameService: GameService,
+    @Inject('IGameService') private readonly gameService: IGameService,
     @Inject('IPageService') private readonly pageService: IPageService,
     private readonly prismaService: PrismaService,
   ) {}
 
-  async excute(
+  async execute(
     userId: number,
     createGameReqDto: CreateGameReqDto,
   ): Promise<CreateGameResDto> {
