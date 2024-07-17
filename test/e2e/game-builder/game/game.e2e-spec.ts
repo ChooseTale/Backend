@@ -56,10 +56,8 @@ describe('Test', () => {
 
     describe('🔴 게임 생성 실패', () => {
       it('🔴 제목은 1글자 이상이어야 한다.', async () => {
-        const title = '';
-
         // title이 1자 이하일 때
-        const { error, statusCode } = await request(app.getHttpServer())
+        const { statusCode } = await request(app.getHttpServer())
           .post('/game')
           .send({
             title: '',

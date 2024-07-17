@@ -39,7 +39,7 @@ export async function setupTestModule(module: any, prisma: PrismaClient) {
   })
     .overrideProvider(PrismaService)
     .useValue(prisma)
-    .overrideProvider('ChatGPT')
+    .overrideProvider('IChatGPTPagePort')
     .useValue({
       getAbridgedContent: jest.fn().mockResolvedValue('abridged content'),
     })
