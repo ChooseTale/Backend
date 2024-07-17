@@ -1,6 +1,6 @@
 import { PrismaService } from '@@prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { toDomain } from '../convertor/game.convertor';
+import { toDomain } from '../mapper/game.mapper';
 import { Prisma } from '@prisma/client';
 import { IGameRepository } from '../../domain/ports/output/repositories/game.repository.interface';
 import { CreateGameDomainEntity } from '../../domain/entities/create-game.entity';
