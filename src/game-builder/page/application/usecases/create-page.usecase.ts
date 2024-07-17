@@ -1,9 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IPageService } from '../../domain/ports/input/page.service.interface';
 import { CreatePageReqDto } from '../controllers/dto/create-page.dto';
-import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
-
-const chatGPT = new ChatGPT();
 
 @Injectable()
 export class CreatePageUsecase {
@@ -12,13 +9,7 @@ export class CreatePageUsecase {
   ) {}
 
   public async create(gameId: number, body: CreatePageReqDto) {
-    const abridgedContent = await chatGPT.getAbridgedContent(body.content);
-
-    const newPage = await this.pageService.create(
-      gameId,
-      abridgedContent,
-      body,
-    );
+    const newPage = await this.pageService.create(gameId, body);
     return {
       id: newPage.id,
     };

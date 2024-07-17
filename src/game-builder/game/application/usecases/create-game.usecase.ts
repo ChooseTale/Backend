@@ -4,7 +4,6 @@ import {
 } from '../controllers/dto/create-game.dto';
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '@@prisma/prisma.service';
-import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
 import { IPageService } from '@@src/game-builder/page/domain/ports/input/page.service.interface';
 import { IGameService } from '../../domain/ports/input/game.service.interface';
 
@@ -13,7 +12,7 @@ export class CreateGameUsecase {
   constructor(
     @Inject('IGameService') private readonly gameService: IGameService,
     @Inject('IPageService') private readonly pageService: IPageService,
-    @Inject('ChatGPT') private readonly chatGPT: ChatGPT,
+
     private readonly prismaService: PrismaService,
   ) {}
 
@@ -21,10 +20,6 @@ export class CreateGameUsecase {
     userId: number,
     createGameReqDto: CreateGameReqDto,
   ): Promise<CreateGameResDto> {
-    const abridgedContent = await this.chatGPT.getAbridgedContent(
-      createGameReqDto.pageOneContent,
-    );
-    console.log(abridgedContent);
     return await this.prismaService.$transaction(async (transaction) => {
       const newGame = await this.gameService.create(
         userId,
@@ -33,7 +28,6 @@ export class CreateGameUsecase {
       );
       const newPage = await this.pageService.create(
         newGame.id,
-        abridgedContent,
         {
           content: createGameReqDto.pageOneContent,
         },

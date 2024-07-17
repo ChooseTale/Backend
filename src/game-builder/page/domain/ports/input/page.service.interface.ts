@@ -9,7 +9,6 @@ export interface IPageService {
   ): Promise<PageDomainEntity | null>;
   create(
     gameId: number,
-    abridgement: string,
     createPageReqDto: CreatePageReqDto,
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity>;

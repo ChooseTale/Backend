@@ -1,9 +1,10 @@
 import config from '@@src/config/index';
+import { IChatGPTPagePort } from '@@src/game-builder/page/domain/ports/output/chatgpt/chatgpt.interface';
 import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
 
 @Injectable()
-export class ChatGPT {
+export class ChatGPT implements IChatGPTPagePort {
   private readonly apiKey: string;
   private readonly openAI: OpenAI;
 

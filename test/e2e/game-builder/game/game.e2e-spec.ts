@@ -6,15 +6,14 @@ import {
 import request from 'supertest';
 
 import { INestApplication } from '@nestjs/common';
-import { GameModule } from '@@src/game-builder/game/application/controllers/game.module';
+import { GameModule } from '@@src/game-builder/game/application/game.module';
 
 describe('Test', () => {
   let prisma: PrismaService;
-  let databaseUrl: string;
   let app: INestApplication;
 
   beforeAll(async () => {
-    ({ prisma, databaseUrl } = await setupPrismaService(
+    ({ prisma } = await setupPrismaService(
       process.env.TEST_DATABASE_URL,
       'game',
     ));

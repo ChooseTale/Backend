@@ -5,11 +5,13 @@ import { IPageRepository } from './ports/output/repositories/page.repository.int
 import { Prisma } from '@prisma/client';
 import { IPageService } from './ports/input/page.service.interface';
 import { CreatePageDomainEntity } from './entities/create-page.entity';
+import { IChatGPTPagePort } from './ports/output/chatgpt/chatgpt.interface';
 
 @Injectable()
 export class PageService implements IPageService {
   constructor(
     @Inject('IPageRepository') private readonly pageRepository: IPageRepository,
+    @Inject('IChatGPTPagePort') private readonly chatGPT: IChatGPTPagePort,
   ) {}
 
   async getOneById(id: number, transaction?: Prisma.TransactionClient) {
@@ -18,13 +20,16 @@ export class PageService implements IPageService {
 
   async create(
     gameId: number,
-    abridgement: string,
-    createPageReqDto?: CreatePageReqDto,
+    createPageReqDto: CreatePageReqDto,
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity> {
+    const abridgedContent = await this.chatGPT.getAbridgedContent(
+      createPageReqDto?.content,
+    );
+
     const page = new CreatePageDomainEntity(
       createPageReqDto?.content ?? '',
-      abridgement,
+      abridgedContent,
       gameId,
       createPageReqDto?.isEnding ?? false,
     );

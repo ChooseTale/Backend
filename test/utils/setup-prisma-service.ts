@@ -39,6 +39,10 @@ export async function setupTestModule(module: any, prisma: PrismaClient) {
   })
     .overrideProvider(PrismaService)
     .useValue(prisma)
+    .overrideProvider('ChatGPT')
+    .useValue({
+      getAbridgedContent: jest.fn().mockResolvedValue('abridged content'),
+    })
     .compile();
 
   const app = moduleFixture.createNestApplication();
