@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class CreateChoiceReqDto {
   @IsNotEmpty()
@@ -11,10 +11,12 @@ export class CreateChoiceReqDto {
 
   @IsNotEmpty()
   @IsString()
+  @Length(1, 30)
   title: string;
 
   @IsNotEmpty()
   @IsString()
+  @Length(1, 200)
   description: string;
 }
 

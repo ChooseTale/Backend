@@ -28,7 +28,7 @@ export class CreateChoiceUseCase {
           title: newChoice.title,
         };
       },
-      { isolationLevel: 'RepeatableRead' },
+      { isolationLevel: 'Serializable' },
     );
   }
 }
