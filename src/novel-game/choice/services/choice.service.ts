@@ -1,13 +1,9 @@
-import {
-  ConflictException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IChoiceRepository } from '../domain/repositories/choice.repository.interface';
 import { CreateChoiceReqDto } from '../applications/controllers/dto/create-choice.dto';
 import { Prisma } from '@prisma/client';
 import { IPageService } from '@@src/novel-game/page/application/services/page.service.interface';
+import { PageChoice } from '../domain/entities/page-choice.entity';
 
 @Injectable()
 export class ChoiceService {
@@ -29,24 +25,13 @@ export class ChoiceService {
     createChoiceReqDto: CreateChoiceReqDto,
     transaction: Prisma.TransactionClient,
   ) {
-    const pageChoices = await this.choiceRepository.getAllByPageId(
-      createChoiceReqDto.parentPageId,
-      transaction,
-    );
-
-    if (pageChoices.length > 3) {
-      throw new ConflictException('초이스는 4개까지만 생성 가능합니다.');
-    }
-
     const fromPage = await this.pageService.getOneById(
       createChoiceReqDto.parentPageId,
       transaction,
     );
-
     if (!fromPage) {
       throw new NotFoundException('해당 페이지가 존재하지 않습니다.');
     }
-
     fromPage.checkIsEnding();
 
     if (createChoiceReqDto.childPageId) {
@@ -58,6 +43,18 @@ export class ChoiceService {
         throw new NotFoundException('해당 페이지가 존재하지 않습니다.');
       }
     }
+
+    const pageChoices = await this.choiceRepository.getAllByPageId(
+      createChoiceReqDto.parentPageId,
+      transaction,
+    );
+
+    const pageChoice = new PageChoice(
+      createChoiceReqDto.parentPageId,
+      pageChoices,
+    );
+
+    pageChoice.checkChoiceLength();
 
     const choice = await this.choiceRepository.create(
       pageChoices.length + 1,
