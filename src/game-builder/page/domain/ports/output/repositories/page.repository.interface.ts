@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
-import { PageDomainEntity } from '../entities/page.entity';
-import { CreatePageDomainEntity } from '../entities/create-page.entity';
+import { PageDomainEntity } from '../../../entities/page.entity';
+import { CreatePageDomainEntity } from '../../../entities/create-page.entity';
 
 export interface IPageRepository {
   getOneById(

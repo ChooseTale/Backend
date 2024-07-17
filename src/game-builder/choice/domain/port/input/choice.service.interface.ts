@@ -1,8 +1,8 @@
+import { CreateChoiceReqDto } from '@@src/game-builder/choice/applications/controllers/dto/create-choice.dto';
 import { Prisma } from '@prisma/client';
-import { CreateChoiceReqDto } from '../../applications/controllers/dto/create-choice.dto';
-import { ChoiceDomainEntity } from '../entities/choice.entity';
+import { ChoiceDomainEntity } from '../../entities/choice.entity';
 
-export interface IChoiceRepository {
+export interface IChoiceService {
   getAllByPageId(
     pageId: number,
     transaction: Prisma.TransactionClient,
@@ -12,7 +12,6 @@ export interface IChoiceRepository {
     transaction: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity | null>;
   create(
-    order: number,
     createChoiceReqDto: CreateChoiceReqDto,
     transaction: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity>;

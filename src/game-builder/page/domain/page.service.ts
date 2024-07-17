@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PageDomainEntity } from '../domain/entities/page.entity';
+import { PageDomainEntity } from './entities/page.entity';
 import { CreatePageReqDto } from '../application/controllers/dto/create-page.dto';
-import { IPageRepository } from '../domain/repositories/page.repository.interface';
+import { IPageRepository } from './ports/output/repositories/page.repository.interface';
 import { Prisma } from '@prisma/client';
-import { IPageService } from '../application/services/page.service.interface';
-import { CreatePageDomainEntity } from '../domain/entities/create-page.entity';
+import { IPageService } from './ports/input/page.service.interface';
+import { CreatePageDomainEntity } from './entities/create-page.entity';
 
 @Injectable()
 export class PageService implements IPageService {

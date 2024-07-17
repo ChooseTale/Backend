@@ -1,4 +1,4 @@
-import { IGameStupRepository } from '@@src/game-builder/game/domain/repositories/game.stub.repository';
+import { IGameStupRepository } from '@@src/game-builder/game/domain/ports/output/repositories/game.stub.repository';
 import { GameService } from './game.service';
 import { CreateGameReqDto } from '@@src/game-builder/game/application/controllers/dto/create-game.dto';
 

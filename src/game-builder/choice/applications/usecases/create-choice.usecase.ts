@@ -1,14 +1,14 @@
 import { PrismaService } from '@@prisma/prisma.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateChoiceReqDto } from '../controllers/dto/create-choice.dto';
-import { ChoiceService } from '../../services/choice.service';
-import { GameService } from '@@src/game-builder/game/services/game-builder/game/game.service';
+import { GameService } from '@@src/game-builder/game/domain/game.service';
+import { IChoiceService } from '../../domain/port/input/choice.service.interface';
 
 @Injectable()
 export class CreateChoiceUseCase {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly choiceService: ChoiceService,
+    @Inject('IChoiceService') private readonly choiceService: IChoiceService,
     private readonly gameService: GameService,
   ) {}
 

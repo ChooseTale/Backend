@@ -1,10 +1,11 @@
 import { Prisma } from '@prisma/client';
-import { GameDomainEntity } from '../entities/game.entity';
+import { GameDomainEntity } from '../../entities/game.entity';
 
-export interface IGameRepository {
+export interface IGameService {
   getById(id: number): Promise<GameDomainEntity | null>;
   create(
-    game: GameDomainEntity,
+    userId: number,
+    title: string,
     transaction: Prisma.TransactionClient,
   ): Promise<GameDomainEntity>;
 }

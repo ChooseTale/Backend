@@ -1,12 +1,14 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { IChoiceRepository } from '../domain/repositories/choice.repository.interface';
+import { IChoiceRepository } from './port/output/repositories/choice.repository.interface';
 import { CreateChoiceReqDto } from '../applications/controllers/dto/create-choice.dto';
 import { Prisma } from '@prisma/client';
-import { IPageService } from '@@src/game-builder/page/application/services/page.service.interface';
-import { PageChoice } from '../domain/entities/page-choice.entity';
+import { IPageService } from '@@src/game-builder/page/domain/ports/input/page.service.interface';
+import { PageChoice } from './entities/page-choice.entity';
+import { IChoiceService } from './port/input/choice.service.interface';
+import { ChoiceDomainEntity } from './entities/choice.entity';
 
 @Injectable()
-export class ChoiceService {
+export class ChoiceService implements IChoiceService {
   constructor(
     @Inject('choiceRepositoryInterface')
     private readonly choiceRepository: IChoiceRepository,
@@ -24,7 +26,7 @@ export class ChoiceService {
   async create(
     createChoiceReqDto: CreateChoiceReqDto,
     transaction: Prisma.TransactionClient,
-  ) {
+  ): Promise<ChoiceDomainEntity> {
     const fromPage = await this.pageService.getOneById(
       createChoiceReqDto.parentPageId,
       transaction,

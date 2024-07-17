@@ -1,11 +1,12 @@
 import { PrismaService } from '@@prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { GameDomainEntity } from '../../domain/entities/game.entity';
-import { toDomain, toEntityForCreate } from '../convertor/game.convertor';
+import { toDomain } from '../convertor/game.convertor';
 import { Prisma } from '@prisma/client';
+import { IGameRepository } from '../../domain/ports/output/repositories/game.repository.interface';
+import { CreateGameDomainEntity } from '../../domain/entities/create-game.entity';
 
 @Injectable()
-export class GameRepository {
+export class GameRepository implements IGameRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async getById(id: number) {
@@ -15,10 +16,12 @@ export class GameRepository {
     return game ? toDomain(game) : null;
   }
 
-  async create(game: GameDomainEntity, transaction: Prisma.TransactionClient) {
-    const gameEntity = toEntityForCreate(game);
+  async create(
+    game: CreateGameDomainEntity,
+    transaction: Prisma.TransactionClient,
+  ) {
     const newGame = await (transaction ?? this.prisma).game.create({
-      data: gameEntity,
+      data: game,
     });
     return toDomain(newGame);
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IChoiceRepository } from '../../domain/repositories/choice.repository.interface';
+import { IChoiceRepository } from '../../domain/port/output/repositories/choice.repository.interface';
 import { PrismaService } from '@@prisma/prisma.service';
 import { CreateChoiceReqDto } from '../../applications/controllers/dto/create-choice.dto';
 import { ChoiceDomainEntity } from '../../domain/entities/choice.entity';

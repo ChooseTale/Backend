@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { GameController } from './game.controller';
-import { GameService } from '../../services/game-builder/game/game.service';
+import { GameService } from '../../domain/game.service';
 import { GameRepository } from '../../infrastructure/repositories/game.repository';
 import { PrismaService } from '@@prisma/prisma.service';
-import { PageModule } from '@@src/game-builder/page/page.module';
+import { PageModule } from '@@src/game-builder/page/application/page.module';
 import { CreateGameUsecase } from '../usecases/create-game.usecase';
 
 @Module({
@@ -12,7 +12,10 @@ import { CreateGameUsecase } from '../usecases/create-game.usecase';
   providers: [
     CreateGameUsecase,
     GameService,
-
+    {
+      provide: 'IGameService',
+      useClass: GameService,
+    },
     {
       provide: 'IGameRepository',
       useClass: GameRepository,

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PageController } from './application/controllers/page.controller';
-import { PageService } from './services/page.service';
-import { PageRepository } from './infrastructure/repositories/page.repository';
+import { PageController } from './controllers/page.controller';
+import { PageService } from '../domain/page.service';
+import { PageRepository } from '../infrastructure/repositories/page.repository';
 import { PrismaService } from '@@prisma/prisma.service';
-import { CreatePageUsecase } from './application/usecases/create-page.usecase';
+import { CreatePageUsecase } from './usecases/create-page.usecase';
 
 @Module({
   controllers: [PageController],

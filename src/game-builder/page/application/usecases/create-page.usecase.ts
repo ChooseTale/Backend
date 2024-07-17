@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IPageService } from '../services/page.service.interface';
+import { IPageService } from '../../domain/ports/input/page.service.interface';
 import { CreatePageReqDto } from '../controllers/dto/create-page.dto';
 import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
 

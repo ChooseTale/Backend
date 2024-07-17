@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IPageRepository } from '../../domain/repositories/page.repository.interface';
+import { IPageRepository } from '../../domain/ports/output/repositories/page.repository.interface';
 import { PageDomainEntity } from '../../domain/entities/page.entity';
 import { PrismaService } from '@@prisma/prisma.service';
 import { toDomain } from '../mappeer/page.mapper';

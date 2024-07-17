@@ -1,9 +1,9 @@
 import { ChoiceService } from './choice.service';
 
-import { IChoiceRepository } from '../domain/repositories/choice.repository.interface';
-import { IChoiceStubRepository } from '../domain/repositories/choice.repository.stub';
-import { IPageService } from '@@src/game-builder/page/application/services/page.service.interface';
-import { PageStubService } from '@@src/game-builder/page/application/services/page.stub.service';
+import { IChoiceRepository } from './port/output/repositories/choice.repository.interface';
+import { IChoiceStubRepository } from './port/output/repositories/choice.repository.stub';
+import { IPageService } from '@@src/game-builder/page/domain/ports/input/page.service.interface';
+import { PageStubService } from '@@src/game-builder/page/domain/ports/input/page.stub.service';
 import { PageStubEntity } from '@@src/game-builder/page/domain/entities/page.stub.entity';
 
 describe('ChoiceService', () => {
