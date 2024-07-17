@@ -79,6 +79,7 @@ export class PageController {
    * 새로운 페이지를 생성합니다.
    *
    * @tag Page
+   * @summary 🟢(240718)
    */
   @Post()
   async create(
