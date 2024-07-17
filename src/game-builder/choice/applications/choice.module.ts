@@ -4,7 +4,7 @@ import { CreateChoiceUseCase } from './usecases/create-choice.usecase';
 import { PrismaService } from '@@prisma/prisma.service';
 import { ChoiceService } from '../domain/choice.service';
 import { ChoiceRepository } from '../infrastructure/repositories/choice.repository';
-import { GameModule } from '@@src/game-builder/game/application/controllers/game.module';
+import { GameModule } from '@@src/game-builder/game/application/game.module';
 import { PageModule } from '@@src/game-builder/page/application/page.module';
 
 @Module({

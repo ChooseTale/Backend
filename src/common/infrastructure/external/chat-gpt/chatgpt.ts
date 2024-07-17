@@ -1,6 +1,8 @@
 import config from '@@src/config/index';
+import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
 
+@Injectable()
 export class ChatGPT {
   private readonly apiKey: string;
   private readonly openAI: OpenAI;
