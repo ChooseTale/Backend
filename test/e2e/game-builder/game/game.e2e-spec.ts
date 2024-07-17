@@ -6,7 +6,7 @@ import {
 import request from 'supertest';
 
 import { INestApplication } from '@nestjs/common';
-import { GameModule } from '@@src/novel-game/game/application/controllers/game.module';
+import { GameModule } from '@@src/game-builder/game/application/controllers/game.module';
 
 describe('Test', () => {
   let prisma: PrismaService;

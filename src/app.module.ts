@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { PrismaService } from '@@prisma/prisma.service';
 
-import { GameModule } from './novel-game/game/application/controllers/game.module';
-import { PageModule } from './novel-game/page/page.module';
+import { GameModule } from './game-builder/game/application/controllers/game.module';
+import { PageModule } from './game-builder/page/page.module';
 
-import { ChoiceModule } from './novel-game/choice/applications/choice.module';
+import { ChoiceModule } from './game-builder/choice/applications/choice.module';
 
 @Module({
   imports: [GameModule, PageModule, ChoiceModule],
