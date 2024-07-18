@@ -8,19 +8,23 @@ export const toDomain = (page: Page): PageDomainEntity => {
     page.abridgement,
     page.gameId,
     page.isEnding,
+    page.version,
     page.createdAt,
     page.updatedAt,
   );
   return pageDomainEntity;
 };
 
-export const toEntity = (page: PageDomainEntity): Omit<Page, 'deletedAt'> => {
+export const toEntity = (
+  page: PageDomainEntity,
+): Omit<Page, 'deletedAt' | 'version'> => {
   return {
     id: page.id,
     content: page.content,
     abridgement: page.abridgement,
     gameId: page.gameId,
     isEnding: page.isEnding,
+
     createdAt: page.createdAt ?? new Date(),
     updatedAt: page.updatedAt ?? new Date(),
   };
@@ -28,7 +32,7 @@ export const toEntity = (page: PageDomainEntity): Omit<Page, 'deletedAt'> => {
 
 export const toEntityForCreate = (
   page: PageDomainEntity,
-): Omit<Page, 'id' | 'deletedAt'> => {
+): Omit<Page, 'id' | 'deletedAt' | 'version'> => {
   return {
     content: page.content,
     abridgement: page.abridgement,

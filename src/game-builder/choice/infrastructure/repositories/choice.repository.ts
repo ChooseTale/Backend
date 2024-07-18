@@ -37,17 +37,43 @@ export class ChoiceRepository implements IChoiceRepository {
   async create(
     order: number,
     createChoiceReqDto: CreateChoiceReqDto,
+    fromPageVersion: number,
     transaction: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity> {
-    const choice = await (transaction ?? this.prisma).choicePage.create({
-      data: {
-        fromPageId: createChoiceReqDto.parentPageId,
-        toPageId: createChoiceReqDto.childPageId ?? null,
-        title: createChoiceReqDto.title,
-        description: createChoiceReqDto.description,
-        order,
-      },
-    });
-    return toDomain(choice);
+    try {
+      const updatedPage = await (transaction ?? this.prisma).page.update({
+        data: {
+          version: {
+            increment: 1,
+          },
+          fromPage: {
+            create: {
+              toPageId: createChoiceReqDto.childPageId ?? null,
+              title: createChoiceReqDto.title,
+              description: createChoiceReqDto.description,
+              order,
+            },
+          },
+        },
+        where: {
+          id: createChoiceReqDto.parentPageId,
+          version: fromPageVersion,
+        },
+        include: {
+          fromPage: true,
+        },
+      });
+
+      const createdFromPage =
+        updatedPage.fromPage[updatedPage.fromPage.length - 1];
+
+      if (!createdFromPage) {
+        throw new Error('Page not found');
+      }
+
+      return toDomain(createdFromPage);
+    } catch (err) {
+      throw new Error('업데이트 실패');
+    }
   }
 }
