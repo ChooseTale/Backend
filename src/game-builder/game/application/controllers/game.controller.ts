@@ -166,6 +166,7 @@ export class GameController {
    *
    *
    * @tag Game
+   * @summary 🟢(240718)
    */
   @Post()
   async create(

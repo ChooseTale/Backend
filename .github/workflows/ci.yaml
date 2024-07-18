@@ -6,6 +6,7 @@ on:
       - dev
       - dev-test
 
+
 jobs:
   excute-test:
     runs-on: ubuntu-latest
@@ -33,6 +34,9 @@ jobs:
       - name: Install dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
+
+      - name: Prisma Setting
+        run: yarn prisma generate
 
       - name: unit test
         run: yarn test

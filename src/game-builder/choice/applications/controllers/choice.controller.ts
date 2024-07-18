@@ -31,7 +31,7 @@ export class ChoiceController {
    *
    * @param gameId 현재 작성중인
    * @tag Choice
-   * @summary Create a choice
+   * @summary Create a choice 🟢(240718)
    */
   @Post()
   async create(
