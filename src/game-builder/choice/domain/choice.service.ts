@@ -25,12 +25,11 @@ export class ChoiceService implements IChoiceService {
 
   async create(
     createChoiceReqDto: CreateChoiceReqDto,
-    transaction: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity> {
     const fromPage = await this.pageService.getOneById(
       createChoiceReqDto.parentPageId,
-      transaction,
     );
+
     if (!fromPage) {
       throw new NotFoundException('해당 페이지가 존재하지 않습니다.');
     }
@@ -39,7 +38,6 @@ export class ChoiceService implements IChoiceService {
     if (createChoiceReqDto.childPageId) {
       const childPage = await this.pageService.getOneById(
         createChoiceReqDto.childPageId,
-        transaction,
       );
       if (!childPage) {
         throw new NotFoundException('해당 페이지가 존재하지 않습니다.');
@@ -48,7 +46,6 @@ export class ChoiceService implements IChoiceService {
 
     const pageChoices = await this.choiceRepository.getAllByPageId(
       createChoiceReqDto.parentPageId,
-      transaction,
     );
 
     const pageChoice = new PageChoice(
@@ -61,7 +58,7 @@ export class ChoiceService implements IChoiceService {
     const choice = await this.choiceRepository.create(
       pageChoices.length + 1,
       createChoiceReqDto,
-      transaction,
+      fromPage.version,
     );
     return choice;
   }

@@ -7,6 +7,7 @@ export class PageDomainEntity {
     public abridgement: string,
     public gameId: number,
     public isEnding: boolean,
+    public version: number,
     public createdAt: Date | null,
     public updatedAt: Date | null,
   ) {}
