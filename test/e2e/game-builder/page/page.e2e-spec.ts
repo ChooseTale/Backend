@@ -47,15 +47,39 @@ describe('Test', () => {
           const { error, statusCode } = await request(app.getHttpServer())
             .post('/game/1/page')
             .send({
-              title: 'test',
-              parentPageId: 1,
-              description: 'test',
               isEnding: false,
               content: 'page content'.repeat(1000),
             });
           //then
           expect(statusCode).toBe(400);
           expect(error).not.toBe(false);
+        });
+
+        it('page의 content가 1자 미만이면 400을 반환한다', async () => {
+          //when
+          const { error, statusCode } = await request(app.getHttpServer())
+            .post('/game/1/page')
+            .send({
+              isEnding: false,
+              content: '',
+            });
+
+          //then
+          expect(statusCode).toBe(400);
+          expect(error).not.toBe(false);
+        });
+
+        it('isEnding값이 없다면 false로 처리한다.', async () => {
+          //when
+          const { error, statusCode } = await request(app.getHttpServer())
+            .post('/game/1/page')
+            .send({
+              description: 'test',
+              content: 'page content',
+            });
+          //then
+          expect(statusCode).toBe(201);
+          expect(error).toBe(false);
         });
       });
     });
