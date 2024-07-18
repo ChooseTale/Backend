@@ -5,7 +5,7 @@ import { ChoiceDomainEntity } from '../../../entities/choice.entity';
 export interface IChoiceRepository {
   getAllByPageId(
     pageId: number,
-    transaction: Prisma.TransactionClient,
+    transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity[]>;
   getOneById(
     id: number,
@@ -14,6 +14,7 @@ export interface IChoiceRepository {
   create(
     order: number,
     createChoiceReqDto: CreateChoiceReqDto,
-    transaction: Prisma.TransactionClient,
+    pageVersion: number,
+    transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity>;
 }

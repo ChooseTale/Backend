@@ -15,16 +15,20 @@ export class ChatGPT implements IChatGPTPagePort {
 
   async getAbridgedContent(content: string): Promise<string> {
     //return abridged content
-    const completion = await this.openAI.chat.completions.create({
-      messages: [
-        {
-          role: 'system',
-          content: `You are an expert at summarizing fiction. Summarize your content in 150 characters or less. The language should be spoken by the user.`,
-        },
-        { role: 'user', content },
-      ],
-      model: 'gpt-4o',
-    });
-    return completion.choices[0].message.content ?? '';
+    try {
+      const completion = await this.openAI.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: `You are an expert at summarizing fiction. Summarize your content in 150 characters or less. The language should be spoken by the user.`,
+          },
+          { role: 'user', content },
+        ],
+        model: 'gpt-4o',
+      });
+      return completion.choices[0].message.content ?? '';
+    } catch (err) {
+      return '';
+    }
   }
 }

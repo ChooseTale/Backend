@@ -144,7 +144,7 @@ describe('Test', () => {
 
         let fulfilledCount = 0;
         let rejectedCount = 0;
-
+        // console.log(results);
         results.forEach((result) => {
           if (
             result.status === 'fulfilled' &&

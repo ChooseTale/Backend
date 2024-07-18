@@ -93,6 +93,8 @@ model Page {
   fromPage ChoicePage[] @relation("fromPage")
   toPage   ChoicePage[] @relation("toPage")
 
+  version Int @default(1)
+
   isEnding Boolean
 
   createdAt DateTime  @default(now())

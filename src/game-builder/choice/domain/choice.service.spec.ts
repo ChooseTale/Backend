@@ -10,13 +10,11 @@ describe('ChoiceService', () => {
   let choiceService: ChoiceService;
   let choiceRepository: IChoiceRepository;
   let pageService: IPageService;
-  let transaction: any;
 
   beforeEach(() => {
     choiceRepository = IChoiceStubRepository;
     pageService = PageStubService;
     choiceService = new ChoiceService(choiceRepository, pageService);
-    transaction = {};
   });
   //🟢
   describe('create', () => {
@@ -45,10 +43,7 @@ describe('ChoiceService', () => {
           .mockResolvedValue([{ id: 1 }, { id: 2 }]);
         choiceRepository.create = jest.fn().mockResolvedValue({ id: 1 });
 
-        const choice = await choiceService.create(
-          createChoiceReqDto,
-          transaction,
-        );
+        const choice = await choiceService.create(createChoiceReqDto);
         expect(choice).toBeDefined();
         expect(choice).toEqual({ id: 1 });
       },
@@ -61,7 +56,7 @@ describe('ChoiceService', () => {
       pageService.getOneById = jest.fn().mockResolvedValue(PageStubEntity);
       pageService.create = jest.fn().mockResolvedValue({ id: 1 });
       try {
-        await choiceService.create({} as any, transaction);
+        await choiceService.create({} as any);
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
       }
@@ -70,7 +65,7 @@ describe('ChoiceService', () => {
     it('🔴 fromPage가 없다면 에러를 던진다.', async () => {
       pageService.getOneById = jest.fn().mockResolvedValue(null);
       try {
-        await choiceService.create({} as any, transaction);
+        await choiceService.create({} as any);
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
       }
