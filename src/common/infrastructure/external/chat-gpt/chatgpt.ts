@@ -26,6 +26,7 @@ export class ChatGPT implements IChatGPTPagePort {
         ],
         model: 'gpt-4o',
       });
+
       return completion.choices[0].message.content ?? '';
     } catch (err) {
       return '';

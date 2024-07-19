@@ -1,10 +1,12 @@
 export class UpdatePageReqDto {
-  title: string;
+  abridgement: string;
   content: string;
+  isEnding: boolean;
 }
 
 export class UpdatePageResDto {
   id: number;
-  title: string;
+  abridgement?: string;
   content: string;
+  isEnding: boolean;
 }

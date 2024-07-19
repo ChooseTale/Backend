@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { IPageRepository } from '../../domain/ports/output/repositories/page.repository.interface';
 import { PageDomainEntity } from '../../domain/entities/page.entity';
 import { PrismaService } from '@@prisma/prisma.service';
-import { toDomain } from '../mappeer/page.mapper';
+import { toDomain, toEntity } from '../mappeer/page.mapper';
 import { Prisma } from '@prisma/client';
 import { CreatePageDomainEntity } from '../../domain/entities/create-page.entity';
 
@@ -28,5 +28,17 @@ export class PageRepository implements IPageRepository {
       data: page,
     });
     return toDomain(newPage);
+  }
+
+  async update(
+    page: PageDomainEntity,
+    transaction: Prisma.TransactionClient | undefined,
+  ): Promise<PageDomainEntity> {
+    const pageEntity = toEntity(page);
+    const updatedPage = await (transaction ?? this.prisma).page.update({
+      where: { id: page.id },
+      data: pageEntity,
+    });
+    return toDomain(updatedPage);
   }
 }
