@@ -9,12 +9,17 @@ export interface IChoiceRepository {
   ): Promise<ChoiceDomainEntity[]>;
   getOneById(
     id: number,
-    transaction: Prisma.TransactionClient,
+    transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity | null>;
   create(
     order: number,
     createChoiceReqDto: CreateChoiceReqDto,
     pageVersion: number,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<ChoiceDomainEntity>;
+  update(
+    choiceId: number,
+    choice: ChoiceDomainEntity,
     transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity>;
 }

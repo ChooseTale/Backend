@@ -17,10 +17,14 @@ import {
   UpdateChoiceResDto,
 } from './dto/update-choice.dto';
 import { CreateChoiceUseCase } from '../usecases/create-choice.usecase';
+import { UpdateChoiceUseCase } from '../usecases/update-choice.usecase';
 
 @Controller('/game/:gameId/choice')
 export class ChoiceController {
-  constructor(private readonly createChoiceUsecase: CreateChoiceUseCase) {}
+  constructor(
+    private readonly createChoiceUsecase: CreateChoiceUseCase,
+    private readonly updateChoiceUsecase: UpdateChoiceUseCase,
+  ) {}
 
   /**
    *
@@ -57,13 +61,7 @@ export class ChoiceController {
     @Param('choiceId', ParseIntPipe) choiceId: number,
     @Body() body: UpdateChoiceReqDto,
   ): Promise<UpdateChoiceResDto> {
-    return {
-      id: 1,
-      title: 'Updated Title',
-      description: 'Updated Description',
-      parentPageId: 2,
-      childPageId: 3,
-    };
+    return await this.updateChoiceUsecase.execute(gameId, choiceId, body);
   }
 
   /**

@@ -6,12 +6,14 @@ import { ChoiceService } from '../domain/choice.service';
 import { ChoiceRepository } from '../infrastructure/repositories/choice.repository';
 import { GameModule } from '@@src/game-builder/game/application/game.module';
 import { PageModule } from '@@src/game-builder/page/application/page.module';
+import { UpdateChoiceUseCase } from './usecases/update-choice.usecase';
 
 @Module({
   imports: [GameModule, PageModule],
   controllers: [ChoiceController],
   providers: [
     CreateChoiceUseCase,
+    UpdateChoiceUseCase,
     PrismaService,
     {
       provide: 'IChoiceService',
