@@ -87,4 +87,11 @@ export class PageService implements IPageService {
     const updatedPage = await this.pageRepository.update(newPage, transaction);
     return updatedPage;
   }
+
+  async delete(
+    pageId: number,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<void> {
+    await this.pageRepository.delete(pageId, transaction);
+  }
 }

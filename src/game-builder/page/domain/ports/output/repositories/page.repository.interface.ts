@@ -15,4 +15,5 @@ export interface IPageRepository {
     page: PageDomainEntity,
     transaction: Prisma.TransactionClient | undefined,
   ): Promise<PageDomainEntity>;
+  delete(pageId: number, transaction?: Prisma.TransactionClient): Promise<void>;
 }

@@ -17,12 +17,14 @@ import { RecommendChoiceByGPTResDto } from './dto/recommend-choice-by-GPT.dto';
 import { UpdatePageReqDto, UpdatePageResDto } from './dto/update-page.dto';
 import { CreatePageUsecase } from '../usecases/create-page.usecase';
 import { UpdatePageUsecase } from '../usecases/update-page.usecase';
+import { DeletePageUseCase } from '../usecases/delete-page.usecase';
 
 @Controller('/game/:gameId/page')
 export class PageController {
   constructor(
     private readonly createPageUsecase: CreatePageUsecase,
     private readonly updatePageUsecase: UpdatePageUsecase,
+    private readonly deletePageUsecase: DeletePageUseCase,
   ) {}
 
   /**
@@ -123,8 +125,6 @@ export class PageController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
   ): Promise<{ message: string }> {
-    return {
-      message: 'success',
-    };
+    return await this.deletePageUsecase.execute(gameId, pageId, 1);
   }
 }

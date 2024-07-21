@@ -41,4 +41,11 @@ export class PageRepository implements IPageRepository {
     });
     return toDomain(updatedPage);
   }
+
+  async delete(
+    pageId: number,
+    transaction: Prisma.TransactionClient | undefined,
+  ): Promise<void> {
+    await (transaction ?? this.prisma).page.delete({ where: { id: pageId } });
+  }
 }

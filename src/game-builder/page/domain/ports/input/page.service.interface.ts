@@ -18,4 +18,5 @@ export interface IPageService {
     updatePageReqDto: UpdatePageReqDto,
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity>;
+  delete(pageId: number, transaction?: Prisma.TransactionClient): Promise<void>;
 }

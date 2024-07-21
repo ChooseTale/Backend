@@ -7,6 +7,7 @@ import { CreatePageUsecase } from './usecases/create-page.usecase';
 import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
 import { UpdatePageUsecase } from './usecases/update-page.usecase';
 import { GameModule } from '@@src/game-builder/game/application/game.module';
+import { DeletePageUseCase } from './usecases/delete-page.usecase';
 
 @Module({
   imports: [forwardRef(() => GameModule)],
@@ -14,6 +15,7 @@ import { GameModule } from '@@src/game-builder/game/application/game.module';
   providers: [
     CreatePageUsecase,
     UpdatePageUsecase,
+    DeletePageUseCase,
     {
       provide: 'IPageService',
       useClass: PageService,
