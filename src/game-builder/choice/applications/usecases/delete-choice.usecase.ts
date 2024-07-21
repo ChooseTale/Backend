@@ -12,10 +12,12 @@ export class DeleteChoiceUseCase {
   ) {}
 
   async execute(gameId: number, choiceId: number) {
-    const game = await this.gameService.getById(gameId);
-    if (!game) throw new NotFoundException(`game is null`);
+    await this.prisma.$transaction(async (transaction) => {
+      const game = await this.gameService.getById(gameId, transaction);
+      if (!game) throw new NotFoundException(`game is null`);
 
-    await this.choiceService.delete(choiceId);
+      await this.choiceService.delete(choiceId, transaction);
+    });
 
     return {
       message: 'success',
