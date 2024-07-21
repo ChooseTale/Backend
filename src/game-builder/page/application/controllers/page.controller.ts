@@ -14,12 +14,16 @@ import {
   CheckSpellingByExternalServiceResDto,
 } from './dto/check-spelling-by-external-service.dto';
 import { RecommendChoiceByGPTResDto } from './dto/recommend-choice-by-GPT.dto';
-import { UpdatePageResDto } from './dto/update-page.dto';
+import { UpdatePageReqDto, UpdatePageResDto } from './dto/update-page.dto';
 import { CreatePageUsecase } from '../usecases/create-page.usecase';
+import { UpdatePageUsecase } from '../usecases/update-page.usecase';
 
 @Controller('/game/:gameId/page')
 export class PageController {
-  constructor(private readonly createPageUsecase: CreatePageUsecase) {}
+  constructor(
+    private readonly createPageUsecase: CreatePageUsecase,
+    private readonly updatePageUsecase: UpdatePageUsecase,
+  ) {}
 
   /**
    * 선택지 추천받기
@@ -93,7 +97,7 @@ export class PageController {
    *
    *  페이지 수정하기
    *
-   * 페이지의 제목과 내용을 수정합니다.
+   * 페이지의 내용을 수정합니다.
    *
    * @tag Page
    */
@@ -101,12 +105,9 @@ export class PageController {
   async update(
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
+    @Body() body: UpdatePageReqDto,
   ): Promise<UpdatePageResDto> {
-    return {
-      id: 1,
-      title: 'Updated Page Title',
-      content: 'Updated Page Content',
-    };
+    return await this.updatePageUsecase.excute(gameId, pageId, body);
   }
 
   /**

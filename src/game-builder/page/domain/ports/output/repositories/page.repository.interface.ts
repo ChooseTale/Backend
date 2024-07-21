@@ -11,4 +11,8 @@ export interface IPageRepository {
     page: CreatePageDomainEntity,
     transaction: Prisma.TransactionClient | undefined,
   ): Promise<PageDomainEntity>;
+  update(
+    page: PageDomainEntity,
+    transaction: Prisma.TransactionClient | undefined,
+  ): Promise<PageDomainEntity>;
 }
