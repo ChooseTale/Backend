@@ -6,15 +6,14 @@ import {
 import request from 'supertest';
 
 import { INestApplication } from '@nestjs/common';
-import { GameModule } from '@@src/novel-game/game/application/controllers/game.module';
+import { GameModule } from '@@src/game-builder/game/application/game.module';
 
 describe('Test', () => {
   let prisma: PrismaService;
-  let databaseUrl: string;
   let app: INestApplication;
 
   beforeAll(async () => {
-    ({ prisma, databaseUrl } = await setupPrismaService(
+    ({ prisma } = await setupPrismaService(
       process.env.TEST_DATABASE_URL,
       'game',
     ));
@@ -57,10 +56,8 @@ describe('Test', () => {
 
     describe('🔴 게임 생성 실패', () => {
       it('🔴 제목은 1글자 이상이어야 한다.', async () => {
-        const title = '';
-
         // title이 1자 이하일 때
-        const { error, statusCode } = await request(app.getHttpServer())
+        const { statusCode } = await request(app.getHttpServer())
           .post('/game')
           .send({
             title: '',
