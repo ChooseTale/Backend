@@ -119,7 +119,7 @@ export class PageController {
    * 페이지를 삭제합니다.
    *
    * @tag Page
-   * @summary 🟢(240721)
+   * @summary 페이지 삭제하기 🟡(240721)
    */
   @Delete('/:pageId')
   async delete(

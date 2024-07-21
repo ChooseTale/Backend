@@ -52,7 +52,7 @@ export class ChoiceController {
    * parentPageId와 childPageId를 수정하면 페이지와 연결이 변경됩니다.
    * 클라이언트에서 받은값으로 덮어씌워서 수정합니다. (모든 값 필요)
    *
-   * @summary Update a choice
+   * @summary Update a choice 🟡(240718)
    * @tag Choice
    */
   @Put(':choiceId')
