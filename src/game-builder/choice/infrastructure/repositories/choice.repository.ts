@@ -76,4 +76,24 @@ export class ChoiceRepository implements IChoiceRepository {
       throw new Error('업데이트 실패');
     }
   }
+
+  async update(
+    choiceId: number,
+    choice: ChoiceDomainEntity,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<ChoiceDomainEntity> {
+    const updatedChoice = await (transaction ?? this.prisma).choicePage.update({
+      data: {
+        title: choice.title,
+        description: choice.description,
+        fromPageId: choice.parentPageId,
+        toPageId: choice.childPageId,
+      },
+      where: {
+        id: choiceId,
+      },
+    });
+
+    return toDomain(updatedChoice);
+  }
 }

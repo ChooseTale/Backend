@@ -6,6 +6,7 @@ import { IPageService } from '@@src/game-builder/page/domain/ports/input/page.se
 import { PageChoice } from './entities/page-choice.entity';
 import { IChoiceService } from './port/input/choice.service.interface';
 import { ChoiceDomainEntity } from './entities/choice.entity';
+import { UpdateChoiceReqDto } from '../applications/controllers/dto/update-choice.dto';
 
 @Injectable()
 export class ChoiceService implements IChoiceService {
@@ -61,5 +62,19 @@ export class ChoiceService implements IChoiceService {
       fromPage.version,
     );
     return choice;
+  }
+
+  async update(
+    choiceId: number,
+    updateChoiceReqDto: UpdateChoiceReqDto,
+  ): Promise<ChoiceDomainEntity> {
+    const choice = await this.choiceRepository.getOneById(choiceId);
+    if (!choice) {
+      throw new NotFoundException('해당 선택지가 존재하지 않습니다.');
+    }
+
+    choice.updateChoice(updateChoiceReqDto);
+
+    return this.choiceRepository.update(choiceId, choice);
   }
 }
