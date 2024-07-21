@@ -1,6 +1,8 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
+const tables = ['Page', 'ChoicePage'];
+
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
@@ -12,7 +14,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     next: (params: any) => Promise<any>,
   ) {
     if (
-      params.model == 'Page' &&
+      tables.includes(params.model) &&
       (params.action == 'findUnique' || params.action == 'findMany')
     ) {
       // Exclude soft-deleted records
@@ -28,7 +30,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   }
 
   async softDeleteMiddleware(params: any, next: (params: any) => Promise<any>) {
-    if (params.model == 'Page' && params.action == 'delete') {
+    if (tables.includes(params.model) && params.action == 'delete') {
       // Change action to an update
       params.action = 'update';
 

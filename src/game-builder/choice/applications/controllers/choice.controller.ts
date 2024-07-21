@@ -18,12 +18,14 @@ import {
 } from './dto/update-choice.dto';
 import { CreateChoiceUseCase } from '../usecases/create-choice.usecase';
 import { UpdateChoiceUseCase } from '../usecases/update-choice.usecase';
+import { DeleteChoiceUseCase } from '../usecases/delete-choice.usecase';
 
 @Controller('/game/:gameId/choice')
 export class ChoiceController {
   constructor(
     private readonly createChoiceUsecase: CreateChoiceUseCase,
     private readonly updateChoiceUsecase: UpdateChoiceUseCase,
+    private readonly deleteChoiceUsecase: DeleteChoiceUseCase,
   ) {}
 
   /**
@@ -70,14 +72,13 @@ export class ChoiceController {
    * 선택지를 삭제합니다. 연결 된 페이지는 삭제되지 않습니다.
    *
    * @tag Choice
+   * @summary Delete a choice 🟡(240721)
    */
   @Delete(':choiceId')
   async delete(
     @Param('choiceId', ParseIntPipe) choiceId: number,
     @Param('gameId', ParseIntPipe) gameId: number,
   ): Promise<DeleteChoiceResDto> {
-    return {
-      message: 'success',
-    };
+    return await this.deleteChoiceUsecase.execute(gameId, choiceId);
   }
 }

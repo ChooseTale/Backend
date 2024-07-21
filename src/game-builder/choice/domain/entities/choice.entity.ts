@@ -28,6 +28,10 @@ export class ChoiceDomainEntity {
     this.childPageId = childPageId;
   }
 
+  setOrder(order: number) {
+    this.order = order;
+  }
+
   updateChoice(updateChoiceReqDto: UpdateChoiceReqDto) {
     this.setTitle(updateChoiceReqDto.title);
     this.setDescription(updateChoiceReqDto.description);

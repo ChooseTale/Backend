@@ -17,4 +17,8 @@ export interface IChoiceService {
     choiceId: number,
     updateChoiceReqDto: UpdateChoiceReqDto,
   ): Promise<ChoiceDomainEntity>;
+  delete(
+    choiceId: number,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<void>;
 }

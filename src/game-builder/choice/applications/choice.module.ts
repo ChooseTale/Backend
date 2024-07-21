@@ -7,6 +7,7 @@ import { ChoiceRepository } from '../infrastructure/repositories/choice.reposito
 import { GameModule } from '@@src/game-builder/game/application/game.module';
 import { PageModule } from '@@src/game-builder/page/application/page.module';
 import { UpdateChoiceUseCase } from './usecases/update-choice.usecase';
+import { DeleteChoiceUseCase } from './usecases/delete-choice.usecase';
 
 @Module({
   imports: [GameModule, PageModule],
@@ -14,6 +15,7 @@ import { UpdateChoiceUseCase } from './usecases/update-choice.usecase';
   providers: [
     CreateChoiceUseCase,
     UpdateChoiceUseCase,
+    DeleteChoiceUseCase,
     PrismaService,
     {
       provide: 'IChoiceService',
