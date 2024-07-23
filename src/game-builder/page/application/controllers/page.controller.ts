@@ -102,6 +102,7 @@ export class PageController {
    * 페이지의 내용을 수정합니다.
    *
    * @tag Page
+   * @summary 페이지 수정하기 🟢(240721)
    */
   @Patch('/:pageId')
   async update(

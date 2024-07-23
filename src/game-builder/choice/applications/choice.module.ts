@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ChoiceController } from './controllers/choice.controller';
 import { CreateChoiceUseCase } from './usecases/create-choice.usecase';
 import { PrismaService } from '@@prisma/prisma.service';
@@ -9,7 +9,7 @@ import { PageModule } from '@@src/game-builder/page/application/page.module';
 import { UpdateChoiceUseCase } from './usecases/update-choice.usecase';
 
 @Module({
-  imports: [GameModule, PageModule],
+  imports: [forwardRef(() => GameModule), forwardRef(() => PageModule)],
   controllers: [ChoiceController],
   providers: [
     CreateChoiceUseCase,
@@ -23,6 +23,12 @@ import { UpdateChoiceUseCase } from './usecases/update-choice.usecase';
     {
       provide: 'choiceRepositoryInterface',
       useClass: ChoiceRepository,
+    },
+  ],
+  exports: [
+    {
+      provide: 'IChoiceService',
+      useClass: ChoiceService,
     },
   ],
 })

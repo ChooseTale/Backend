@@ -3,6 +3,10 @@ import { CreateChoiceReqDto } from '../../../../applications/controllers/dto/cre
 import { ChoiceDomainEntity } from '../../../entities/choice.entity';
 
 export interface IChoiceRepository {
+  getAllByPageIds(
+    pageIds: number[],
+    transaction?: Prisma.TransactionClient,
+  ): Promise<ChoiceDomainEntity[]>;
   getAllByPageId(
     pageId: number,
     transaction?: Prisma.TransactionClient,

@@ -3,6 +3,10 @@ import { PageDomainEntity } from '../../../entities/page.entity';
 import { CreatePageDomainEntity } from '../../../entities/create-page.entity';
 
 export interface IPageRepository {
+  getAllByGameId(
+    gameId: number,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<PageDomainEntity[]>;
   getOneById(
     id: number,
     transaction?: Prisma.TransactionClient,

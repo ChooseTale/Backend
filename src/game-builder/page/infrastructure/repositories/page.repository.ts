@@ -10,6 +10,16 @@ import { CreatePageDomainEntity } from '../../domain/entities/create-page.entity
 export class PageRepository implements IPageRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getAllByGameId(
+    gameId: number,
+    transaction?: Prisma.TransactionClient | undefined,
+  ): Promise<PageDomainEntity[]> {
+    const pages = await (transaction ?? this.prisma).page.findMany({
+      where: { gameId },
+    });
+    return pages.map(toDomain);
+  }
+
   async getOneById(
     id: number,
     transaction?: Prisma.TransactionClient,

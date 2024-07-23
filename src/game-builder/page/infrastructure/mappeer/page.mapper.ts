@@ -7,6 +7,7 @@ export const toDomain = (page: Page): PageDomainEntity => {
     page.content,
     page.abridgement,
     page.gameId,
+    page.isStarting,
     page.isEnding,
     page.version,
     page.createdAt,

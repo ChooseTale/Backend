@@ -15,6 +15,10 @@ export class PageService implements IPageService {
     @Inject('IChatGPTPagePort') private readonly chatGPT: IChatGPTPagePort,
   ) {}
 
+  async getAllByGameId(gameId: number, transaction?: Prisma.TransactionClient) {
+    return await this.pageRepository.getAllByGameId(gameId, transaction);
+  }
+
   async getOneById(id: number, transaction?: Prisma.TransactionClient) {
     return await this.pageRepository.getOneById(id, transaction);
   }
@@ -52,6 +56,7 @@ export class PageService implements IPageService {
       page.content,
       page.abridgement,
       page.gameId,
+      page.isStarting,
       page.isEnding,
       page.version,
       page.createdAt,

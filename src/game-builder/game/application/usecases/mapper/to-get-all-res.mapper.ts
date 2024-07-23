@@ -3,35 +3,40 @@ import { GetAllGameResDto } from '../../controllers/dto/get-all-game.dto';
 import { GameDomainEntity } from '@@src/game-builder/game/domain/entities/game.entity';
 import { ChoiceDomainEntity } from '@@src/game-builder/choice/domain/entities/choice.entity';
 
-const getPages = (pages: PageDomainEntity[], choices: ChoiceDomainEntity[]) => {
-    const result = []
-
-    const startingPage = pages.find((page) => page.isStarting);
-
-    // page와 그 페이지의 초이스
-    const getChildPages = (page: PageDomainEntity, pageChoices: ChoiceDomainEntity[]) => {
-        const childPages = pageChoices.map((choice) => pages.find((page) => page.id === choice.childPageId));
-        return childPages;
-    }
-
-    while (1) {
-
-    }
-}
-
 export const toGetAllResMapper = (
   game: GameDomainEntity,
   pages: PageDomainEntity[],
-    choices: ChoiceDomainEntity[],
-
+  choices: ChoiceDomainEntity[],
 ): GetAllGameResDto => {
-  const depth = 1;
+  const result: any[] = [];
   const startingPage = pages.find((page) => page.isStarting);
-  const endingPage = pages.find((page) => page.isEnding);
 
-  const result = {
+  if (!startingPage) {
+    throw new Error('Starting page not found');
+  }
+
+  const dfs = (page: PageDomainEntity, depth: number) => {
+    const childChoices = choices.filter(
+      (choice) => choice.parentPageId === page.id,
+    );
+    const childPages = childChoices.map((c) =>
+      pages.find((p) => p.id === c.childPageId),
+    ) as PageDomainEntity[];
+    result.push({
+      ...page,
+      depth,
+      choices: childChoices,
+    });
+    childPages.forEach((childPage) => dfs(childPage, depth + 1));
+  };
+
+  dfs(startingPage, 1);
+
+  result.sort((a, b) => a.depth - b.depth);
+
+  return {
     id: game.id,
     title: game.title,
-    pages:
+    pages: result,
   };
 };

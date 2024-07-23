@@ -1,13 +1,25 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreateGameReqDto, CreateGameResDto } from './dto/create-game.dto';
 import { UpdateGameReqDto, UpdateGameResDto } from './dto/update-game.dto';
 import { GetAllGameResDto } from './dto/get-all-game.dto';
 
 import { CreateGameUsecase } from '../usecases/create-game.usecase';
+import { GetAllGameUsecase } from '../usecases/get-all.usecase';
 
 @Controller('game')
 export class GameController {
-  constructor(private readonly createGameUsecase: CreateGameUsecase) {}
+  constructor(
+    private readonly createGameUsecase: CreateGameUsecase,
+    private readonly getAllUsecase: GetAllGameUsecase,
+  ) {}
 
   /**
    * 게임 데이터 불러오기
@@ -55,105 +67,16 @@ export class GameController {
    *
    *
    * 0630 page isEnding 추가
+   * 0723 page isStarting 추가
    * @param gameId
    * @returns
+   * @summary 🟡(240723)
    */
   @Get('/:gameId')
-  async getAll(@Param('gameId') gameId: number): Promise<GetAllGameResDto> {
-    return {
-      id: 1,
-      title: 'title',
-      pages: [
-        {
-          id: 1,
-          abridgement: '요약 1',
-          description: '설명 1',
-          createdAt: new Date(),
-          depth: 1,
-          choices: [
-            {
-              id: 1,
-              fromPageId: 1,
-              toPageId: 2,
-              createdAt: new Date(),
-            },
-            {
-              id: 2,
-              fromPageId: 1,
-              toPageId: 3,
-              createdAt: new Date(),
-            },
-          ],
-        },
-        {
-          id: 2,
-          abridgement: '요약 2',
-          description: '설명 2',
-          createdAt: new Date(),
-          depth: 2,
-          choices: [
-            {
-              id: 3,
-              fromPageId: 2,
-              toPageId: 4,
-              createdAt: new Date(),
-            },
-            {
-              id: 4,
-              fromPageId: 3,
-              toPageId: 5,
-              createdAt: new Date(),
-            },
-          ],
-        },
-        {
-          id: 3,
-          abridgement: '요약 3',
-          description: '설명 3',
-          createdAt: new Date(),
-          depth: 2,
-          choices: [
-            {
-              id: 5,
-              fromPageId: 3,
-              toPageId: 5,
-              createdAt: new Date(),
-            },
-            {
-              id: 6,
-              fromPageId: 3,
-              toPageId: 6,
-              createdAt: new Date(),
-            },
-          ],
-        },
-        {
-          id: 4,
-          abridgement: '요약 4',
-          description: '설명 4',
-          createdAt: new Date(),
-          depth: 3,
-          choices: [], // choice가 없다면 ending
-        },
-        {
-          id: 5,
-
-          abridgement: '요약 5',
-          description: '설명 5',
-          createdAt: new Date(),
-          depth: 3,
-          choices: [], // choice가 없다면 ending
-        },
-        {
-          id: 6,
-          abridgement: '요약 6',
-          description: '설명 6',
-          createdAt: new Date(),
-          depth: 3,
-          choices: [], // choice가 없다면 ending
-        },
-      ],
-    };
+  async getAll(
+    @Param('gameId', ParseIntPipe) gameId: number,
+  ): Promise<GetAllGameResDto> {
+    return await this.getAllUsecase.execute(gameId);
   }
 
   /**

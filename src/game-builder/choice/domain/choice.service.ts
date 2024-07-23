@@ -16,6 +16,13 @@ export class ChoiceService implements IChoiceService {
     @Inject('IPageService') private readonly pageService: IPageService,
   ) {}
 
+  async getAllByPageIds(
+    pageIds: number[],
+    transaction?: Prisma.TransactionClient | undefined,
+  ): Promise<ChoiceDomainEntity[]> {
+    return this.choiceRepository.getAllByPageIds(pageIds, transaction);
+  }
+
   async getAllByPageId(pageId: number, transaction: Prisma.TransactionClient) {
     return this.choiceRepository.getAllByPageId(pageId, transaction);
   }
