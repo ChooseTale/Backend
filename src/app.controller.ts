@@ -11,6 +11,7 @@ export class AppController {
   @Post('/mock')
   async mock() {
     await createMockData(this.prismaService);
+    return 'success';
   }
 
   @Post('/test-user')

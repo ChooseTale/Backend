@@ -48,5 +48,12 @@
     "abridgement": "내부 갈등과 배신으로 민수의 공동체는 붕괴되고, 그는 고독하게 생을 마감한다.",
     "gameId": 1,
     "isEnding": true
+  },
+  {
+    "id": 8,
+    "content": "초이스와 연결되지 않은 독립적인 페이지",
+    "abridgement": "초이스와 연결되지 않은 독립적인 페이지",
+    "gameId": 1,
+    "isEnding": false
   }
 ]

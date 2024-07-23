@@ -1,7 +1,7 @@
 type Choice = {
   id: number;
   fromPageId: number;
-  toPageId: number;
+  toPageId: number | null;
   createdAt: Date;
 };
 

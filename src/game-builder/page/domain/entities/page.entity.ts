@@ -9,8 +9,8 @@ export class PageDomainEntity {
     public isStarting: boolean,
     public isEnding: boolean,
     public version: number,
-    public createdAt: Date | null,
-    public updatedAt: Date | null,
+    public createdAt: Date,
+    public updatedAt: Date,
   ) {}
 
   public setContent(content: string) {
