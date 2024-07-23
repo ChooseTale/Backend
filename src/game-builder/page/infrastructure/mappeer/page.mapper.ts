@@ -23,6 +23,7 @@ export const toEntity = (
     content: page.content,
     abridgement: page.abridgement,
     gameId: page.gameId,
+    isStarting: page.isStarting,
     isEnding: page.isEnding,
 
     createdAt: page.createdAt ?? new Date(),
@@ -37,6 +38,7 @@ export const toEntityForCreate = (
     content: page.content,
     abridgement: page.abridgement,
     gameId: page.gameId,
+    isStarting: page.isStarting,
     isEnding: page.isEnding,
     createdAt: new Date(),
     updatedAt: new Date(),

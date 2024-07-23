@@ -6,6 +6,7 @@ export class PageDomainEntity {
     public content: string,
     public abridgement: string,
     public gameId: number,
+    public isStarting: boolean,
     public isEnding: boolean,
     public version: number,
     public createdAt: Date | null,
