@@ -95,7 +95,8 @@ model Page {
 
   version Int @default(1)
 
-  isEnding Boolean
+  isStarting Boolean @default(false)
+  isEnding   Boolean @default(false)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
