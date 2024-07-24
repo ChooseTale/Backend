@@ -15,6 +15,7 @@ export interface IPageService {
   create(
     gameId: number,
     createPageReqDto: CreatePageReqDto,
+    isStarting: boolean,
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity>;
   update(

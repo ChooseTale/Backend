@@ -31,6 +31,7 @@ export class CreateGameUsecase {
         {
           content: createGameReqDto.pageOneContent,
         },
+        true,
         transaction,
       );
       return {

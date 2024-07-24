@@ -26,6 +26,7 @@ export class PageService implements IPageService {
   async create(
     gameId: number,
     createPageReqDto: CreatePageReqDto,
+    isStarting: boolean,
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity> {
     const abridgedContent = await this.chatGPT.getAbridgedContent(
@@ -36,6 +37,7 @@ export class PageService implements IPageService {
       createPageReqDto?.content ?? '',
       abridgedContent,
       gameId,
+      isStarting,
       createPageReqDto?.isEnding ?? false,
     );
     const newPage = await this.pageRepository.create(page, transaction);

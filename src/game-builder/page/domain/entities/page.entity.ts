@@ -27,6 +27,12 @@ export class PageDomainEntity {
     }
   }
 
+  public checkIsStarting() {
+    if (this.isStarting) {
+      throw new ConflictException('스타팅 페이지에 적용할 수 없는 요청');
+    }
+  }
+
   private checkEqualUpdateContent(content: string) {
     return this.content === content; // 내용이 변경되었는지 확인
   }
