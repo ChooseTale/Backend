@@ -19,6 +19,7 @@ export class DeletePageUseCase {
     if (!page) {
       throw new NotFoundException('Page not found');
     }
+    page.checkIsStarting();
 
     await this.pageService.delete(pageId);
 
