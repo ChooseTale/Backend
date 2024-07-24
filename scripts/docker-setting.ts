@@ -29,4 +29,4 @@ const localEnv = fs.readFileSync(join(__dirname, '../.env.local'), 'utf-8');
 fs.writeFileSync(join(__dirname, '../.env'), localEnv);
 
 // npx prisma migrate dev
-exec('npx prisma migrate dev');
+exec('yarn prisma migrate dev');

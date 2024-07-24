@@ -26,4 +26,8 @@ export interface IChoiceRepository {
     choice: ChoiceDomainEntity,
     transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity>;
+  delete(
+    choiceId: number,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<void>;
 }

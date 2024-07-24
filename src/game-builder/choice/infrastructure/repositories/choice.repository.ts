@@ -102,6 +102,7 @@ export class ChoiceRepository implements IChoiceRepository {
         description: choice.description,
         fromPageId: choice.parentPageId,
         toPageId: choice.childPageId,
+        order: choice.order,
       },
       where: {
         id: choiceId,
@@ -109,5 +110,24 @@ export class ChoiceRepository implements IChoiceRepository {
     });
 
     return toDomain(updatedChoice);
+  }
+
+  async delete(
+    choiceId: number,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<void> {
+    await (transaction ?? this.prisma).choicePage.update({
+      data: {
+        order: 0,
+      },
+      where: {
+        id: choiceId,
+      },
+    });
+    await (transaction ?? this.prisma).choicePage.delete({
+      where: {
+        id: choiceId,
+      },
+    });
   }
 }

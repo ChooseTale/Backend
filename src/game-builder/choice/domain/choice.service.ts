@@ -16,6 +16,7 @@ export class ChoiceService implements IChoiceService {
     @Inject('IPageService') private readonly pageService: IPageService,
   ) {}
 
+
   async getAllByPageIds(
     pageIds: number[],
     transaction?: Prisma.TransactionClient | undefined,
@@ -23,11 +24,12 @@ export class ChoiceService implements IChoiceService {
     return this.choiceRepository.getAllByPageIds(pageIds, transaction);
   }
 
-  async getAllByPageId(pageId: number, transaction: Prisma.TransactionClient) {
+
+  async getAllByPageId(pageId: number, transaction?: Prisma.TransactionClient) {
     return this.choiceRepository.getAllByPageId(pageId, transaction);
   }
 
-  async getOneById(id: number, transaction: Prisma.TransactionClient) {
+  async getOneById(id: number, transaction?: Prisma.TransactionClient) {
     return this.choiceRepository.getOneById(id, transaction);
   }
 
@@ -83,5 +85,35 @@ export class ChoiceService implements IChoiceService {
     choice.updateChoice(updateChoiceReqDto);
 
     return this.choiceRepository.update(choiceId, choice);
+  }
+
+  async updateOrder(
+    parentPageId: number,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<void> {
+    const pageChoices = await this.getAllByPageId(parentPageId);
+    await Promise.all(
+      pageChoices.map((pageChoice, idx) => {
+        pageChoice.setOrder(idx + 1);
+        return this.choiceRepository.update(
+          pageChoice.id,
+          pageChoice,
+          transaction,
+        );
+      }),
+    );
+  }
+
+  async delete(
+    choiceId: number,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<void> {
+    const choice = await this.getOneById(choiceId, transaction);
+    if (!choice) {
+      throw new NotFoundException('해당 선택지가 존재하지 않습니다.');
+    }
+
+    await this.choiceRepository.delete(choiceId, transaction);
+    await this.updateOrder(choice.parentPageId, transaction);
   }
 }
