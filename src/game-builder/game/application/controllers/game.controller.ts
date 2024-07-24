@@ -13,12 +13,14 @@ import { GetAllGameResDto } from './dto/get-all-game.dto';
 
 import { CreateGameUsecase } from '../usecases/create-game.usecase';
 import { GetAllGameUsecase } from '../usecases/get-all.usecase';
+import { GetDataUsecase } from '../usecases/get-data.usecase';
 
 @Controller('game')
 export class GameController {
   constructor(
     private readonly createGameUsecase: CreateGameUsecase,
     private readonly getAllUsecase: GetAllGameUsecase,
+    private readonly getDataUsecase: GetDataUsecase,
   ) {}
 
   /**
@@ -32,32 +34,11 @@ export class GameController {
    *
    * @param gameId
    * @returns
+   * @summary 🟡(240723) 게임 데이터 불러오기
    */
   @Get('/:gameId/data')
-  async getData(@Param('gameId') gameId: number) {
-    return {
-      id: 1,
-      title: 'Game Title',
-      description: 'Game Description',
-      isPrivate: true,
-      genre: 'OTHER',
-      thumbnails: [
-        {
-          id: 1,
-          url: `https://www.google.com/imgres?q=lol&imgurl=https%3A%2F%2Fcdn1.epicgames.com%2Foffer%2F24b9b5e323bc40eea252a10cdd3b2f10%2FEGS_LeagueofLegends_RiotGames_S1_2560x1440-80471666c140f790f28dff68d72c384b&imgrefurl=https%3A%2F%2Fstore.epicgames.com%2Fko%2Fp%2Fleague-of-legends&docid=XzNCAy9WkYmi7M&tbnid=RHVexfuwUGmwaM&vet=12ahUKEwiI7YG7k4OHAxVebPUHHXFMDOgQM3oECB0QAA..i&w=2560&h=1440&hcb=2&ved=2ahUKEwiI7YG7k4OHAxVebPUHHXFMDOgQM3oECB0QAA`,
-        },
-        {
-          id: 2,
-          url: `https://www.google.com/imgres?q=battleground&imgurl=https%3A%2F%2Fcdn1.epicgames.com%2Fspt-assets%2F53ec4985296b4facbe3a8d8d019afba9%2Fpubg-battlegrounds-1e9a7.jpg&imgrefurl=https%3A%2F%2Fstore.epicgames.com%2Fko%2Fp%2Fpubg-59c1d9&docid=XNRd0HG1OuVLVM&tbnid=daYKOkvfY85WjM&vet=12ahUKEwiEm-6wlIOHAxV0cfUHHRLiAtkQM3oECBQQAA..i&w=1920&h=1080&hcb=2&ved=2ahUKEwiEm-6wlIOHAxV0cfUHHRLiAtkQM3oECBQQAA`,
-        },
-      ],
-      createdAt: new Date(),
-      counts: {
-        pages: 6,
-        choices: 10,
-        ending: 4,
-      },
-    };
+  async getData(@Param('gameId', ParseIntPipe) gameId: number) {
+    return await this.getDataUsecase.execute(gameId);
   }
 
   /**
@@ -70,7 +51,7 @@ export class GameController {
    * 0723 page isStarting 추가
    * @param gameId
    * @returns
-   * @summary 🟡(240723)
+   * @summary 🟡(240723) 게임 전체 불러오기
    */
   @Get('/:gameId')
   async getAll(
