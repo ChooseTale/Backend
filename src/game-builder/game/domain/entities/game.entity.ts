@@ -11,7 +11,7 @@ export class GameDomainEntity {
     public thumbnailId: number | null,
     public userId: number,
 
-    public createdAt?: Date,
-    public updatedAt?: Date,
+    public createdAt: Date,
+    public updatedAt: Date,
   ) {}
 }

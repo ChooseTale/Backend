@@ -30,7 +30,10 @@ export const toGetAllResMapper = (
       pages.find((p) => p.id === c.toPageId),
     ) as PageDomainEntity[];
     result.push({
-      ...page,
+      id: page.id,
+      abridgement: page.abridgement,
+      createdAt: page.createdAt,
+
       description: page.content,
       depth,
       choices: childChoices,
@@ -50,7 +53,9 @@ export const toGetAllResMapper = (
   );
   for (const page of unconnectedPages) {
     result.push({
-      ...page,
+      id: page.id,
+      abridgement: page.abridgement,
+      createdAt: page.createdAt,
       description: page.content,
       depth: -1,
       choices: [],
