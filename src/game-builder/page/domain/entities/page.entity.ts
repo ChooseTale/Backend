@@ -6,10 +6,11 @@ export class PageDomainEntity {
     public content: string,
     public abridgement: string,
     public gameId: number,
+    public isStarting: boolean,
     public isEnding: boolean,
     public version: number,
-    public createdAt: Date | null,
-    public updatedAt: Date | null,
+    public createdAt: Date,
+    public updatedAt: Date,
   ) {}
 
   public setContent(content: string) {
@@ -23,6 +24,12 @@ export class PageDomainEntity {
   public checkIsEnding() {
     if (this.isEnding) {
       throw new ConflictException('엔딩 페이지에는 선택지를 만들 수 없습니다.');
+    }
+  }
+
+  public checkIsStarting() {
+    if (this.isStarting) {
+      throw new ConflictException('스타팅 페이지에 적용할 수 없는 요청');
     }
   }
 

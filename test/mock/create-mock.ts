@@ -5,6 +5,16 @@ export const createMockData = async (prisma: PrismaClient) => {
   await prisma.$transaction(async (prisma) => {
     await prisma.$executeRaw`SET session_replication_role = 'replica';`;
 
+    // 모든 테이블 데이터 삭제
+    for (const table of jsonEntities) {
+      await prisma[table.tableName].deleteMany();
+      // 시퀀스 업데이트
+      await prisma.$executeRawUnsafe(`
+        SELECT setval(pg_get_serial_sequence('"${table.tableName}"', 'id'), coalesce(max(id), 0) + 1, false)
+        FROM "${table.tableName}";
+      `);
+    }
+
     for (const table of jsonEntities) {
       try {
         await prisma[table.tableName].createMany({

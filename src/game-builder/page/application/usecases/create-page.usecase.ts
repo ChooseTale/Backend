@@ -9,7 +9,7 @@ export class CreatePageUsecase {
   ) {}
 
   public async create(gameId: number, body: CreatePageReqDto) {
-    const newPage = await this.pageService.create(gameId, body);
+    const newPage = await this.pageService.create(gameId, body, false);
     return {
       id: newPage.id,
     };

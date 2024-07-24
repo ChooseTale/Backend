@@ -10,6 +10,20 @@ import { Prisma } from '@prisma/client';
 export class ChoiceRepository implements IChoiceRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getAllByPageIds(
+    pageIds: number[],
+    transaction?: Prisma.TransactionClient | undefined,
+  ): Promise<ChoiceDomainEntity[]> {
+    const choices = await (transaction ?? this.prisma).choicePage.findMany({
+      where: {
+        fromPageId: {
+          in: pageIds,
+        },
+      },
+    });
+    return choices.map((choice) => toDomain(choice));
+  }
+
   async getAllByPageId(
     pageId: number,
     transaction: Prisma.TransactionClient,

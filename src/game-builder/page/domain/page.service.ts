@@ -15,6 +15,10 @@ export class PageService implements IPageService {
     @Inject('IChatGPTPagePort') private readonly chatGPT: IChatGPTPagePort,
   ) {}
 
+  async getAllByGameId(gameId: number, transaction?: Prisma.TransactionClient) {
+    return await this.pageRepository.getAllByGameId(gameId, transaction);
+  }
+
   async getOneById(id: number, transaction?: Prisma.TransactionClient) {
     return await this.pageRepository.getOneById(id, transaction);
   }
@@ -22,6 +26,7 @@ export class PageService implements IPageService {
   async create(
     gameId: number,
     createPageReqDto: CreatePageReqDto,
+    isStarting: boolean,
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity> {
     const abridgedContent = await this.chatGPT.getAbridgedContent(
@@ -32,6 +37,7 @@ export class PageService implements IPageService {
       createPageReqDto?.content ?? '',
       abridgedContent,
       gameId,
+      isStarting,
       createPageReqDto?.isEnding ?? false,
     );
     const newPage = await this.pageRepository.create(page, transaction);
@@ -52,6 +58,7 @@ export class PageService implements IPageService {
       page.content,
       page.abridgement,
       page.gameId,
+      page.isStarting,
       page.isEnding,
       page.version,
       page.createdAt,
