@@ -74,7 +74,7 @@ export class PageController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: CheckSpellingByExternalServiceReqDto,
   ): Promise<CheckSpellingByExternalServiceResDto> {
-    let testSentence = '이게 맛는 맞춤법';
+    let testSentence = body.text;
 
     const result: any[] = await new Promise((resolve, reject) => {
       hanspell.spellCheckByDAUM(
