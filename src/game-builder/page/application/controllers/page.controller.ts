@@ -18,6 +18,7 @@ import { UpdatePageReqDto, UpdatePageResDto } from './dto/update-page.dto';
 import { CreatePageUsecase } from '../usecases/create-page.usecase';
 import { UpdatePageUsecase } from '../usecases/update-page.usecase';
 import { DeletePageUseCase } from '../usecases/delete-page.usecase';
+import hanspell from 'hanspell';
 
 @Controller('/game/:gameId/page')
 export class PageController {
@@ -73,9 +74,35 @@ export class PageController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: CheckSpellingByExternalServiceReqDto,
   ): Promise<CheckSpellingByExternalServiceResDto> {
+    let testSentence = '이게 맛는 맞춤법';
+
+    const result: any[] = await new Promise((resolve, reject) => {
+      hanspell.spellCheckByDAUM(
+        testSentence,
+        6000,
+        (r) => {
+          resolve(r);
+        },
+        (finalResult) => {
+          resolve(finalResult);
+        },
+        (err) => {
+          console.error('// error: ' + err);
+          reject(err);
+        },
+      );
+    });
+
+    for (const r of result) {
+      testSentence = testSentence.replace(
+        r.token,
+        `<color>${r.suggestions[0]}</color>`,
+      );
+    }
+
     // req : 이게 맛는 맞춤뻡
     return {
-      text: '이게 <color>맞는</color> <color>맞춤법</color>',
+      text: testSentence,
     };
   }
 
