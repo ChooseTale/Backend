@@ -8,14 +8,17 @@ import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
 import { UpdatePageUsecase } from './usecases/update-page.usecase';
 import { GameModule } from '@@src/game-builder/game/application/game.module';
 import { DeletePageUseCase } from './usecases/delete-page.usecase';
+import { GetRecommentChoiceUsecase } from './usecases/get-recomment-choice.usecase';
+import { ChoiceModule } from '@@src/game-builder/choice/applications/choice.module';
 
 @Module({
-  imports: [forwardRef(() => GameModule)],
+  imports: [forwardRef(() => GameModule), forwardRef(() => ChoiceModule)],
   controllers: [PageController],
   providers: [
     CreatePageUsecase,
     UpdatePageUsecase,
     DeletePageUseCase,
+    GetRecommentChoiceUsecase,
     {
       provide: 'IPageService',
       useClass: PageService,

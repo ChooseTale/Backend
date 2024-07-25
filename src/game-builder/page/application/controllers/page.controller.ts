@@ -19,6 +19,7 @@ import { CreatePageUsecase } from '../usecases/create-page.usecase';
 import { UpdatePageUsecase } from '../usecases/update-page.usecase';
 import { DeletePageUseCase } from '../usecases/delete-page.usecase';
 import hanspell from 'hanspell';
+import { GetRecommentChoiceUsecase } from '../usecases/get-recomment-choice.usecase';
 
 @Controller('/game/:gameId/page')
 export class PageController {
@@ -26,6 +27,7 @@ export class PageController {
     private readonly createPageUsecase: CreatePageUsecase,
     private readonly updatePageUsecase: UpdatePageUsecase,
     private readonly deletePageUsecase: DeletePageUseCase,
+    private readonly getRecommentChoiceUsecase: GetRecommentChoiceUsecase,
   ) {}
 
   /**
@@ -42,20 +44,7 @@ export class PageController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
   ): Promise<RecommendChoiceByGPTResDto[]> {
-    return [
-      {
-        title: 'Recommend Choice Title1',
-        description: 'Recommend Choice Description1',
-      },
-      {
-        title: 'Recommend Choice Title2',
-        description: 'Recommend Choice Description2',
-      },
-      {
-        title: 'Recommend Choice Title3',
-        description: 'Recommend Choice Description3',
-      },
-    ];
+    return await this.getRecommentChoiceUsecase.execute(pageId);
   }
 
   /**
