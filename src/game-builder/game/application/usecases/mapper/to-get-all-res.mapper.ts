@@ -10,11 +10,12 @@ export const toGetAllResMapper = (
 ): GetAllGameResDto => {
   const result: GetAllGameResDto['pages'] = [];
   const startingPage = pages.find((page) => page.isStarting);
-
   const resChoices = choices.map((choice) => ({
     id: choice.id,
     fromPageId: choice.parentPageId,
     toPageId: choice.childPageId,
+    title: choice.title,
+    description: choice.description,
     createdAt: choice.createdAt,
   }));
 
