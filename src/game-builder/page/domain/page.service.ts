@@ -23,6 +23,13 @@ export class PageService implements IPageService {
     return await this.pageRepository.getOneById(id, transaction);
   }
 
+  async getStartingPage(
+    gameId: number,
+    transaction?: Prisma.TransactionClient,
+  ) {
+    return await this.pageRepository.getStartingPage(gameId, transaction);
+  }
+
   async create(
     gameId: number,
     createPageReqDto: CreatePageReqDto,

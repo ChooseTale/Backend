@@ -30,6 +30,16 @@ export class PageRepository implements IPageRepository {
     return page ? toDomain(page) : null;
   }
 
+  async getStartingPage(
+    gameId: number,
+    transaction?: Prisma.TransactionClient | undefined,
+  ): Promise<PageDomainEntity | null> {
+    const page = await (transaction ?? this.prisma).page.findFirst({
+      where: { gameId, isStarting: true },
+    });
+    return page ? toDomain(page) : null;
+  }
+
   async create(
     page: CreatePageDomainEntity,
     transaction: Prisma.TransactionClient,

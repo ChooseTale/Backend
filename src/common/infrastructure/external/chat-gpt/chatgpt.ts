@@ -71,4 +71,31 @@ export class ChatGPT implements IChatGPTPagePort {
       return [];
     }
   }
+
+  async getThumbnailImage(
+    abridgement: string,
+    content: string,
+    genre: string,
+  ): Promise<string> {
+    try {
+      const response = await this.openAI.images.generate({
+        model: 'dall-e-3',
+        prompt: `
+        Don't put text in the image. It should be a single image, not a cartoon format.
+        You have to use the following information to create an image:
+        - Abridgement: ${abridgement}
+        - Content: ${content}
+        - Genre: ${genre}
+
+      `,
+        n: 1,
+        size: '1024x1024',
+      });
+
+      return response.data[0].url ?? '';
+    } catch (err) {
+      console.log(err);
+      return '';
+    }
+  }
 }

@@ -35,7 +35,7 @@
     "dotenv": "^16.4.5",
     "hanspell": "^0.9.7",
     "ioredis": "^5.4.1",
-    "openai": "4.0.0",
+    "openai": "^4.53.1",
     "prisma": "^5.17.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
