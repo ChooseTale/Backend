@@ -8,14 +8,26 @@ import { CreateGameUsecase } from './usecases/create-game.usecase';
 import { GetAllGameUsecase } from './usecases/get-all.usecase';
 import { ChoiceModule } from '@@src/game-builder/choice/applications/choice.module';
 import { GetDataUsecase } from './usecases/get-data.usecase';
+import { MulterModule } from '@nestjs/platform-express';
+import config from '@@src/config';
+import { ImageModule } from '@@src/common/images/image.module';
+import { UploadImagesUseCase } from './usecases/upload-images.usecase';
 
 @Module({
-  imports: [forwardRef(() => PageModule), forwardRef(() => ChoiceModule)],
+  imports: [
+    forwardRef(() => PageModule),
+    forwardRef(() => ChoiceModule),
+    MulterModule.register({
+      dest: config.files.gameThumnailImage.dest,
+    }),
+    ImageModule,
+  ],
   controllers: [GameController],
   providers: [
     CreateGameUsecase,
     GetAllGameUsecase,
     GetDataUsecase,
+    UploadImagesUseCase,
     GameService,
     {
       provide: 'IGameService',

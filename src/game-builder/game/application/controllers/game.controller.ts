@@ -1,11 +1,16 @@
 import {
   Body,
   Controller,
+  FileTypeValidator,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseIntPipe,
   Patch,
   Post,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateGameReqDto, CreateGameResDto } from './dto/create-game.dto';
 import { UpdateGameReqDto, UpdateGameResDto } from './dto/update-game.dto';
@@ -14,6 +19,8 @@ import { GetAllGameResDto } from './dto/get-all-game.dto';
 import { CreateGameUsecase } from '../usecases/create-game.usecase';
 import { GetAllGameUsecase } from '../usecases/get-all.usecase';
 import { GetDataUsecase } from '../usecases/get-data.usecase';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { UploadImagesUseCase } from '../usecases/upload-images.usecase';
 
 @Controller('game')
 export class GameController {
@@ -21,6 +28,7 @@ export class GameController {
     private readonly createGameUsecase: CreateGameUsecase,
     private readonly getAllUsecase: GetAllGameUsecase,
     private readonly getDataUsecase: GetDataUsecase,
+    private readonly uploadImagesUseCase: UploadImagesUseCase,
   ) {}
 
   /**
@@ -77,6 +85,28 @@ export class GameController {
     @Body() createGameReqDto: CreateGameReqDto,
   ): Promise<CreateGameResDto> {
     return await this.createGameUsecase.excute(1, createGameReqDto);
+  }
+
+  @Post(':gameId/upload-images')
+  @UseInterceptors(FilesInterceptor('images'))
+  async uploadImages(
+    @Param('gameId', ParseIntPipe) gameId: number,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          // jpeg와 png, gif 허용
+          new FileTypeValidator({
+            fileType: /jpeg|png|gif/,
+          }),
+          new MaxFileSizeValidator({
+            maxSize: 3 * 1024 * 1024,
+          }),
+        ],
+      }),
+    )
+    files: Array<Express.Multer.File>,
+  ) {
+    return await this.uploadImagesUseCase.execute(gameId, files);
   }
 
   /**
