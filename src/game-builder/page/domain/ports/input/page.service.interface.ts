@@ -12,6 +12,10 @@ export interface IPageService {
     id: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity | null>;
+  getStartingPage(
+    gameId: number,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<PageDomainEntity | null>;
   create(
     gameId: number,
     createPageReqDto: CreatePageReqDto,

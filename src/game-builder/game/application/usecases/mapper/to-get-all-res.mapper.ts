@@ -10,11 +10,12 @@ export const toGetAllResMapper = (
 ): GetAllGameResDto => {
   const result: GetAllGameResDto['pages'] = [];
   const startingPage = pages.find((page) => page.isStarting);
-
   const resChoices = choices.map((choice) => ({
     id: choice.id,
     fromPageId: choice.parentPageId,
     toPageId: choice.childPageId,
+    title: choice.title,
+    description: choice.description,
     createdAt: choice.createdAt,
   }));
 
@@ -33,7 +34,7 @@ export const toGetAllResMapper = (
       id: page.id,
       abridgement: page.abridgement,
       createdAt: page.createdAt,
-
+      isEnding: page.isEnding,
       description: page.content,
       depth,
       choices: childChoices,
@@ -57,6 +58,7 @@ export const toGetAllResMapper = (
       abridgement: page.abridgement,
       createdAt: page.createdAt,
       description: page.content,
+      isEnding: page.isEnding,
       depth: -1,
       choices: [],
     });

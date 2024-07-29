@@ -11,6 +11,7 @@ type Page = {
   description: string;
   createdAt: Date;
   depth: number;
+  isEnding: boolean;
   choices: Choice[];
 };
 

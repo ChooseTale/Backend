@@ -1,11 +1,17 @@
 import {
   Body,
   Controller,
+  Delete,
+  FileTypeValidator,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseIntPipe,
   Patch,
   Post,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateGameReqDto, CreateGameResDto } from './dto/create-game.dto';
 import { UpdateGameReqDto, UpdateGameResDto } from './dto/update-game.dto';
@@ -14,6 +20,10 @@ import { GetAllGameResDto } from './dto/get-all-game.dto';
 import { CreateGameUsecase } from '../usecases/create-game.usecase';
 import { GetAllGameUsecase } from '../usecases/get-all.usecase';
 import { GetDataUsecase } from '../usecases/get-data.usecase';
+import { GetRecommandImageUseCase } from '../usecases/get-recommand-image.usecase';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { UploadImagesUseCase } from '../usecases/upload-images.usecase';
+import { DeleteGameUseCase } from '../usecases/delete-game.usecase';
 
 @Controller('game')
 export class GameController {
@@ -21,6 +31,9 @@ export class GameController {
     private readonly createGameUsecase: CreateGameUsecase,
     private readonly getAllUsecase: GetAllGameUsecase,
     private readonly getDataUsecase: GetDataUsecase,
+    private readonly getRecommandImageUseCase: GetRecommandImageUseCase,
+    private readonly uploadImagesUsecase: UploadImagesUseCase,
+    private readonly deleteImageUsecase: DeleteGameUseCase,
   ) {}
 
   /**
@@ -49,6 +62,7 @@ export class GameController {
    *
    * 0630 page isEnding 추가
    * 0723 page isStarting 추가
+   * 0730 page isEnding res 추가
    * @param gameId
    * @returns
    * @summary 🟡(240723) 게임 전체 불러오기
@@ -82,6 +96,33 @@ export class GameController {
   /**
    *
    * @tag Game
+   * @summary 🟡(240730) 게임 썸네일 이미지 업로드
+   */
+  @Post(':gameId/upload-thumbnail')
+  @UseInterceptors(FilesInterceptor('images'))
+  async uploadImages(
+    @Param('gameId', ParseIntPipe) gameId: number,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          // jpeg와 png, gif 허용
+          new FileTypeValidator({
+            fileType: /jpeg|png|gif/,
+          }),
+          new MaxFileSizeValidator({
+            maxSize: 3 * 1024 * 1024,
+          }),
+        ],
+      }),
+    )
+    files: Array<Express.Multer.File>,
+  ) {
+    return await this.uploadImagesUsecase.execute(gameId, files);
+  }
+
+  /**
+   *
+   * @tag Game
    */
   @Patch(':gameId')
   async update(
@@ -101,9 +142,30 @@ export class GameController {
   /**
    *
    * @tag Game
+   * @summary 🟡(240726) 게임 추천 썸네일 이미지 생성
    */
   @Post(':gameId/recommend-image')
-  async recommendImage(@Param('gameId') gameId: number): Promise<string> {
-    return 'https://www.example.com/image.jpg';
+  async recommendImage(
+    @Param('gameId', ParseIntPipe) gameId: number,
+  ): Promise<string> {
+    return await this.getRecommandImageUseCase.execute(gameId);
+  }
+
+  /**
+   *
+   * @param gameId
+   * @param imageId
+   * @returns
+   *
+   * @tag Game
+   * @summary 🟡(240730) 게임 썸네일 이미지 삭제
+   */
+  @Delete(':gameId/thumbnail/:imageId')
+  async deleteImage(
+    @Param('gameId', ParseIntPipe) gameId: number,
+    @Param('imageId', ParseIntPipe) imageId: number,
+  ): Promise<string> {
+    await this.deleteImageUsecase.execute(imageId, gameId);
+    return 'success';
   }
 }
