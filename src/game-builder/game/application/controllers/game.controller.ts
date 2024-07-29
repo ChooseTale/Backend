@@ -1,11 +1,17 @@
 import {
   Body,
   Controller,
+  Delete,
+  FileTypeValidator,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseIntPipe,
   Patch,
   Post,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateGameReqDto, CreateGameResDto } from './dto/create-game.dto';
 import { UpdateGameReqDto, UpdateGameResDto } from './dto/update-game.dto';
@@ -14,6 +20,9 @@ import { GetAllGameResDto } from './dto/get-all-game.dto';
 import { CreateGameUsecase } from '../usecases/create-game.usecase';
 import { GetAllGameUsecase } from '../usecases/get-all.usecase';
 import { GetDataUsecase } from '../usecases/get-data.usecase';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { UploadImagesUseCase } from '../usecases/upload-images.usecase';
+import { DeleteGameUseCase } from '../usecases/delete-game.usecase';
 
 @Controller('game')
 export class GameController {
@@ -21,6 +30,8 @@ export class GameController {
     private readonly createGameUsecase: CreateGameUsecase,
     private readonly getAllUsecase: GetAllGameUsecase,
     private readonly getDataUsecase: GetDataUsecase,
+    private readonly uploadImagesUsecase: UploadImagesUseCase,
+    private readonly deleteImageUsecase: DeleteGameUseCase,
   ) {}
 
   /**
@@ -79,6 +90,28 @@ export class GameController {
     return await this.createGameUsecase.excute(1, createGameReqDto);
   }
 
+  @Post(':gameId/upload-thumbnail')
+  @UseInterceptors(FilesInterceptor('images'))
+  async uploadImages(
+    @Param('gameId', ParseIntPipe) gameId: number,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          // jpeg와 png, gif 허용
+          new FileTypeValidator({
+            fileType: /jpeg|png|gif/,
+          }),
+          new MaxFileSizeValidator({
+            maxSize: 3 * 1024 * 1024,
+          }),
+        ],
+      }),
+    )
+    files: Array<Express.Multer.File>,
+  ) {
+    return await this.uploadImagesUsecase.execute(gameId, files);
+  }
+
   /**
    *
    * @tag Game
@@ -105,5 +138,14 @@ export class GameController {
   @Post(':gameId/recommend-image')
   async recommendImage(@Param('gameId') gameId: number): Promise<string> {
     return 'https://www.example.com/image.jpg';
+  }
+
+  @Delete(':gameId/thumbnail/:imageId')
+  async deleteImage(
+    @Param('gameId', ParseIntPipe) gameId: number,
+    @Param('imageId', ParseIntPipe) imageId: number,
+  ): Promise<string> {
+    await this.deleteImageUsecase.execute(imageId, gameId);
+    return 'success';
   }
 }
