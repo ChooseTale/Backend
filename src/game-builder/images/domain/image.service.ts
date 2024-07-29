@@ -13,11 +13,11 @@ export class ImageService implements IImageService {
 
   async uploadImageForGameThumbnail(
     gameId: number,
-    file: Array<Express.Multer.File>,
+    file: Array<{ url: string }>,
   ): Promise<GameThumbnailDomainEntity[]> {
     const newGameThumbnails = await Promise.all(
       file.map(async (file) => {
-        const gameThumbnail = new CreateGameThumbnailEntity(gameId, file);
+        const gameThumbnail = new CreateGameThumbnailEntity(gameId, file.url);
         return await this.imageRepository.uploadImageForGameThumbnail(
           gameThumbnail,
         );

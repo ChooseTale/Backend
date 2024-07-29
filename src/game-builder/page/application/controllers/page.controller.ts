@@ -38,6 +38,7 @@ export class PageController {
    * 1. 페이지 생성하기
 
    * @tag Page
+   * @summary 선택지 추천받기 🟡(2407329)
    */
   @Get(':pageId/recommend-choices')
   async recommendChoicesByExternalService(
@@ -57,6 +58,7 @@ export class PageController {
    * 0620 카카오의 경우 띄어쓰기 체크는 따로 해줘야 하는데 어떤식으로 할지 고민중
    *
    * @tag Page
+   * @summary 맞춤법 검사하기 🟡(240730)
    */
   @Post('/check-spelling')
   async checkSpellingByExternalService(

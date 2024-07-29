@@ -8,6 +8,11 @@ export class UploadImagesUseCase {
   ) {}
 
   async execute(gameId: number, images: Express.Multer.File[]) {
-    return this.imageService.uploadImageForGameThumbnail(gameId, images);
+    return this.imageService.uploadImageForGameThumbnail(
+      gameId,
+      images.map((image) => ({
+        url: `${image.destination}/${image.filename}`,
+      })),
+    );
   }
 }

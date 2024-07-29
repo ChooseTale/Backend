@@ -2,6 +2,7 @@ import { IPageService } from '@@src/game-builder/page/domain/ports/input/page.se
 import { IChatGPTPagePort } from '@@src/game-builder/page/domain/ports/output/chatgpt/chatgpt.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { IGameService } from '../../domain/ports/input/game.service.interface';
+import { IImageService } from '@@src/game-builder/images/domain/port/input/image.service.interface';
 
 @Injectable()
 export class GetRecommandImageUseCase {
@@ -12,6 +13,8 @@ export class GetRecommandImageUseCase {
     private readonly gameService: IGameService,
     @Inject('IPageService')
     private readonly pagePort: IPageService,
+    @Inject('IImageService')
+    private readonly imageService: IImageService,
   ) {}
 
   async execute(gameId: number) {
@@ -28,6 +31,11 @@ export class GetRecommandImageUseCase {
       startingPage.content,
       game.genre,
     );
+
+    await this.imageService.uploadImageForGameThumbnail(gameId, [
+      { url: image },
+    ]);
+
     return image;
   }
 }

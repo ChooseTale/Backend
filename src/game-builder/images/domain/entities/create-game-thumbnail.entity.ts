@@ -1,10 +1,8 @@
 export class CreateGameThumbnailEntity {
-  public url: string;
-
   constructor(
     public readonly gameId: number,
-    readonly file: Express.Multer.File,
+    public readonly url: string,
   ) {
-    this.url = `${file.destination}/${file.filename}`;
+    this.url = url;
   }
 }

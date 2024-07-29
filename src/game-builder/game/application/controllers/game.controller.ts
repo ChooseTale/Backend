@@ -62,6 +62,7 @@ export class GameController {
    *
    * 0630 page isEnding 추가
    * 0723 page isStarting 추가
+   * 0730 page isEnding res 추가
    * @param gameId
    * @returns
    * @summary 🟡(240723) 게임 전체 불러오기
@@ -92,6 +93,11 @@ export class GameController {
     return await this.createGameUsecase.excute(1, createGameReqDto);
   }
 
+  /**
+   *
+   * @tag Game
+   * @summary 🟡(240730) 게임 썸네일 이미지 업로드
+   */
   @Post(':gameId/upload-thumbnail')
   @UseInterceptors(FilesInterceptor('images'))
   async uploadImages(
@@ -145,6 +151,15 @@ export class GameController {
     return await this.getRecommandImageUseCase.execute(gameId);
   }
 
+  /**
+   *
+   * @param gameId
+   * @param imageId
+   * @returns
+   *
+   * @tag Game
+   * @summary 🟡(240730) 게임 썸네일 이미지 삭제
+   */
   @Delete(':gameId/thumbnail/:imageId')
   async deleteImage(
     @Param('gameId', ParseIntPipe) gameId: number,
