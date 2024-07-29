@@ -65,6 +65,8 @@ export class GameController {
    * 0630 page isEnding 추가
    * 0723 page isStarting 추가
    * 0730 page isEnding res 추가
+   * 0730 page updatedAt 추가
+   *
    * @param gameId
    * @returns
    * @summary 🟡(240723) 게임 전체 불러오기
