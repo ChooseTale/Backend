@@ -24,6 +24,5 @@ export class UpdateGameResDto {
   title: string;
   description: string;
   genre: Genres;
-  thumbnailImageUrl: string | null;
   isPrivate: boolean;
 }

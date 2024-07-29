@@ -24,6 +24,7 @@ import { GetRecommandImageUseCase } from '../usecases/get-recommand-image.usecas
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { UploadImagesUseCase } from '../usecases/upload-images.usecase';
 import { DeleteGameUseCase } from '../usecases/delete-game.usecase';
+import { UpdateGameUseCase } from '../usecases/update-game.usecase';
 
 @Controller('game')
 export class GameController {
@@ -34,6 +35,7 @@ export class GameController {
     private readonly getRecommandImageUseCase: GetRecommandImageUseCase,
     private readonly uploadImagesUsecase: UploadImagesUseCase,
     private readonly deleteImageUsecase: DeleteGameUseCase,
+    private readonly updateGameUsecase: UpdateGameUseCase,
   ) {}
 
   /**
@@ -126,17 +128,10 @@ export class GameController {
    */
   @Patch(':gameId')
   async update(
-    @Param('gameId') gameId: number,
+    @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: UpdateGameReqDto,
   ): Promise<UpdateGameResDto> {
-    return {
-      id: 1,
-      title: 'Updated Game Title',
-      description: 'Updated Game Description',
-      genre: 'COMIC',
-      thumbnailImageUrl: 'https://www.example.com/image.jpg',
-      isPrivate: false,
-    };
+    return await this.updateGameUsecase.execute(gameId, 1, body);
   }
 
   /**
