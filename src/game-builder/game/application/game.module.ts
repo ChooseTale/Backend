@@ -12,6 +12,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import config from '@@src/config';
 import { ImageModule } from '@@src/game-builder/images/image.module';
 import { UploadImagesUseCase } from './usecases/upload-images.usecase';
+import { DeleteGameUseCase } from './usecases/delete-game.usecase';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UploadImagesUseCase } from './usecases/upload-images.usecase';
     GetAllGameUsecase,
     GetDataUsecase,
     UploadImagesUseCase,
+    DeleteGameUseCase,
     GameService,
     {
       provide: 'IGameService',

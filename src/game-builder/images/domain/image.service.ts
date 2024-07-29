@@ -25,4 +25,11 @@ export class ImageService implements IImageService {
     );
     return newGameThumbnails;
   }
+
+  async deleteImageGameThumbnail(
+    imageId: number,
+    gameId: number,
+  ): Promise<void> {
+    await this.imageRepository.deleteImageGameThumbnail(imageId, gameId);
+  }
 }

@@ -20,4 +20,16 @@ export class ImageRepository implements IImageRepository {
     });
     return toDomainEntity(newImage);
   }
+
+  async deleteImageGameThumbnail(
+    imageId: number,
+    gameId: number,
+  ): Promise<void> {
+    await this.prisma.image.delete({
+      where: {
+        id: imageId,
+        gameId,
+      },
+    });
+  }
 }

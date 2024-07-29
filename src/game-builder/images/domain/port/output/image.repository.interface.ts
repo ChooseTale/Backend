@@ -5,4 +5,5 @@ export interface IImageRepository {
   uploadImageForGameThumbnail(
     gameThumbnail: CreateGameThumbnailEntity,
   ): Promise<GameThumbnailDomainEntity>;
+  deleteImageGameThumbnail(imageId: number, gameId: number): Promise<void>;
 }

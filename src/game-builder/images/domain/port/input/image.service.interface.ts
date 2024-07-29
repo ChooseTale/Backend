@@ -5,4 +5,5 @@ export interface IImageService {
     gameId: number,
     file: Array<Express.Multer.File>,
   ): Promise<GameThumbnailDomainEntity[]>;
+  deleteImageGameThumbnail(imageId: number, gameId: number): Promise<void>;
 }
