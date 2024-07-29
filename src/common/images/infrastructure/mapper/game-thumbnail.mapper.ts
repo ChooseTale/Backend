@@ -6,7 +6,7 @@ export const toCreateEntity = (
   gameThumbnail: CreateGameThumbnailEntity,
 ): Omit<Image, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> => {
   return {
-    url: gameThumbnail.destination,
+    url: gameThumbnail.url,
     gameId: gameThumbnail.gameId,
   };
 };

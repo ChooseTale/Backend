@@ -1,13 +1,13 @@
 export class GameThumbnailDomainEntity {
   id: number;
-  destination: string;
+  url: string;
   gameId: number;
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
 
-  constructor(id: number, destination: string, gameId: number) {
+  constructor(id: number, url: string, gameId: number) {
     this.id = id;
-    this.destination = destination;
+    this.url = url;
     this.gameId = gameId;
   }
 }

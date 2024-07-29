@@ -1,10 +1,10 @@
-import { ImageService } from '@@src/common/images/domain/image.service';
+import { IImageService } from '@@src/common/images/domain/port/input/image.service.interface';
 import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UploadImagesUseCase {
   constructor(
-    @Inject('IImageService') private readonly imageService: ImageService,
+    @Inject('IImageService') private readonly imageService: IImageService,
   ) {}
 
   async execute(gameId: number, images: Express.Multer.File[]) {
