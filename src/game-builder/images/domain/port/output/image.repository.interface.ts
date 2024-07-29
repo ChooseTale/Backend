@@ -2,6 +2,7 @@ import { CreateGameThumbnailEntity } from '../../entities/create-game-thumbnail.
 import { GameThumbnailDomainEntity } from '../../entities/game-thumnail.entity';
 
 export interface IImageRepository {
+  getOne(imageId: number): Promise<GameThumbnailDomainEntity | null>;
   uploadImageForGameThumbnail(
     gameThumbnail: CreateGameThumbnailEntity,
   ): Promise<GameThumbnailDomainEntity>;

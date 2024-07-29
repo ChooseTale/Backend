@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IImageService } from './port/input/image.service.interface';
 import { IImageRepository } from './port/output/image.repository.interface';
 import { GameThumbnailDomainEntity } from './entities/game-thumnail.entity';
@@ -10,6 +10,14 @@ export class ImageService implements IImageService {
     @Inject('IImageRepository')
     private readonly imageRepository: IImageRepository,
   ) {}
+
+  async getOneOrThrow(imageId: number): Promise<GameThumbnailDomainEntity> {
+    const thumbnail = await this.imageRepository.getOne(imageId);
+    if (!thumbnail) {
+      throw new NotFoundException('Image not found');
+    }
+    return thumbnail;
+  }
 
   async uploadImageForGameThumbnail(
     gameId: number,

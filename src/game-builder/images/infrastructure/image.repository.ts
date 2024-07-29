@@ -9,6 +9,20 @@ import { CreateGameThumbnailEntity } from '../domain/entities/create-game-thumbn
 export class ImageRepository implements IImageRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getOne(imageId: number): Promise<GameThumbnailDomainEntity | null> {
+    const image = await this.prisma.image.findUnique({
+      where: {
+        id: imageId,
+      },
+    });
+
+    if (!image) {
+      return null;
+    }
+
+    return toDomainEntity(image);
+  }
+
   async uploadImageForGameThumbnail(
     gameThumbnail: CreateGameThumbnailEntity,
   ): Promise<GameThumbnailDomainEntity> {
