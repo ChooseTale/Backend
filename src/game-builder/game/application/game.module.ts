@@ -10,7 +10,7 @@ import { ChoiceModule } from '@@src/game-builder/choice/applications/choice.modu
 import { GetDataUsecase } from './usecases/get-data.usecase';
 import { MulterModule } from '@nestjs/platform-express';
 import config from '@@src/config';
-import { ImageModule } from '@@src/common/images/image.module';
+import { ImageModule } from '@@src/game-builder/images/image.module';
 import { UploadImagesUseCase } from './usecases/upload-images.usecase';
 
 @Module({

@@ -1,4 +1,4 @@
-import { IImageService } from '@@src/common/images/domain/port/input/image.service.interface';
+import { IImageService } from '@@src/game-builder/images/domain/port/input/image.service.interface';
 import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
