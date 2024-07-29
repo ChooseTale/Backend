@@ -4,6 +4,8 @@ import OpenAI from 'openai';
 
 import config from '@@src/config/index';
 import { createMockData } from 'test/mock/create-mock';
+import fs from 'fs';
+
 @Controller()
 export class AppController {
   constructor(private readonly prismaService: PrismaService) {}
@@ -11,6 +13,16 @@ export class AppController {
   @Post('/mock')
   async mock() {
     await createMockData(this.prismaService);
+
+    // uploads 폴더 초기화
+    fs.rmSync('uploads', { recursive: true, force: true });
+
+    fs.mkdirSync('uploads');
+
+    const dirNames = ['game-thumnail-images'];
+    dirNames.forEach((dirName) => {
+      fs.mkdirSync(`uploads/${dirName}`);
+    });
     return 'success';
   }
 

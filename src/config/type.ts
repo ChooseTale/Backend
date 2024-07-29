@@ -1,5 +1,10 @@
 export type ConfigType = {
   port: number;
+  files: {
+    gameThumnailImage: {
+      dest: string;
+    };
+  };
   slack: {
     githubActionsChannelWebhookUrl: string;
   };
