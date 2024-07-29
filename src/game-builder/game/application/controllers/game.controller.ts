@@ -20,6 +20,7 @@ import { GetAllGameResDto } from './dto/get-all-game.dto';
 import { CreateGameUsecase } from '../usecases/create-game.usecase';
 import { GetAllGameUsecase } from '../usecases/get-all.usecase';
 import { GetDataUsecase } from '../usecases/get-data.usecase';
+import { GetRecommandImageUseCase } from '../usecases/get-recommand-image.usecase';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { UploadImagesUseCase } from '../usecases/upload-images.usecase';
 import { DeleteGameUseCase } from '../usecases/delete-game.usecase';
@@ -30,6 +31,7 @@ export class GameController {
     private readonly createGameUsecase: CreateGameUsecase,
     private readonly getAllUsecase: GetAllGameUsecase,
     private readonly getDataUsecase: GetDataUsecase,
+    private readonly getRecommandImageUseCase: GetRecommandImageUseCase,
     private readonly uploadImagesUsecase: UploadImagesUseCase,
     private readonly deleteImageUsecase: DeleteGameUseCase,
   ) {}
@@ -134,10 +136,13 @@ export class GameController {
   /**
    *
    * @tag Game
+   * @summary 🟡(240726) 게임 추천 썸네일 이미지 생성
    */
   @Post(':gameId/recommend-image')
-  async recommendImage(@Param('gameId') gameId: number): Promise<string> {
-    return 'https://www.example.com/image.jpg';
+  async recommendImage(
+    @Param('gameId', ParseIntPipe) gameId: number,
+  ): Promise<string> {
+    return await this.getRecommandImageUseCase.execute(gameId);
   }
 
   @Delete(':gameId/thumbnail/:imageId')

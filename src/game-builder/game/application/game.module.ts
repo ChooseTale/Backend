@@ -8,6 +8,10 @@ import { CreateGameUsecase } from './usecases/create-game.usecase';
 import { GetAllGameUsecase } from './usecases/get-all.usecase';
 import { ChoiceModule } from '@@src/game-builder/choice/applications/choice.module';
 import { GetDataUsecase } from './usecases/get-data.usecase';
+
+import { GetRecommandImageUseCase } from './usecases/get-recommand-image.usecase';
+import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
+
 import { MulterModule } from '@nestjs/platform-express';
 import config from '@@src/config';
 import { ImageModule } from '@@src/game-builder/images/image.module';
@@ -28,9 +32,15 @@ import { DeleteGameUseCase } from './usecases/delete-game.usecase';
     CreateGameUsecase,
     GetAllGameUsecase,
     GetDataUsecase,
+    GetRecommandImageUseCase,
     UploadImagesUseCase,
     DeleteGameUseCase,
+
     GameService,
+    {
+      provide: 'IChatGPTPagePort',
+      useClass: ChatGPT,
+    },
     {
       provide: 'IGameService',
       useClass: GameService,

@@ -10,7 +10,7 @@ export interface IChoiceService {
   ): Promise<ChoiceDomainEntity[]>;
   getAllByPageId(
     pageId: number,
-    transaction: Prisma.TransactionClient,
+    transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity[]>;
   getOneById(
     id: number,

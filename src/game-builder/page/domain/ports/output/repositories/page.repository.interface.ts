@@ -11,6 +11,10 @@ export interface IPageRepository {
     id: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity | null>;
+  getStartingPage(
+    gameId: number,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<PageDomainEntity | null>;
   create(
     page: CreatePageDomainEntity,
     transaction: Prisma.TransactionClient | undefined,
