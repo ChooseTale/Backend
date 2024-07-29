@@ -34,7 +34,7 @@ export const toGetAllResMapper = (
       id: page.id,
       abridgement: page.abridgement,
       createdAt: page.createdAt,
-
+      isEnding: page.isEnding,
       description: page.content,
       depth,
       choices: childChoices,
@@ -58,6 +58,7 @@ export const toGetAllResMapper = (
       abridgement: page.abridgement,
       createdAt: page.createdAt,
       description: page.content,
+      isEnding: page.isEnding,
       depth: -1,
       choices: [],
     });
