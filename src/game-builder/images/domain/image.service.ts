@@ -19,6 +19,10 @@ export class ImageService implements IImageService {
     return thumbnail;
   }
 
+  async getAllByGameId(gameId: number): Promise<GameThumbnailDomainEntity[]> {
+    return await this.imageRepository.getAllByGameId(gameId);
+  }
+
   async uploadImageForGameThumbnail(
     gameId: number,
     file: Array<{ url: string }>,

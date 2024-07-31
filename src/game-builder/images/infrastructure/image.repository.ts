@@ -23,6 +23,15 @@ export class ImageRepository implements IImageRepository {
     return toDomainEntity(image);
   }
 
+  async getAllByGameId(gameId: number): Promise<GameThumbnailDomainEntity[]> {
+    const images = await this.prisma.image.findMany({
+      where: {
+        gameId,
+      },
+    });
+    return images.map(toDomainEntity);
+  }
+
   async uploadImageForGameThumbnail(
     gameThumbnail: CreateGameThumbnailEntity,
   ): Promise<GameThumbnailDomainEntity> {
