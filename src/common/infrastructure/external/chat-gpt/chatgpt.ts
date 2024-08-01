@@ -81,11 +81,12 @@ export class ChatGPT implements IChatGPTPagePort {
       const response = await this.openAI.images.generate({
         model: 'dall-e-3',
         prompt: `
-        Don't put text in the image. It should be a single image, not a cartoon format.
-        You have to use the following information to create an image:
+Create a single, detailed image that visually represents the following themes:
         - Abridgement: ${abridgement}
-        - Content: ${content}
         - Genre: ${genre}
+        ---
+        Ensure the image does not contain any text and is presented in a realistic,
+        single-image format rather than a cartoon style.
 
       `,
         n: 1,

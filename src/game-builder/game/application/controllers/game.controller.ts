@@ -25,6 +25,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { UploadImagesUseCase } from '../usecases/upload-images.usecase';
 import { DeleteGameUseCase } from '../usecases/delete-game.usecase';
 import { UpdateGameUseCase } from '../usecases/update-game.usecase';
+import { GetRecommentImageDto } from './dto/get-recomment-image.dto';
 
 @Controller('game')
 export class GameController {
@@ -156,7 +157,7 @@ export class GameController {
   @Post(':gameId/recommend-image')
   async recommendImage(
     @Param('gameId', ParseIntPipe) gameId: number,
-  ): Promise<string> {
+  ): Promise<GetRecommentImageDto> {
     return await this.getRecommandImageUseCase.execute(gameId);
   }
 

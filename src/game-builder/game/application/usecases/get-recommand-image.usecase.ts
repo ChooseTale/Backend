@@ -32,10 +32,18 @@ export class GetRecommandImageUseCase {
       game.genre,
     );
 
-    await this.imageService.uploadImageForGameThumbnail(gameId, [
-      { url: image },
-    ]);
+    const newImage = await this.imageService.uploadImageForGameThumbnail(
+      gameId,
+      [{ url: image }],
+    );
 
-    return image;
+    if (newImage.length > 1) {
+      throw new Error('Too many images');
+    }
+
+    return {
+      imageId: newImage[0].id,
+      url: newImage[0].url,
+    };
   }
 }
