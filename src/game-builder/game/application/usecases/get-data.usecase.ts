@@ -5,6 +5,7 @@ import { IChoiceService } from '@@src/game-builder/choice/domain/port/input/choi
 import { PrismaService } from '@@prisma/prisma.service';
 import { toGetDataRes } from './mapper/to-get-data-res.mapper';
 import { GetDataGameResDto } from '../controllers/dto/get-data-game.dto';
+import { IImageService } from '@@src/game-builder/images/domain/port/input/image.service.interface';
 
 @Injectable()
 export class GetDataUsecase {
@@ -12,6 +13,7 @@ export class GetDataUsecase {
     @Inject('IGameService') private readonly gameService: IGameService,
     @Inject('IPageService') private readonly pageService: IPageService,
     @Inject('IChoiceService') private readonly choiceService: IChoiceService,
+    @Inject('IImageService') private readonly imageService: IImageService,
     private readonly prismaService: PrismaService,
   ) {}
 
@@ -22,10 +24,12 @@ export class GetDataUsecase {
       pages.map((page) => page.id),
     );
 
+    const images = await this.imageService.getAllByGameId(gameId);
+
     if (!game) {
       throw new NotFoundException('Game not found');
     }
 
-    return toGetDataRes(game, pages, choices);
+    return toGetDataRes(game, pages, choices, images);
   }
 }
