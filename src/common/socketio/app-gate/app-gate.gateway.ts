@@ -17,21 +17,23 @@ export class AppGateGateway
 
   afterInit(server: Server) {
     this.server = server;
-    console.log('WebSocket initialized');
   }
 
   handleConnection(client: Socket) {
-    // header 에서 유저 아이디 가져오기
+    // 유저 아이디 가져오기
+    const userId = client.handshake.headers.userId ?? 1;
+    // userId등록
+    Object.assign(client, { userId });
 
-    client.join(`user:${client.id}`);
+    client.join(`user:${userId}`);
   }
 
   handleDisconnect(client: Socket) {
-    client.leave(`user:${client.id}`);
+    const userId = client.handshake.headers.userId ?? 1;
+    client.leave(`user:${userId}`);
   }
 
-  emitMessage(client: Socket, eventName: string, message: string) {
-    this.server.to(`user:${client.id}`).emit(eventName, message);
-    client.disconnect();
+  emitMessage(userId: number, eventName: string, message: object) {
+    this.server.to(`user:${userId}`).emit(eventName, message);
   }
 }
