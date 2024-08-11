@@ -3,7 +3,6 @@ import { PrismaClient } from '@prisma/client';
 
 const tables = ['Page', 'ChoicePage', 'Image'];
 
-@Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
     await this.$connect();
@@ -42,8 +41,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     return next(params);
   }
 
-  constructor() {
-    super();
+  constructor(dataSources: any) {
+    super(dataSources);
     this.$use(this.softDeleteMiddleware);
     this.$use(this.softDeleteFindMiddleware);
   }
