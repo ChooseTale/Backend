@@ -21,7 +21,7 @@ export class GetRecommentChoiceUsecase {
     }
     const abridgement = page.abridgement;
 
-    await this.kafkaService.produceMessage('recommend-choices', {
+    await this.kafkaService.produceRecommendChoices({
       abridgement,
       choices: choices.map((choice) => {
         return { title: choice.title, description: choice.description };
