@@ -1,10 +1,12 @@
-import { ChatGPT } from '@@src/common/infrastructure/external/chat-gpt/chatgpt';
-import { AppGateGateway } from '@@src/common/socketio/app-gate/app-gate.gateway';
+import { ChatGPT } from '@@src/common/chat-gpt/chatgpt';
+import { AppGateGateway } from '@@src/common/socketio/gate/chat-gpt.gateway';
 import { Injectable } from '@nestjs/common';
 import { Consumer, Kafka, Producer } from 'kafkajs';
+import { IChatGPTKafkaPort } from '../port/input/chat-gpt.service.interface';
+import { ProduceRecommendChoicesInputType } from '../type/produce-recommend-choices.input.type';
 
 @Injectable()
-export class KafkaService {
+export class KafkaService implements IChatGPTKafkaPort {
   constructor(
     private readonly chatGpt: ChatGPT,
     private readonly appGate: AppGateGateway,
@@ -13,6 +15,7 @@ export class KafkaService {
   private readonly kafka = new Kafka({
     brokers: ['localhost:9092'],
     clientId: 'chat-gpt-client',
+    connectionTimeout: 3000, // 연결 시도 시간
   });
 
   private producer: Producer;
@@ -20,7 +23,7 @@ export class KafkaService {
 
   async onModuleInit() {
     this.producer = this.kafka.producer();
-    this.chatgptConsumer = this.kafka.consumer({ groupId: 'my-group' });
+    this.chatgptConsumer = this.kafka.consumer({ groupId: 'chat-gpt-group' });
 
     await this.producer.connect();
     await this.chatgptConsumer.connect();
@@ -34,38 +37,48 @@ export class KafkaService {
       eachMessage: async ({ topic, partition, message }) => {
         if (!message.value) return;
 
-        switch (topic) {
-          case 'recommend-choices':
-            // message의 타입 확인
-            const messageValue = JSON.parse(message.value.toString());
-            if (typeof messageValue !== 'object') return;
-            if (!messageValue.abridgement) return;
-            if (!messageValue.choices) return;
+        try {
+          switch (topic) {
+            case 'recommend-choices':
+              // messgeValue의 타입 지정
+              const messageValue = JSON.parse(
+                message.value.toString(),
+              ) as ProduceRecommendChoicesInputType;
 
-            const result = await this.chatGpt.getRecommandedChoices(
-              messageValue.abridgement,
-              messageValue.choices,
-            );
-            console.log('sendMessage');
-            this.appGate.emitMessage(1, 'recommend-choices', result);
-          // socket으로 결과값 전달
+              // message의 타입 확인
+              if (typeof messageValue !== 'object') return;
+              if (!messageValue.abridgement) return;
+              if (!messageValue.choices) return;
+
+              throw new Error('테스트 에러');
+              const result = await this.chatGpt.getRecommandedChoices(
+                messageValue.abridgement,
+                messageValue.choices,
+              );
+
+              this.appGate.emitMessage(1, 'recommend-choices', result);
+              // socket으로 결과값 전달
+              // offset 커밋
+              await this.chatgptConsumer.commitOffsets([
+                {
+                  topic: 'recommend-choices',
+                  partition: partition,
+                  offset: message.offset,
+                },
+              ]);
+          }
+        } catch (error) {
+          this.appGate.emitException(1, 'recommend-choices', {
+            message: error.message,
+          });
         }
       },
     });
   }
 
-  async produceMessage(
-    topic: string,
-    message: {
-      abridgement: string;
-      choices: {
-        title: string;
-        description: string;
-      }[];
-    },
-  ) {
+  async produceRecommendChoices(message: ProduceRecommendChoicesInputType) {
     await this.producer.send({
-      topic,
+      topic: 'recommend-choices',
       messages: [{ value: JSON.stringify(message) }],
     });
   }
