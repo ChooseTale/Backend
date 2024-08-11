@@ -50,7 +50,6 @@ export class KafkaService implements IChatGPTKafkaPort {
               if (!messageValue.abridgement) return;
               if (!messageValue.choices) return;
 
-              throw new Error('테스트 에러');
               const result = await this.chatGpt.getRecommandedChoices(
                 messageValue.abridgement,
                 messageValue.choices,
