@@ -180,6 +180,19 @@ describe('Test', () => {
       expect(error).toBe(false);
     });
 
+    it('🟢 자식 페이지를 변경할 수 있움.', async () => {
+      const { body } = await request(app.getHttpServer())
+        .put('/game/1/choice/6')
+        .send({
+          title: 'test',
+          description: 'test',
+          parentPageId: 3,
+          childPageId: 4,
+        });
+
+      expect(body.childPageId).toBe(4);
+    });
+
     it('🟢 수정된 선택지를 반환받아야한다.', async () => {
       const { body } = await request(app.getHttpServer())
         .put('/game/1/choice/6')
@@ -196,6 +209,29 @@ describe('Test', () => {
         .send({ title: 'test', description: 'test' });
 
       expect(statusCode).toBe(400);
+      expect(error).not.toBe(false);
+    });
+
+    it('🔴 parentPage가 존재하지 않으면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .put('/game/1/choice/6')
+        .send({ title: 'test', description: 'test', parentPageId: 999 });
+
+      expect(statusCode).toBe(404);
+      expect(error).not.toBe(false);
+    });
+
+    it('🔴 childPage가 존재하지 않으면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .put('/game/1/choice/6')
+        .send({
+          title: 'test',
+          description: 'test',
+          parentPageId: 3,
+          childPageId: 999,
+        });
+
+      expect(statusCode).toBe(404);
       expect(error).not.toBe(false);
     });
 

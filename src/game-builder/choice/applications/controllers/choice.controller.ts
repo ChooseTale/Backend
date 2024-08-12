@@ -54,7 +54,7 @@ export class ChoiceController {
    * parentPageId와 childPageId를 수정하면 페이지와 연결이 변경됩니다.
    * 클라이언트에서 받은값으로 덮어씌워서 수정합니다. (모든 값 필요)
    *
-   * @summary Update a choice 🟡(240718)
+   * @summary Update a choice 🟢(240812)
    * @tag Choice
    */
   @Put(':choiceId')
@@ -72,7 +72,7 @@ export class ChoiceController {
    * 선택지를 삭제합니다. 연결 된 페이지는 삭제되지 않습니다.
    *
    * @tag Choice
-   * @summary Delete a choice 🟡(240721)
+   * @summary Delete a choice 🟢(240812)
    */
   @Delete(':choiceId')
   async delete(
