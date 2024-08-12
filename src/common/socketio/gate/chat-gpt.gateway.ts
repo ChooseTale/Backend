@@ -31,7 +31,10 @@ export class AppGateGateway
   }
 
   emitMessage(userId: number, eventName: string, message: object) {
-    this.server.to(`user:${userId}`).emit(eventName, message);
+    this.server.to(`user:${userId}`).emit(eventName, {
+      message,
+      status: 'success',
+    });
   }
 
   emitException(userId: number, eventName: string, message: object) {
