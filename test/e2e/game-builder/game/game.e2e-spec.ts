@@ -22,12 +22,33 @@ describe('Test', () => {
 
   describe('게임 상세 데이터 불러오기', () => {
     it('🟢 게임 데이터를 불러올 수 있다.', async () => {
-      const { error, statusCode } = await request(app.getHttpServer())
+      const { error, statusCode, body } = await request(app.getHttpServer())
         .get('/game/1/data')
         .send();
 
       expect(statusCode).toBe(200);
       expect(error).toBe(false);
+
+      /**
+       *  id: 1,
+        title: '좀비',
+        description: '좀비가 나타났다. 어떻게하면 살아남을 수 있을까?',
+        isPrivate: false,
+        genre: 'HORROR',
+        createdAt: '2024-08-12T10:13:48.798Z',
+        thumbnails: [],
+        counts: { pages: 8, choices: 6, ending: 4 }
+       */
+      expect(body).toEqual({
+        id: expect.any(Number),
+        title: expect.any(String),
+        description: expect.any(String),
+        isPrivate: expect.any(Boolean),
+        genre: expect.any(String),
+        createdAt: expect.any(String),
+        thumbnails: expect.any(Array),
+        counts: expect.any(Object),
+      });
     });
 
     it('🔴 존재하지 않는 게임이라면 에러를 반환한다.', async () => {
@@ -40,7 +61,33 @@ describe('Test', () => {
     });
   });
 
-  describe('게임 생성', () => {
+  describe(`게임 전체 불러오기`, () => {
+    it('🟢 게임 전체 불러오기 성공', async () => {
+      const { error, statusCode, body } = await request(app.getHttpServer())
+        .get('/game/1')
+        .send();
+
+      expect(statusCode).toBe(200);
+      expect(error).toBe(false);
+
+      expect(body).toEqual({
+        id: expect.any(Number),
+        title: expect.any(String),
+        pages: expect.any(Array),
+      });
+    });
+
+    it('🔴 게임이 존재하지 않으면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .get('/game/999')
+        .send();
+
+      expect(statusCode).toBe(404);
+      expect(error).not.toBe(false);
+    });
+  });
+
+  describe(`게임 생성`, () => {
     it('🟢 게임 생성 성공', async () => {
       const { error, statusCode } = await request(app.getHttpServer())
         .post('/game')
@@ -125,10 +172,10 @@ describe('Test', () => {
         expect(statusCode).toEqual(400);
       });
     });
-  });
 
-  afterAll(async () => {
-    await prisma.$disconnect();
-    await app.close();
+    afterAll(async () => {
+      await prisma.$disconnect();
+      await app.close();
+    });
   });
 });

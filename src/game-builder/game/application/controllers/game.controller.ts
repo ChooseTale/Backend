@@ -26,6 +26,7 @@ import { UploadImagesUseCase } from '../usecases/upload-images.usecase';
 import { DeleteGameUseCase } from '../usecases/delete-game.usecase';
 import { UpdateGameUseCase } from '../usecases/update-game.usecase';
 import { GetRecommentImageDto } from './dto/get-recomment-image.dto';
+import { GetDataGameResDto } from './dto/get-data-game.dto';
 
 @Controller('game')
 export class GameController {
@@ -54,7 +55,9 @@ export class GameController {
    * @summary 🟡(240723) 게임 데이터 불러오기
    */
   @Get('/:gameId/data')
-  async getData(@Param('gameId', ParseIntPipe) gameId: number) {
+  async getData(
+    @Param('gameId', ParseIntPipe) gameId: number,
+  ): Promise<GetDataGameResDto> {
     return await this.getDataUsecase.execute(gameId);
   }
 
