@@ -7,6 +7,7 @@ import request from 'supertest';
 
 import { INestApplication } from '@nestjs/common';
 import { GameModule } from '@@src/game-builder/game/application/game.module';
+import path from 'path';
 
 describe('Test', () => {
   let prisma: PrismaService;
@@ -176,6 +177,27 @@ describe('Test', () => {
     afterAll(async () => {
       await prisma.$disconnect();
       await app.close();
+    });
+  });
+
+  describe('게임 썸네일 이미지 업로드', () => {
+    // multer 테스트
+
+    it('🟢 게임 썸네일 이미지 업로드 성공', async () => {
+      const { error, body } = await request(app.getHttpServer())
+        .post('/game/1/upload-thumbnail')
+        .attach('images', Buffer.from('테스트 이미지 데이터'), 'test.jpg');
+
+      expect(error).toBe(false);
+      expect(body).toEqual([
+        {
+          id: expect.any(Number),
+          url: expect.any(String),
+          gameId: expect.any(Number),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+        },
+      ]);
     });
   });
 });
