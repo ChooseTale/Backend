@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { IChoiceRepository } from '../../domain/port/output/repositories/choice.repository.interface';
 import { PrismaService } from '@@prisma/prisma.service';
 import { CreateChoiceReqDto } from '../../applications/controllers/dto/create-choice.dto';
@@ -55,39 +59,53 @@ export class ChoiceRepository implements IChoiceRepository {
     transaction: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity> {
     try {
+      // 페이지 버전 업데이트
       const updatedPage = await (transaction ?? this.prisma).page.update({
         data: {
           version: {
             increment: 1,
-          },
-          fromPage: {
-            create: {
-              toPageId: createChoiceReqDto.childPageId ?? null,
-              title: createChoiceReqDto.title,
-              description: createChoiceReqDto.description,
-              order,
-            },
           },
         },
         where: {
           id: createChoiceReqDto.parentPageId,
           version: fromPageVersion,
         },
+      });
+
+      if (!updatedPage) {
+        throw new ConflictException('페이지가 업데이트 되지 않음.');
+      }
+
+      // 선택지 생성
+      await (transaction ?? this.prisma).choicePage.create({
+        data: {
+          toPageId: createChoiceReqDto.childPageId ?? null,
+          title: createChoiceReqDto.title,
+          description: createChoiceReqDto.description,
+          order,
+          fromPageId: createChoiceReqDto.parentPageId,
+        },
+      });
+
+      // 업데이트된 페이지와 생성된 선택지 조회
+      const result = await (transaction ?? this.prisma).page.findUnique({
+        where: {
+          id: createChoiceReqDto.parentPageId,
+        },
         include: {
           fromPage: true,
         },
       });
 
-      const createdFromPage =
-        updatedPage.fromPage[updatedPage.fromPage.length - 1];
+      const createdFromPage = result?.fromPage[result?.fromPage.length - 1];
 
       if (!createdFromPage) {
-        throw new Error('Page not found');
+        throw new BadRequestException('선택지가 생성되지 않음.');
       }
 
       return toDomain(createdFromPage);
     } catch (err) {
-      throw new Error('업데이트 실패');
+      throw new BadRequestException(`선택지 생성 실패`);
     }
   }
 
