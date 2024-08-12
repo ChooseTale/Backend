@@ -7,7 +7,6 @@ import request from 'supertest';
 
 import { INestApplication } from '@nestjs/common';
 import { GameModule } from '@@src/game-builder/game/application/game.module';
-import path from 'path';
 
 describe('Test', () => {
   let prisma: PrismaService;
@@ -198,6 +197,44 @@ describe('Test', () => {
           updatedAt: expect.any(String),
         },
       ]);
+    });
+  });
+
+  describe('게임 정보 수정', () => {
+    it('🟢 게임 정보 수정 성공', async () => {
+      const { error, statusCode, body } = await request(app.getHttpServer())
+        .patch('/game/1')
+        .send({
+          title: 'test title',
+          description: 'test description',
+          isPrivate: true,
+          genre: 'FANTASY',
+          thumbnailImageId: 1,
+        });
+
+      expect(statusCode).toBe(200);
+      expect(error).toBe(false);
+      expect(body).toEqual({
+        id: expect.any(Number),
+        title: expect.any(String),
+        description: expect.any(String),
+        isPrivate: expect.any(Boolean),
+        genre: expect.any(String),
+      });
+    });
+
+    it('🔴 썸네일 이미지가 존재하지 않으면 에러를 반환한다.', async () => {
+      const { statusCode, error } = await request(app.getHttpServer())
+        .patch('/game/1')
+        .send({
+          title: 'test title',
+          description: 'test description',
+          genre: 'FANTASY',
+          thumbnailImageId: 999,
+        });
+
+      expect(statusCode).toBe(404);
+      expect(error).not.toBe(false);
     });
   });
 });

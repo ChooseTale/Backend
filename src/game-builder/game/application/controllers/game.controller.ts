@@ -52,7 +52,7 @@ export class GameController {
    * @tag Game
    * @param gameId
    * @returns
-   * @summary 🟡(240723) 게임 데이터 불러오기
+   * @summary 🟢(240812) 게임 데이터 불러오기
    */
   @Get('/:gameId/data')
   async getData(
@@ -75,7 +75,7 @@ export class GameController {
    * @tag Game
    * @param gameId
    * @returns
-   * @summary 🟡(240723) 게임 전체 불러오기
+   * @summary 🟢(240812) 게임 전체 불러오기
    */
   @Get('/:gameId')
   async getAll(
@@ -109,7 +109,7 @@ export class GameController {
    * 게임의 썸네일 이미지를 업로드합니다.
    *
    * @tag Game
-   * @summary 🟡(240730) 게임 썸네일 이미지 업로드
+   * @summary 🟢(240812) 게임 썸네일 이미지 업로드
    */
   @Post(':gameId/upload-thumbnail')
   @UseInterceptors(FilesInterceptor('images'))
@@ -139,7 +139,7 @@ export class GameController {
    * 게임의 정보를 수정합니다.
    *
    * @tag Game
-   * @summary 🟡(240730) 게임 정보 수정
+   * @summary 🟢(240812) 게임 정보 수정
    */
   @Patch(':gameId')
   async update(
