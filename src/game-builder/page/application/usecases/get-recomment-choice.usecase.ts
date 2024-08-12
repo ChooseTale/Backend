@@ -2,7 +2,8 @@ import { IChoiceService } from '@@src/game-builder/choice/domain/port/input/choi
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IPageService } from '../../domain/ports/input/page.service.interface';
 import { IChatGPTPagePort } from '../../domain/ports/output/chatgpt/chatgpt.interface';
-import { KafkaService } from '@@src/common/kafka/chat-gpt/services/kafks.service';
+
+import { IChatGPTKafkaPort } from '@@src/common/kafka/chat-gpt/port/input/chat-gpt.service.interface';
 
 @Injectable()
 export class GetRecommentChoiceUsecase {
@@ -10,7 +11,7 @@ export class GetRecommentChoiceUsecase {
     @Inject('IChatGPTPagePort') private readonly chatGPT: IChatGPTPagePort,
     @Inject('IPageService') private readonly pageService: IPageService,
     @Inject('IChoiceService') private readonly choiceService: IChoiceService,
-    private readonly kafkaService: KafkaService,
+    @Inject('IKafkaService') private readonly kafkaService: IChatGPTKafkaPort,
   ) {}
 
   async execute(pageId: number): Promise<any[] | []> {

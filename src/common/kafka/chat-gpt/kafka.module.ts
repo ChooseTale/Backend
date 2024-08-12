@@ -4,7 +4,19 @@ import { ChatGPT } from '@@src/common/chat-gpt/chatgpt';
 import { AppGateGateway } from '@@src/common/socketio/gate/chat-gpt.gateway';
 
 @Module({
-  providers: [KafkaService, ChatGPT, AppGateGateway],
-  exports: [KafkaService],
+  providers: [
+    {
+      provide: 'IKafkaService',
+      useClass: KafkaService,
+    },
+    ChatGPT,
+    AppGateGateway,
+  ],
+  exports: [
+    {
+      provide: 'IKafkaService',
+      useClass: KafkaService,
+    },
+  ],
 })
 export class KafkaModule {}
