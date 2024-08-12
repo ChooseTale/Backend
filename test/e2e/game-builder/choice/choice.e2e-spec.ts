@@ -217,4 +217,33 @@ describe('Test', () => {
       expect(error).not.toBe(false);
     });
   });
+
+  describe('Delete Choice', () => {
+    it('🟢 선택지를 삭제할 수 있음.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .delete('/game/1/choice/6')
+        .send();
+
+      expect(statusCode).toBe(200);
+      expect(error).toBe(false);
+    });
+
+    it('🔴 존재하지 않는 게임이라면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .delete('/game/999/choice/6')
+        .send();
+
+      expect(statusCode).toBe(404);
+      expect(error).not.toBe(false);
+    });
+
+    it('🔴 존재하지 않는 선택지라면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .delete('/game/1/choice/999')
+        .send();
+
+      expect(statusCode).toBe(404);
+      expect(error).not.toBe(false);
+    });
+  });
 });
