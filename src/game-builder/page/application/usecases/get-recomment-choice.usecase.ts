@@ -2,6 +2,7 @@ import { IChoiceService } from '@@src/game-builder/choice/domain/port/input/choi
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IPageService } from '../../domain/ports/input/page.service.interface';
 import { IChatGPTPagePort } from '../../domain/ports/output/chatgpt/chatgpt.interface';
+import { KafkaService } from '@@src/common/kafka/chat-gpt/services/kafks.service';
 
 @Injectable()
 export class GetRecommentChoiceUsecase {
@@ -9,6 +10,7 @@ export class GetRecommentChoiceUsecase {
     @Inject('IChatGPTPagePort') private readonly chatGPT: IChatGPTPagePort,
     @Inject('IPageService') private readonly pageService: IPageService,
     @Inject('IChoiceService') private readonly choiceService: IChoiceService,
+    private readonly kafkaService: KafkaService,
   ) {}
 
   async execute(pageId: number): Promise<any[] | []> {
@@ -18,11 +20,20 @@ export class GetRecommentChoiceUsecase {
       throw new NotFoundException('Page not found');
     }
     const abridgement = page.abridgement;
-    return await this.chatGPT.getRecommandedChoices(
+
+    await this.kafkaService.produceRecommendChoices({
       abridgement,
-      choices.map((choice) => {
+      choices: choices.map((choice) => {
         return { title: choice.title, description: choice.description };
       }),
-    );
+    });
+
+    return [];
+    // return await this.chatGPT.getRecommandedChoices(
+    //   abridgement,
+    //   choices.map((choice) => {
+    //     return { title: choice.title, description: choice.description };
+    //   }),
+    // );
   }
 }
