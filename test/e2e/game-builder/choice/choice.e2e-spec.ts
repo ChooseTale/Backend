@@ -125,22 +125,26 @@ describe('Test', () => {
         //given
         const gameId = 1;
 
-        const createChoice = (index) => {
-          return request(app.getHttpServer())
-            .post(`/game/${gameId}/choice`)
-            .send({
-              title: `test${index}`,
-              parentPageId: 3,
-              description: `test description ${index}`,
-            });
-        };
+        let results;
 
-        const promises: any = [];
-        for (let i = 0; i < 5; i++) {
-          promises.push(createChoice(i));
-        }
+        try {
+          const createChoice = (index) => {
+            return request(app.getHttpServer())
+              .post(`/game/${gameId}/choice`)
+              .send({
+                title: `test${index}`,
+                parentPageId: 3,
+                description: `test description ${index}`,
+              });
+          };
 
-        const results = await Promise.allSettled(promises);
+          const promises: any = [];
+          for (let i = 0; i < 5; i++) {
+            promises.push(createChoice(i));
+          }
+
+          results = await Promise.allSettled(promises);
+        } catch (error) {}
 
         let fulfilledCount = 0;
         let rejectedCount = 0;
@@ -163,6 +167,119 @@ describe('Test', () => {
         expect(fulfilledCount).toBe(2);
         expect(rejectedCount).toBe(3);
       });
+    });
+  });
+
+  describe('Update Choice', () => {
+    it('🟢 선택지를 수정할 수 있음.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .put('/game/1/choice/6')
+        .send({ title: 'test', description: 'test', parentPageId: 3 });
+
+      expect(statusCode).toBe(200);
+      expect(error).toBe(false);
+    });
+
+    it('🟢 자식 페이지를 변경할 수 있움.', async () => {
+      const { body } = await request(app.getHttpServer())
+        .put('/game/1/choice/6')
+        .send({
+          title: 'test',
+          description: 'test',
+          parentPageId: 3,
+          childPageId: 4,
+        });
+
+      expect(body.childPageId).toBe(4);
+    });
+
+    it('🟢 수정된 선택지를 반환받아야한다.', async () => {
+      const { body } = await request(app.getHttpServer())
+        .put('/game/1/choice/6')
+        .send({ title: 'test', description: 'test', parentPageId: 3 });
+
+      expect(body.title).toBe('test');
+      expect(body.description).toBe('test');
+      expect(body.parentPageId).toBe(3);
+    });
+
+    it('🔴 parentPageId가 존재하지 않으면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .put('/game/1/choice/6')
+        .send({ title: 'test', description: 'test' });
+
+      expect(statusCode).toBe(400);
+      expect(error).not.toBe(false);
+    });
+
+    it('🔴 parentPage가 존재하지 않으면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .put('/game/1/choice/6')
+        .send({ title: 'test', description: 'test', parentPageId: 999 });
+
+      expect(statusCode).toBe(404);
+      expect(error).not.toBe(false);
+    });
+
+    it('🔴 childPage가 존재하지 않으면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .put('/game/1/choice/6')
+        .send({
+          title: 'test',
+          description: 'test',
+          parentPageId: 3,
+          childPageId: 999,
+        });
+
+      expect(statusCode).toBe(404);
+      expect(error).not.toBe(false);
+    });
+
+    it('🔴 존재하지 않는 게임이라면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .put('/game/999/choice/6')
+        .send({ title: 'test', description: 'test', parentPageId: 3 });
+
+      expect(statusCode).toBe(404);
+      expect(error).not.toBe(false);
+    });
+
+    it('🔴 존재하지 않는 선택지라면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .put('/game/1/choice/999')
+        .send({ title: 'test', description: 'test', parentPageId: 3 });
+
+      expect(statusCode).toBe(404);
+      expect(error).not.toBe(false);
+    });
+  });
+
+  describe('Delete Choice', () => {
+    it('🟢 선택지를 삭제할 수 있음.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .delete('/game/1/choice/6')
+        .send();
+
+      expect(statusCode).toBe(200);
+      expect(error).toBe(false);
+    });
+
+    it('🔴 존재하지 않는 게임이라면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .delete('/game/999/choice/6')
+        .send();
+
+      expect(statusCode).toBe(404);
+      expect(error).not.toBe(false);
+    });
+
+    it('🔴 존재하지 않는 선택지라면 에러를 반환한다.', async () => {
+      const { error, statusCode } = await request(app.getHttpServer())
+        .delete('/game/1/choice/999')
+        .send();
+
+      expect(statusCode).toBe(404);
+      expect(error).not.toBe(false);
     });
   });
 });
