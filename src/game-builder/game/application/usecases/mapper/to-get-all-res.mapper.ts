@@ -66,11 +66,16 @@ export const toGetAllResMapper = (
     });
   }
 
-  result.sort((a, b) => a.depth - b.depth);
+  // 중복되는 page 제거
+  const uniqueResult = result.filter((page, index, self) =>
+    index === self.findIndex((t) => t.id === page.id),
+  );
+  uniqueResult.sort((a, b) => a.depth - b.depth);
+
 
   return {
     id: game.id,
     title: game.title,
-    pages: result,
+    pages: uniqueResult,
   };
 };
