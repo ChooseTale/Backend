@@ -20,7 +20,7 @@ export class ChatGPT implements IChatGPTPagePort {
         messages: [
           {
             role: 'system',
-            content: `You are an expert at summarizing fiction. Summarize your content in 150 characters or less. The language should be spoken by the user. Answer 'error' if the sentence cannot be summarized.`,
+            content: `You are an expert at summarizing fiction. Summarize your content in 50 characters or less. The language should be spoken by the user. Answer 'error' if the sentence cannot be summarized.`,
           },
           { role: 'user', content },
         ],
