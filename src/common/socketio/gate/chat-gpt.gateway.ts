@@ -6,7 +6,12 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway(5002, { cors: true, namespace: '/chat-gpt' })
+const isTestEnv = process.env.NODE_ENV === 'test';
+
+@WebSocketGateway(isTestEnv ? undefined : 5002, {
+  cors: true,
+  namespace: '/chat-gpt',
+})
 export class AppGateGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {

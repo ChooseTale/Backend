@@ -43,6 +43,10 @@ export async function setupTestModule(module: any, prisma: PrismaClient) {
     .useValue({
       getAbridgedContent: jest.fn().mockResolvedValue('abridged content'),
     })
+    .overrideProvider(`IKafkaService`)
+    .useValue({
+      produceRecommendChoices: jest.fn().mockResolvedValue(undefined),
+    })
     .compile();
 
   const app = moduleFixture.createNestApplication();

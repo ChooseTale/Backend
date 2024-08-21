@@ -10,11 +10,16 @@ import { GameModule } from '@@src/game-builder/game/application/game.module';
 import { DeletePageUseCase } from './usecases/delete-page.usecase';
 import { GetRecommentChoiceUsecase } from './usecases/get-recomment-choice.usecase';
 import { ChoiceModule } from '@@src/game-builder/choice/applications/choice.module';
-import { KafkaService } from '@@src/common/kafka/chat-gpt/services/kafks.service';
+
 import { AppGateGateway } from '@@src/common/socketio/gate/chat-gpt.gateway';
+import { KafkaModule } from '@@src/common/kafka/chat-gpt/kafka.module';
 
 @Module({
-  imports: [forwardRef(() => GameModule), forwardRef(() => ChoiceModule)],
+  imports: [
+    forwardRef(() => GameModule),
+    forwardRef(() => ChoiceModule),
+    KafkaModule,
+  ],
   controllers: [PageController],
   providers: [
     CreatePageUsecase,
@@ -36,7 +41,6 @@ import { AppGateGateway } from '@@src/common/socketio/gate/chat-gpt.gateway';
       useClass: ChatGPT,
     },
     PrismaService,
-    KafkaService,
   ],
   exports: [{ provide: 'IPageService', useClass: PageService }],
 })
