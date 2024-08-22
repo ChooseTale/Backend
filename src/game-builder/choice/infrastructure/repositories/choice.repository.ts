@@ -28,13 +28,25 @@ export class ChoiceRepository implements IChoiceRepository {
     return choices.map((choice) => toDomain(choice));
   }
 
-  async getAllByPageId(
+  async getAllByFromPageId(
     pageId: number,
     transaction: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity[]> {
     const choices = await (transaction ?? this.prisma).choicePage.findMany({
       where: {
         fromPageId: pageId,
+      },
+    });
+    return choices.map((choice) => toDomain(choice));
+  }
+
+  async getAllByToPageId(
+    pageId: number,
+    transaction: Prisma.TransactionClient,
+  ): Promise<ChoiceDomainEntity[]> {
+    const choices = await (transaction ?? this.prisma).choicePage.findMany({
+      where: {
+        toPageId: pageId,
       },
     });
     return choices.map((choice) => toDomain(choice));

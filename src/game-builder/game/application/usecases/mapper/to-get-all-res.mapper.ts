@@ -2,6 +2,7 @@ import { PageDomainEntity } from '@@src/game-builder/page/domain/entities/page.e
 import { GetAllGameResDto } from '../../controllers/dto/get-all-game.dto';
 import { GameDomainEntity } from '@@src/game-builder/game/domain/entities/game.entity';
 import { ChoiceDomainEntity } from '@@src/game-builder/choice/domain/entities/choice.entity';
+import { NotFoundException } from '@nestjs/common';
 
 export const toGetAllResMapper = (
   game: GameDomainEntity,
@@ -20,10 +21,13 @@ export const toGetAllResMapper = (
   }));
 
   if (!startingPage) {
-    throw new Error('Starting page not found');
+    throw new NotFoundException('Starting page not found');
   }
 
   const dfs = (page: PageDomainEntity, depth: number) => {
+    if (!page) {
+      return;
+    }
     const childChoices = resChoices.filter(
       (choice) => choice.fromPageId === page.id,
     );
@@ -67,11 +71,10 @@ export const toGetAllResMapper = (
   }
 
   // 중복되는 page 제거
-  const uniqueResult = result.filter((page, index, self) =>
-    index === self.findIndex((t) => t.id === page.id),
+  const uniqueResult = result.filter(
+    (page, index, self) => index === self.findIndex((t) => t.id === page.id),
   );
   uniqueResult.sort((a, b) => a.depth - b.depth);
-
 
   return {
     id: game.id,
