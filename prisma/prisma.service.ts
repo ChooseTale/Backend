@@ -1,11 +1,17 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-
+import config from '@@src/config/index';
 const tables = ['Page', 'ChoicePage', 'Image'];
 
 export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
-    await this.$connect();
+    const prisma = new PrismaClient(
+      {
+        datasourceUrl: `postgresql://${config.db.username}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.database}?schema=${config.db.schema}`,
+      }
+    );
+
+    await prisma.$connect();
   }
 
   async softDeleteFindMiddleware(

@@ -1,5 +1,14 @@
 export type ConfigType = {
   port: number;
+  socketIoPort: number;
+  db: {
+    username: string;
+    password: string;
+    host: string;
+    port: number;
+    database: string;
+    schema: string;
+  };
   files: {
     gameThumnailImage: {
       dest: string;
