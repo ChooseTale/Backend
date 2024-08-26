@@ -106,6 +106,7 @@ export class PageService implements IPageService {
     pageId: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<void> {
+    await this;
     await this.pageRepository.delete(pageId, transaction);
   }
 }

@@ -16,7 +16,7 @@ export class GetRecommentChoiceUsecase {
 
   async execute(pageId: number): Promise<any[] | []> {
     const page = await this.pageService.getOneById(pageId);
-    const choices = await this.choiceService.getAllByPageId(pageId);
+    const choices = await this.choiceService.getAllByFromPageId(pageId);
     if (!page) {
       throw new NotFoundException('Page not found');
     }

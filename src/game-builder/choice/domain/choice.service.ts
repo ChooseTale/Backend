@@ -16,7 +16,6 @@ export class ChoiceService implements IChoiceService {
     @Inject('IPageService') private readonly pageService: IPageService,
   ) {}
 
-
   async getAllByPageIds(
     pageIds: number[],
     transaction?: Prisma.TransactionClient | undefined,
@@ -24,9 +23,18 @@ export class ChoiceService implements IChoiceService {
     return this.choiceRepository.getAllByPageIds(pageIds, transaction);
   }
 
+  async getAllByFromPageId(
+    pageId: number,
+    transaction?: Prisma.TransactionClient,
+  ) {
+    return this.choiceRepository.getAllByFromPageId(pageId, transaction);
+  }
 
-  async getAllByPageId(pageId: number, transaction?: Prisma.TransactionClient) {
-    return this.choiceRepository.getAllByPageId(pageId, transaction);
+  async getAllByToPageId(
+    pageId: number,
+    transaction?: Prisma.TransactionClient,
+  ) {
+    return this.choiceRepository.getAllByToPageId(pageId, transaction);
   }
 
   async getOneById(id: number, transaction?: Prisma.TransactionClient) {
@@ -54,7 +62,7 @@ export class ChoiceService implements IChoiceService {
       }
     }
 
-    const pageChoices = await this.choiceRepository.getAllByPageId(
+    const pageChoices = await this.choiceRepository.getAllByFromPageId(
       createChoiceReqDto.parentPageId,
     );
 
@@ -91,7 +99,7 @@ export class ChoiceService implements IChoiceService {
     parentPageId: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<void> {
-    const pageChoices = await this.getAllByPageId(parentPageId);
+    const pageChoices = await this.getAllByFromPageId(parentPageId);
     await Promise.all(
       pageChoices.map((pageChoice, idx) => {
         pageChoice.setOrder(idx + 1);
