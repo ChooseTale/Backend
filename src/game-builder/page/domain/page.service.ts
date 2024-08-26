@@ -42,7 +42,7 @@ export class PageService implements IPageService {
 
     const page = new CreatePageDomainEntity(
       createPageReqDto?.content ?? '',
-      abridgedContent,
+      abridgedContent == '' ? createPageReqDto.content : abridgedContent,
       gameId,
       isStarting,
       createPageReqDto?.isEnding ?? false,
