@@ -102,6 +102,7 @@ export class PageController {
    *
    * 새로운 페이지를 생성합니다.
    *
+   * 240826 페이지 생성 후 데이터 반환
    * @tag Page
    * @summary 🟢(240718)
    */
@@ -119,6 +120,7 @@ export class PageController {
    *
    * 페이지의 내용을 수정합니다.
    *
+   * 240826 페이지에 선택지가 있다면 엔딩 페이지로 지정할 수 없음
    * @tag Page
    * @summary 페이지 수정하기 🟢(240721)
    */

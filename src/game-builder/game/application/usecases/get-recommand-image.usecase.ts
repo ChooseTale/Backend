@@ -1,6 +1,6 @@
 import { IPageService } from '@@src/game-builder/page/domain/ports/input/page.service.interface';
 import { IChatGPTPagePort } from '@@src/game-builder/page/domain/ports/output/chatgpt/chatgpt.interface';
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { IGameService } from '../../domain/ports/input/game.service.interface';
 import { IImageService } from '@@src/game-builder/images/domain/port/input/image.service.interface';
 
@@ -31,6 +31,10 @@ export class GetRecommandImageUseCase {
       startingPage.content,
       game.genre,
     );
+
+    if(image === ''){
+      throw new BadRequestException('이미지 생성에 실패했습니다.')
+    }
 
     const newImage = await this.imageService.uploadImageForGameThumbnail(
       gameId,
