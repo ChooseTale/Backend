@@ -14,23 +14,24 @@ datasource db {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  deletedAt  DateTime?
-  UserChoice UserChoice[]
-  Game       Game[]
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  Game     Game[]
+  PlayGame PlayGame[]
 }
 
 model UserChoice {
   id Int @id @default(autoincrement())
 
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
-
   choicePage   ChoicePage @relation(fields: [choicePageId], references: [id])
   choicePageId Int
+
+  playGame   PlayGame @relation(fields: [playGameId], references: [id])
+  playGameId Int
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -60,6 +61,23 @@ enum Genres {
   OTHER
 }
 
+model PlayGame {
+  id Int @id @default(autoincrement())
+
+  game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  isEnded Boolean @default(false)
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  deletedAt  DateTime?
+  UserChoice UserChoice[]
+}
+
 model Game {
   id          Int     @id @default(autoincrement())
   title       String
@@ -78,6 +96,8 @@ model Game {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  PlayGame PlayGame[]
 }
 
 model Page {
