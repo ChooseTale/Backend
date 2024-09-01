@@ -1,4 +1,6 @@
 import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { GetPlayGameScreenDto } from '../dto/get-play-game-screen.dto';
+import { ChooseChoiceResDto } from '../dto/choose-choice.dto';
 
 @Controller('/play')
 export class PlayController {
@@ -20,7 +22,7 @@ export class PlayController {
   async getPlayGameScreen(
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
-  ) {
+  ): Promise<GetPlayGameScreenDto> {
     return {
       playId: 1,
       gameIntroData: {
@@ -85,7 +87,7 @@ export class PlayController {
   async chooseChoice(
     @Param('playId', ParseIntPipe) playId: number,
     @Param('choiceId', ParseIntPipe) choiceId: number,
-  ) {
+  ): Promise<ChooseChoiceResDto> {
     return {
       playId: 1,
       page: {

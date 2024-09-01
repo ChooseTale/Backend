@@ -1,11 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { GetResultScreenDto } from '../dto/get-result-screen.dto';
 
 @Controller('/result')
 export class ResultController {
   constructor() {}
 
   @Get('/:playId')
-  async getResultScreen() {
+  async getResultScreen(
+    @Param('playId', ParseIntPipe) playId: number,
+  ): Promise<GetResultScreenDto> {
     return {
       endingPage: {
         id: 1,
