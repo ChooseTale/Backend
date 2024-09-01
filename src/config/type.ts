@@ -9,6 +9,9 @@ export type ConfigType = {
     database: string;
     schema: string;
   };
+  kafka: {
+    brokers: string[];
+  };
   files: {
     gameThumnailImage: {
       dest: string;
