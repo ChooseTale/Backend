@@ -5,10 +5,11 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import config from '@@src/config/index';
 
 const isTestEnv = process.env.NODE_ENV === 'test';
 
-@WebSocketGateway(isTestEnv ? undefined : 5002, {
+@WebSocketGateway(isTestEnv ? undefined : config.socketIoPort, {
   cors: true,
   namespace: '/chat-gpt',
 })
