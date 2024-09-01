@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Consumer, Kafka, Producer } from 'kafkajs';
 import { IChatGPTKafkaPort } from '../port/input/chat-gpt.service.interface';
 import { ProduceRecommendChoicesInputType } from '../type/produce-recommend-choices.input.type';
+import config from '@@src/config/index';
 
 @Injectable()
 export class KafkaService implements IChatGPTKafkaPort {
@@ -13,7 +14,7 @@ export class KafkaService implements IChatGPTKafkaPort {
   ) {}
 
   private readonly kafka = new Kafka({
-    brokers: ['localhost:9092'],
+    brokers: config.kafka.brokers,
     clientId: 'chat-gpt-client',
     connectionTimeout: 3000, // 연결 시도 시간
   });

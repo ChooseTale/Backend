@@ -41,6 +41,7 @@ lerna-debug.log*
 .env
 .env.*
 /src/config/development.ts
+/src/config/development-test.ts
 
 # nestia
 /nestia

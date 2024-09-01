@@ -8,6 +8,8 @@
   "scripts": {
     "build": "nest build",
     "dev": "nest start --watch",
+    "dev:prod": "NODE_ENV=development nest start",
+    "dev:test": "NODE_ENV=developmentTest nest start --watch ",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "test": "jest",
