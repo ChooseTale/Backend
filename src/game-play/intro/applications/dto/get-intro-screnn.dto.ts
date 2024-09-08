@@ -21,7 +21,21 @@ export interface EnrichData {
   totalEnding: number;
 }
 
+export interface Play {
+  id: number;
+  page: {
+    id: number;
+    abridgement: string;
+  };
+}
+
+export interface Page {
+  id: number;
+}
+
 export interface GetIntroScreenResDto {
   game: Game;
   enrichData: EnrichData;
+  play: Play;
+  firstPage: Page;
 }

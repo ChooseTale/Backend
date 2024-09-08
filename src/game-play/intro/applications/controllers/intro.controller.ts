@@ -24,6 +24,16 @@ export class IntroController {
           profileImageUrl: '게임 제작자 프로필 이미지 URL',
         },
       },
+      play: {
+        id: 1, // play id,
+        page: {
+          id: 1,
+          abridgement: '페이지의 요약',
+        },
+      },
+      firstPage: {
+        id: 1,
+      },
       enrichData: {
         lastUpdatedAt: new Date(),
         totalPlayCount: 5,
@@ -47,9 +57,6 @@ export class IntroController {
   ): Promise<FirstStartGameResDto> {
     return {
       playId: 1,
-      page: {
-        id: 1,
-      },
     };
   }
 
@@ -66,9 +73,6 @@ export class IntroController {
   ): Promise<ContinueGameResDto> {
     return {
       playId: 1,
-      page: {
-        id: 1,
-      },
     };
   }
 }
