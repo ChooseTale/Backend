@@ -2,15 +2,17 @@ import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { GetIntroScreenResDto } from '../dto/get-intro-screnn.dto';
 import { FirstStartGameResDto } from '../dto/first-start-game.dto';
 import { ContinueGameResDto } from '../dto/countinue-game.dto';
+import { GetIntroScreenUsecase } from '../../domain/usecases/get-intro-screen.usecase';
 
 @Controller('/intro')
 export class IntroController {
-  constructor() {}
+  constructor(private readonly getIntroScreenUsecase: GetIntroScreenUsecase) {}
 
   @Get('/:gameId')
   async getIntroScreen(
     @Param('gameId', ParseIntPipe) gameId: number,
   ): Promise<GetIntroScreenResDto> {
+    await this.getIntroScreenUsecase.execute(gameId, 1);
     return {
       game: {
         id: 1,
