@@ -36,6 +36,6 @@ export interface Page {
 export interface GetIntroScreenResDto {
   game: Game;
   enrichData: EnrichData;
-  play: Play;
+  play: Play | null;
   firstPage: Page;
 }

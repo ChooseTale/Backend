@@ -21,6 +21,10 @@ export class IntroEntity {
       nickname: string;
       profileImageUrl: string;
     };
+    firstPage: {
+      id: number;
+      abridgement: string;
+    };
   };
 
   playGameDatas: {
@@ -63,9 +67,10 @@ export class IntroEntity {
       pages: pages,
       producer: {
         userId: producer.id,
-        nickname: '추가',
-        profileImageUrl: '추가',
+        nickname: '추가 예정',
+        profileImageUrl: '추가 예정',
       },
+      firstPage: pages.filter((page) => page.isStarting === true)[0],
     };
     this.playGameDatas = playGameDatas.map((play) => {
       return {

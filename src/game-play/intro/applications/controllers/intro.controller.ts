@@ -12,38 +12,38 @@ export class IntroController {
   async getIntroScreen(
     @Param('gameId', ParseIntPipe) gameId: number,
   ): Promise<GetIntroScreenResDto> {
-    await this.getIntroScreenUsecase.execute(gameId, 4);
-    return {
-      game: {
-        id: 1,
-        title: '게임의 타이틀',
-        description: '게임의 설명',
-        genre: '게임의 장르',
-        thumbnailUrl: '게임의 썸네일 URL',
-        producer: {
-          userId: 1,
-          nickname: '게임 제작자 닉네임',
-          profileImageUrl: '게임 제작자 프로필 이미지 URL',
-        },
-      },
-      play: {
-        id: 1, // play id,
-        page: {
-          id: 1,
-          abridgement: '페이지의 요약',
-        },
-      },
-      firstPage: {
-        id: 1,
-      },
-      enrichData: {
-        lastUpdatedAt: new Date(),
-        totalPlayCount: 5,
-        expectPlayTime: 10,
-        completedEnding: 3,
-        totalEnding: 5,
-      },
-    };
+    return await this.getIntroScreenUsecase.execute(gameId, 1);
+    // return {
+    //   game: {
+    //     id: 1,
+    //     title: '게임의 타이틀',
+    //     description: '게임의 설명',
+    //     genre: '게임의 장르',
+    //     thumbnailUrl: '게임의 썸네일 URL',
+    //     producer: {
+    //       userId: 1,
+    //       nickname: '게임 제작자 닉네임',
+    //       profileImageUrl: '게임 제작자 프로필 이미지 URL',
+    //     },
+    //   },
+    //   play: {
+    //     id: 1, // play id,
+    //     page: {
+    //       id: 1,
+    //       abridgement: '페이지의 요약',
+    //     },
+    //   },
+    //   firstPage: {
+    //     id: 1,
+    //   },
+    //   enrichData: {
+    //     lastUpdatedAt: new Date(),
+    //     totalPlayCount: 5,
+    //     expectPlayTime: 10,
+    //     completedEnding: 3,
+    //     totalEnding: 5,
+    //   },
+    // };
   }
 
   /**
