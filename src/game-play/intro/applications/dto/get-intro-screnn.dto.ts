@@ -22,11 +22,11 @@ export interface EnrichData {
 }
 
 export interface Play {
-  id: number;
+  id: number | null;
   page: {
     id: number;
     abridgement: string;
-  };
+  } | null;
 }
 
 export interface Page {

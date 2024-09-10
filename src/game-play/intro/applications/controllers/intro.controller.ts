@@ -12,7 +12,7 @@ export class IntroController {
   async getIntroScreen(
     @Param('gameId', ParseIntPipe) gameId: number,
   ): Promise<GetIntroScreenResDto> {
-    await this.getIntroScreenUsecase.execute(gameId, 1);
+    await this.getIntroScreenUsecase.execute(gameId, 4);
     return {
       game: {
         id: 1,

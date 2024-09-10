@@ -8,6 +8,7 @@ import { PlayGameRepositoryModule } from '@@src/common/infrastructure/play-game/
 import { PageRepositoryModule } from '@@src/common/infrastructure/page/page.repository.module';
 import { ImageRepositoryModule } from '@@src/common/infrastructure/image/image.repository.module';
 import { GetIntroScreenUsecase } from '../domain/usecases/get-intro-screen.usecase';
+import { UserChoiceModule } from '@@src/common/infrastructure/user-choice/user-choice.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { GetIntroScreenUsecase } from '../domain/usecases/get-intro-screen.useca
     PlayGameRepositoryModule,
     PageRepositoryModule,
     ImageRepositoryModule,
+    UserChoiceModule,
   ],
   controllers: [IntroController],
   providers: [

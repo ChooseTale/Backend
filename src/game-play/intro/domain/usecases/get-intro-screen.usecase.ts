@@ -10,9 +10,11 @@ export class GetIntroScreenUsecase {
   ) {}
 
   async execute(gameId: number, userId: number): Promise<GetIntroScreenResDto> {
-    console.log(
-      await this.getIntroDataComponent.getIntroEntity(gameId, userId),
+    const introEntity = await this.getIntroDataComponent.getIntroEntity(
+      gameId,
+      userId,
     );
+    console.log(introEntity);
     return '' as any;
   }
 }

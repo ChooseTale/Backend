@@ -1,5 +1,5 @@
-import { Game, Page, User, Image, PlayGame } from '@prisma/client';
-import { Play } from '../../applications/dto/get-intro-screnn.dto';
+import { ConflictException } from '@nestjs/common';
+import { Game, Page, User, Image, PlayGame, UserChoice } from '@prisma/client';
 
 export class IntroEntity {
   game: {
@@ -9,25 +9,49 @@ export class IntroEntity {
     genre: string;
     thumbnailUrl: string;
     updatedAt: Date;
+    pages: {
+      id: number;
+      abridgement: string;
+      content: string;
+      isEnding: boolean;
+      isStarting: boolean;
+    }[];
+    producer: {
+      userId: number;
+      nickname: string;
+      profileImageUrl: string;
+    };
   };
-  producer: {
-    userId: number;
-    nickname: string;
-    profileImageUrl: string;
-  };
-  play: {
+
+  playGameDatas: {
     id: number | null;
-  };
-  firstPage: {
+    isEnded: boolean;
+  }[];
+
+  currentPlayGameData: {
     id: number;
-  };
+    page: {
+      id: number;
+      abridgement: string;
+      content: string;
+      isEnding: boolean;
+      isStarting: boolean;
+    };
+  } | null;
+
+  userChoices: {
+    id: number;
+    choicePageId: number;
+    playGameId: number;
+  }[];
 
   constructor(
     game: Game,
+    pages: Page[],
     producer: User,
-    play: PlayGame | null,
-    firstPage: Page,
+    playGameDatas: PlayGame[],
     thumbnailImage: Image | null,
+    userChoices: UserChoice[],
   ) {
     this.game = {
       id: game.id,
@@ -36,18 +60,49 @@ export class IntroEntity {
       genre: game.genre,
       thumbnailUrl: thumbnailImage?.url ?? '',
       updatedAt: game.updatedAt,
+      pages: pages,
+      producer: {
+        userId: producer.id,
+        nickname: '추가',
+        profileImageUrl: '추가',
+      },
     };
-    this.producer = {
-      userId: producer.id,
-      nickname: '유저에 추가해야함',
-      profileImageUrl: '유저에 추가해야함',
-    };
-    // game play데이터는 없을 수 있다.
-    this.play = {
-      id: play?.id ?? null,
-    };
-    this.firstPage = {
-      id: firstPage.id,
+    this.playGameDatas = playGameDatas.map((play) => {
+      return {
+        id: play.id,
+        isEnded: play.isEnded,
+      };
+    });
+    this.userChoices = userChoices.map((userChoice) => {
+      return {
+        id: userChoice.id,
+        choicePageId: userChoice.choicePageId,
+        playGameId: userChoice.playGameId,
+      };
+    });
+    this.getPlayGameData(playGameDatas, pages);
+  }
+
+  private getPlayGameData(play: PlayGame[], pages: Page[]) {
+    const currentPlayGame = play.find((p) => p.isEnded === false);
+    if (!currentPlayGame) {
+      this.currentPlayGameData = null;
+      return;
+    }
+
+    const currentPage = pages.find(
+      (page) =>
+        page.id ===
+        this.userChoices
+          .filter((choice) => choice.playGameId === currentPlayGame.id)
+          .sort((a, b) => a.id - b.id)[0].choicePageId,
+    );
+    if (!currentPage) {
+      throw new ConflictException('현재 페이지를 찾을 수 없습니다.');
+    }
+    this.currentPlayGameData = {
+      id: currentPlayGame.id,
+      page: currentPage,
     };
   }
 }
