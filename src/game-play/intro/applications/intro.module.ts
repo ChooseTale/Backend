@@ -9,6 +9,8 @@ import { PageRepositoryModule } from '@@src/common/infrastructure/page/page.repo
 import { ImageRepositoryModule } from '@@src/common/infrastructure/image/image.repository.module';
 import { GetIntroScreenUsecase } from '../domain/usecases/get-intro-screen.usecase';
 import { UserChoiceModule } from '@@src/common/infrastructure/user-choice/user-choice.module';
+import { FirstStartGameUsecase } from '../domain/usecases/first-start-game.usecase';
+import { StartGameComponent } from '../domain/components/start-game.component';
 
 @Module({
   imports: [
@@ -22,9 +24,14 @@ import { UserChoiceModule } from '@@src/common/infrastructure/user-choice/user-c
   controllers: [IntroController],
   providers: [
     GetIntroScreenUsecase,
+    FirstStartGameUsecase,
     {
       provide: 'GetIntroDataComponent',
       useClass: GetIntroDataComponent,
+    },
+    {
+      provide: 'StartGameComponent',
+      useClass: StartGameComponent,
     },
   ],
 })

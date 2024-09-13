@@ -3,10 +3,14 @@ import { GetIntroScreenResDto } from '../dto/get-intro-screnn.dto';
 import { FirstStartGameResDto } from '../dto/first-start-game.dto';
 import { ContinueGameResDto } from '../dto/countinue-game.dto';
 import { GetIntroScreenUsecase } from '../../domain/usecases/get-intro-screen.usecase';
+import { FirstStartGameUsecase } from '../../domain/usecases/first-start-game.usecase';
 
 @Controller('/intro')
 export class IntroController {
-  constructor(private readonly getIntroScreenUsecase: GetIntroScreenUsecase) {}
+  constructor(
+    private readonly getIntroScreenUsecase: GetIntroScreenUsecase,
+    private readonly firstStartGameUsecase: FirstStartGameUsecase,
+  ) {}
 
   /**
    * 게임 소개 인트로 조회
@@ -68,6 +72,7 @@ export class IntroController {
   async firstStartGame(
     @Param('gameId', ParseIntPipe) gameId: number,
   ): Promise<FirstStartGameResDto> {
+    return await this.firstStartGameUsecase.execute(gameId, 1);
     return {
       playId: 1,
     };
