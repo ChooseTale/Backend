@@ -5,7 +5,7 @@ import { UserRepositoryPort } from '@@src/common/infrastructure/user/port/user.r
 import { PlayRepositoryPort } from '@@src/common/infrastructure/play-game/port/play.repository.interface';
 import { PageRepositoryPort } from '@@src/common/infrastructure/page/port/page.repository.interface';
 import { ImageRepositoryPort } from '@@src/common/infrastructure/image/port/image.repository.interface';
-import { Image, Page, UserChoice } from '@prisma/client';
+import { Image } from '@prisma/client';
 import { GetIntroDataComponentInterface } from './port/get-intro-data.component.interface';
 import { UserChoiceRepositoryPort } from '@@src/common/infrastructure/user-choice/port/user-choice.repository.interface';
 
