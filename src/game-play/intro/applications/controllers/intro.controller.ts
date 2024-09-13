@@ -86,12 +86,12 @@ export class IntroController {
    * @tag Play-Game
    * @returns 플레이 아이디, 최근 플레이 한 페이지 아이디
    */
-  @Post('/:gameId/continue')
-  async continueGame(
-    @Param('gameId', ParseIntPipe) gameId: number,
-  ): Promise<ContinueGameResDto> {
-    return {
-      playId: 1,
-    };
-  }
+  // @Post('/:gameId/continue')
+  // async continueGame(
+  //   @Param('gameId', ParseIntPipe) gameId: number,
+  // ): Promise<ContinueGameResDto> {
+  //   return {
+  //     playId: 1,
+  //   };
+  // }
 }
