@@ -1,10 +1,13 @@
 import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { GetPlayGameScreenDto } from '../dto/get-play-game-screen.dto';
 import { ChooseChoiceResDto } from '../dto/choose-choice.dto';
+import { GetPlayGameScreenUsecase } from '../../domain/usecases/get-play-game-screen.usecase';
 
 @Controller('/play')
 export class PlayController {
-  constructor() {}
+  constructor(
+    private readonly getPlayGameScreenUsecase: GetPlayGameScreenUsecase,
+  ) {}
 
   /**
    *
@@ -23,6 +26,7 @@ export class PlayController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
   ): Promise<GetPlayGameScreenDto> {
+    return await this.getPlayGameScreenUsecase.execute(gameId, 1, pageId);
     return {
       playId: 1,
       gameIntroData: {
@@ -46,30 +50,27 @@ export class PlayController {
           totalEnding: 5,
         },
       },
-      page: [
-        {
-          id: 1,
-          description: '페이지의 내용들',
-          tempDescription:
-            '이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요.',
-          choices: [
-            {
-              id: 1,
-              title: '선택지 1',
-              description:
-                '선택지 1의 설명 예시입니다. 길이가 길면 어떻게 되죠',
-              childPageId: 2,
-            },
-            {
-              id: 2,
-              title: '선택지 2',
-              description: '선택지 2의 설명',
-              nextPageId: 3,
-            },
-          ],
-          isEnding: false,
-        },
-      ],
+      page: {
+        id: 1,
+        description: '페이지의 내용들',
+        tempDescription:
+          '이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요.',
+        choices: [
+          {
+            id: 1,
+            title: '선택지 1',
+            description: '선택지 1의 설명 예시입니다. 길이가 길면 어떻게 되죠',
+            toPageId: 2,
+          },
+          {
+            id: 2,
+            title: '선택지 2',
+            description: '선택지 2의 설명',
+            toPageId: 3,
+          },
+        ],
+        isEnding: false,
+      },
     };
   }
 
