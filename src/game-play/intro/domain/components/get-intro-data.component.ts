@@ -1,16 +1,16 @@
-import { GetGameRepositoryPort } from '@@src/common/infrastructure/game/port/get-game.repository';
+import { GetGameRepositoryPort } from '@@src/common/infrastructure/repositories/game/port/get-game.repository';
 import { Inject, Injectable } from '@nestjs/common';
 import { IntroEntity } from '../entities/intro-data.entity';
-import { UserRepositoryPort } from '@@src/common/infrastructure/user/port/user.repository.interface';
-import { PlayRepositoryPort } from '@@src/common/infrastructure/play-game/port/play.repository.interface';
-import { PageRepositoryPort } from '@@src/common/infrastructure/page/port/page.repository.interface';
-import { ImageRepositoryPort } from '@@src/common/infrastructure/image/port/image.repository.interface';
+import { UserRepositoryPort } from '@@src/common/infrastructure/repositories/user/port/user.repository.interface';
+import { PlayRepositoryPort } from '@@src/common/infrastructure/repositories/play-game/port/play.repository.interface';
+import { PageRepositoryPort } from '@@src/common/infrastructure/repositories/page/port/page.repository.interface';
+import { ImageRepositoryPort } from '@@src/common/infrastructure/repositories/image/port/image.repository.interface';
 import { Image } from '@prisma/client';
-import { GetIntroDataComponentInterface } from './port/get-intro-data.component.interface';
-import { UserChoiceRepositoryPort } from '@@src/common/infrastructure/user-choice/port/user-choice.repository.interface';
+import { GetIntroDataComponentPort } from './port/get-intro-data.component.interface';
+import { UserChoiceRepositoryPort } from '@@src/common/infrastructure/repositories/user-choice/port/user-choice.repository.interface';
 
 @Injectable()
-export class GetIntroDataComponent implements GetIntroDataComponentInterface {
+export class GetIntroDataComponent implements GetIntroDataComponentPort {
   constructor(
     @Inject('GetGameRepository')
     private readonly gameRepository: GetGameRepositoryPort,

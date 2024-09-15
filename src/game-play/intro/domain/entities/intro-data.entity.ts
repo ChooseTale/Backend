@@ -99,7 +99,7 @@ export class IntroEntity {
       (page) =>
         page.id ===
         this.userChoices
-          .filter((choice) => choice.playGameId === currentPlayGame.id)
+          .filter((choice) => choice.playGameId === currentPlayGame.gameId)
           .sort((a, b) => a.id - b.id)[0].choicePageId,
     );
     if (!currentPage) {

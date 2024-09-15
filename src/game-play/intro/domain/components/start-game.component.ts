@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { StartGameComponentInterface } from './port/start-game.component.interface';
-import { PlayRepositoryPort } from '@@src/common/infrastructure/play-game/port/play.repository.interface';
+import { PlayRepositoryPort } from '@@src/common/infrastructure/repositories/play-game/port/play.repository.interface';
 import { PlayGameEntity } from '../entities/play-game.entity';
 
 @Injectable()

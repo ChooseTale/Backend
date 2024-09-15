@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { GetIntroDataComponentInterface } from '../components/port/get-intro-data.component.interface';
+import { GetIntroDataComponentPort } from '../components/port/get-intro-data.component.interface';
 import { GetIntroScreenResDto } from '../../applications/dto/get-intro-screnn.dto';
 import {
   getCompletedEndingCount,
@@ -10,7 +10,7 @@ import {
 export class GetIntroScreenUsecase {
   constructor(
     @Inject('GetIntroDataComponent')
-    private readonly getIntroDataComponent: GetIntroDataComponentInterface,
+    private readonly getIntroDataComponent: GetIntroDataComponentPort,
   ) {}
 
   async execute(gameId: number, userId: number): Promise<GetIntroScreenResDto> {
