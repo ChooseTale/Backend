@@ -27,4 +27,10 @@ export class UserChoiceRepository implements UserChoiceRepositoryPort {
       },
     });
   }
+
+  create(playGameId: number, pageId: number): Promise<UserChoice> {
+    return this.prismaService.userChoice.create({
+      data: { playGameId, choicePageId: pageId },
+    });
+  }
 }
