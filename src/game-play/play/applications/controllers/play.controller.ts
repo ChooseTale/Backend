@@ -2,11 +2,13 @@ import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { GetPlayGameScreenDto } from '../dto/get-play-game-screen.dto';
 import { ChooseChoiceResDto } from '../dto/choose-choice.dto';
 import { GetPlayGameScreenUsecase } from '../../domain/usecases/get-play-game-screen.usecase';
+import { ChooseChoiceUsecase } from '../../domain/usecases/choose-choice.usecase';
 
 @Controller('/play')
 export class PlayController {
   constructor(
     private readonly getPlayGameScreenUsecase: GetPlayGameScreenUsecase,
+    private readonly chooseChoiceUsecase: ChooseChoiceUsecase,
   ) {}
 
   /**
@@ -89,12 +91,6 @@ export class PlayController {
     @Param('playId', ParseIntPipe) playId: number,
     @Param('choiceId', ParseIntPipe) choiceId: number,
   ): Promise<ChooseChoiceResDto> {
-    return {
-      playId: 1,
-      page: {
-        id: 1,
-        description: '페이지의 내용들',
-      },
-    };
+    return await this.chooseChoiceUsecase.execute(playId, choiceId, 1);
   }
 }
