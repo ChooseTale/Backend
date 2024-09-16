@@ -3,7 +3,7 @@ export interface GetResultScreenDto {
     id: number;
     abridgement: string;
   };
-  chosenPages: {
+  choosenPages: {
     id: number;
     abridgement: string;
     choices: {

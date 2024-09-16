@@ -19,6 +19,8 @@ export class PlayController {
    * gameIntroData는 모달창에서 출력할 수 있는 데이터입니다.
    * page는 유저가 플레이중인 게임의 페이지의 데이터를 출력합니다.
    *
+   * @tag Play-Game
+   * @summary 게임 플레이 화면 조회 🟡(240916)
    * @param gameId
    * @param pageId
    * @returns
@@ -82,6 +84,8 @@ export class PlayController {
    *
    * 유저의 선택지 선택 데이터를 저장하기 위한 API
    *
+   * @summary 선택지 선택 🟡(240916)
+   * @tag Play-Game
    * @param playId
    * @param choiceId
    * @returns
