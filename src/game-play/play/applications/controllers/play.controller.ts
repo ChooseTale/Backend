@@ -1,10 +1,15 @@
 import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { GetPlayGameScreenDto } from '../dto/get-play-game-screen.dto';
 import { ChooseChoiceResDto } from '../dto/choose-choice.dto';
+import { GetPlayGameScreenUsecase } from '../../domain/usecases/get-play-game-screen.usecase';
+import { ChooseChoiceUsecase } from '../../domain/usecases/choose-choice.usecase';
 
 @Controller('/play')
 export class PlayController {
-  constructor() {}
+  constructor(
+    private readonly getPlayGameScreenUsecase: GetPlayGameScreenUsecase,
+    private readonly chooseChoiceUsecase: ChooseChoiceUsecase,
+  ) {}
 
   /**
    *
@@ -14,6 +19,8 @@ export class PlayController {
    * gameIntroData는 모달창에서 출력할 수 있는 데이터입니다.
    * page는 유저가 플레이중인 게임의 페이지의 데이터를 출력합니다.
    *
+   * @tag Play-Game
+   * @summary 게임 플레이 화면 조회 🟡(240916)
    * @param gameId
    * @param pageId
    * @returns
@@ -23,6 +30,7 @@ export class PlayController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
   ): Promise<GetPlayGameScreenDto> {
+    return await this.getPlayGameScreenUsecase.execute(gameId, 1, pageId);
     return {
       playId: 1,
       gameIntroData: {
@@ -46,30 +54,27 @@ export class PlayController {
           totalEnding: 5,
         },
       },
-      page: [
-        {
-          id: 1,
-          description: '페이지의 내용들',
-          tempDescription:
-            '이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요.',
-          choices: [
-            {
-              id: 1,
-              title: '선택지 1',
-              description:
-                '선택지 1의 설명 예시입니다. 길이가 길면 어떻게 되죠',
-              childPageId: 2,
-            },
-            {
-              id: 2,
-              title: '선택지 2',
-              description: '선택지 2의 설명',
-              nextPageId: 3,
-            },
-          ],
-          isEnding: false,
-        },
-      ],
+      page: {
+        id: 1,
+        description: '페이지의 내용들',
+        tempDescription:
+          '이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요.',
+        choices: [
+          {
+            id: 1,
+            title: '선택지 1',
+            description: '선택지 1의 설명 예시입니다. 길이가 길면 어떻게 되죠',
+            toPageId: 2,
+          },
+          {
+            id: 2,
+            title: '선택지 2',
+            description: '선택지 2의 설명',
+            toPageId: 3,
+          },
+        ],
+        isEnding: false,
+      },
     };
   }
 
@@ -79,6 +84,8 @@ export class PlayController {
    *
    * 유저의 선택지 선택 데이터를 저장하기 위한 API
    *
+   * @summary 선택지 선택 🟡(240916)
+   * @tag Play-Game
    * @param playId
    * @param choiceId
    * @returns
@@ -88,12 +95,6 @@ export class PlayController {
     @Param('playId', ParseIntPipe) playId: number,
     @Param('choiceId', ParseIntPipe) choiceId: number,
   ): Promise<ChooseChoiceResDto> {
-    return {
-      playId: 1,
-      page: {
-        id: 1,
-        description: '페이지의 내용들',
-      },
-    };
+    return await this.chooseChoiceUsecase.execute(playId, choiceId, 1);
   }
 }

@@ -29,9 +29,8 @@ export interface GetPlayGameScreenDto {
       id: number;
       title: string;
       description: string;
-      childPageId?: number;
-      nextPageId?: number;
+      toPageId: number | null;
     }[];
     isEnding: boolean;
-  }[];
+  };
 }

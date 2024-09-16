@@ -5,6 +5,16 @@ import { GetResultScreenDto } from '../dto/get-result-screen.dto';
 export class ResultController {
   constructor() {}
 
+  /**
+   * 게임 결과 화면 조회
+   *
+   * 게임 결과 화면을 조회하는 API
+   *
+   * @summary 게임 결과 화면 조회 🟡(240916)
+   * @tag Play-Game
+   * @param playId
+   * @returns
+   */
   @Get('/:playId')
   async getResultScreen(
     @Param('playId', ParseIntPipe) playId: number,
@@ -14,7 +24,7 @@ export class ResultController {
         id: 1,
         abridgement: '페이지 1의 요약',
       },
-      chosenPages: [
+      choosenPages: [
         {
           id: 1,
           abridgement: '페이지 1의 요약',
