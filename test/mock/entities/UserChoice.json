@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "playGameId": 1,
+    "choicePageId": 1
+  },
+  {
+    "id": 2,
+    "playGameId": 1,
+    "choicePageId": 3
+  },
+  {
+    "id": 3,
+    "playGameId": 2,
+    "choicePageId": 2
+  },
+  {
+    "id": 4,
+    "playGameId": 2,
+    "choicePageId": 5
+  },
+  {
+    "id": 5,
+    "playGameId": 3,
+    "choicePageId": 1
+  },
+  {
+    "id": 6,
+    "playGameId": 3,
+    "choicePageId": 4
+  },
+  {
+    "id": 7,
+    "playGameId": 4,
+    "choicePageId": 2
+  },
+  {
+    "id": 8,
+    "playGameId": 5,
+    "choicePageId": 1
+  },
+  {
+    "id": 9,
+    "playGameId": 6,
+    "choicePageId": 1
+  },
+  {
+    "id": 10,
+    "playGameId": 6,
+    "choicePageId": 4
+  },
+  {
+    "id": 11,
+    "playGameId": 7,
+    "choicePageId": 1
+  },
+  {
+    "id": 12,
+    "playGameId": 7,
+    "choicePageId": 3
+  },
+  {
+    "id": 13,
+    "playGameId": 8,
+    "choicePageId": 2
+  },
+  {
+    "id": 14,
+    "playGameId": 8,
+    "choicePageId": 5
+  }
+]

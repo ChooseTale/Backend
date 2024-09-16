@@ -7,7 +7,11 @@ export interface IChoiceRepository {
     pageIds: number[],
     transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity[]>;
-  getAllByPageId(
+  getAllByFromPageId(
+    pageId: number,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<ChoiceDomainEntity[]>;
+  getAllByToPageId(
     pageId: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity[]>;

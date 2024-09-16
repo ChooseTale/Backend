@@ -61,7 +61,5 @@ export class AppController {
       n: 1,
       size: '512x512',
     });
-
-    console.log(image.data[0]);
   }
 }

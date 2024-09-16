@@ -12,6 +12,8 @@ export class CreatePageUsecase {
     const newPage = await this.pageService.create(gameId, body, false);
     return {
       id: newPage.id,
+      abridgement: newPage.abridgement,
+      content: newPage.content,
     };
   }
 }

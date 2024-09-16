@@ -38,7 +38,7 @@ describe('ChoiceService', () => {
     ])(
       'choice의 생성이 성공하고 생성된 choice를 반환한다',
       async (createChoiceReqDto) => {
-        choiceRepository.getAllByPageId = jest
+        choiceRepository.getAllByFromPageId = jest
           .fn()
           .mockResolvedValue([{ id: 1 }, { id: 2 }]);
         choiceRepository.create = jest.fn().mockResolvedValue({ id: 1 });
@@ -50,7 +50,7 @@ describe('ChoiceService', () => {
     );
 
     it('🔴 choice는 페이지당 4개 생성 가능하다.', async () => {
-      choiceRepository.getAllByPageId = jest
+      choiceRepository.getAllByFromPageId = jest
         .fn()
         .mockResolvedValue([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]);
       pageService.getOneById = jest.fn().mockResolvedValue(PageStubEntity);

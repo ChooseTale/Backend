@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { PrismaService } from '@@prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { Test } from '@nestjs/testing';
 import { NotFoundException, ValidationPipe } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
@@ -42,6 +42,10 @@ export async function setupTestModule(module: any, prisma: PrismaClient) {
     .overrideProvider('IChatGPTPagePort')
     .useValue({
       getAbridgedContent: jest.fn().mockResolvedValue('abridged content'),
+    })
+    .overrideProvider(`IKafkaService`)
+    .useValue({
+      produceRecommendChoices: jest.fn().mockResolvedValue(undefined),
     })
     .compile();
 

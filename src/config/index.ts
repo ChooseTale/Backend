@@ -14,6 +14,9 @@ class ConfigLoader {
       case 'development':
         this.configFileName = 'development';
         break;
+      case 'developmentTest':
+        this.configFileName = 'development-test';
+        break;
       case 'production':
         this.configFileName = 'production';
         break;

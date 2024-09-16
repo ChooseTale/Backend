@@ -24,6 +24,9 @@ import { GetRecommandImageUseCase } from '../usecases/get-recommand-image.usecas
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { UploadImagesUseCase } from '../usecases/upload-images.usecase';
 import { DeleteGameUseCase } from '../usecases/delete-game.usecase';
+import { UpdateGameUseCase } from '../usecases/update-game.usecase';
+import { GetRecommentImageDto } from './dto/get-recomment-image.dto';
+import { GetDataGameResDto } from './dto/get-data-game.dto';
 
 @Controller('game')
 export class GameController {
@@ -34,6 +37,7 @@ export class GameController {
     private readonly getRecommandImageUseCase: GetRecommandImageUseCase,
     private readonly uploadImagesUsecase: UploadImagesUseCase,
     private readonly deleteImageUsecase: DeleteGameUseCase,
+    private readonly updateGameUsecase: UpdateGameUseCase,
   ) {}
 
   /**
@@ -45,12 +49,15 @@ export class GameController {
    * genre는 nestia sdk를 참고해 enum값만을 가져야합니다.
    * thumbnails는 사용자가 가질 수 있는 이미지들입니다. `index 0의 이미지`가 게임이 가지는 메인이미지입니다.
    *
+   * @tag Game
    * @param gameId
    * @returns
-   * @summary 🟡(240723) 게임 데이터 불러오기
+   * @summary 🟢(240812) 게임 데이터 불러오기
    */
   @Get('/:gameId/data')
-  async getData(@Param('gameId', ParseIntPipe) gameId: number) {
+  async getData(
+    @Param('gameId', ParseIntPipe) gameId: number,
+  ): Promise<GetDataGameResDto> {
     return await this.getDataUsecase.execute(gameId);
   }
 
@@ -63,9 +70,12 @@ export class GameController {
    * 0630 page isEnding 추가
    * 0723 page isStarting 추가
    * 0730 page isEnding res 추가
+   * 0730 page updatedAt 추가
+   *
+   * @tag Game
    * @param gameId
    * @returns
-   * @summary 🟡(240723) 게임 전체 불러오기
+   * @summary 🟢(240812) 게임 전체 불러오기
    */
   @Get('/:gameId')
   async getAll(
@@ -94,9 +104,12 @@ export class GameController {
   }
 
   /**
+   * 게임 썸네일 이미지 업로드
+   *
+   * 게임의 썸네일 이미지를 업로드합니다.
    *
    * @tag Game
-   * @summary 🟡(240730) 게임 썸네일 이미지 업로드
+   * @summary 🟢(240812) 게임 썸네일 이미지 업로드
    */
   @Post(':gameId/upload-thumbnail')
   @UseInterceptors(FilesInterceptor('images'))
@@ -121,25 +134,25 @@ export class GameController {
   }
 
   /**
+   * 게임 정보 수정
+   *
+   * 게임의 정보를 수정합니다.
    *
    * @tag Game
+   * @summary 🟢(240812) 게임 정보 수정
    */
   @Patch(':gameId')
   async update(
-    @Param('gameId') gameId: number,
+    @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: UpdateGameReqDto,
   ): Promise<UpdateGameResDto> {
-    return {
-      id: 1,
-      title: 'Updated Game Title',
-      description: 'Updated Game Description',
-      genre: 'COMIC',
-      thumbnailImageUrl: 'https://www.example.com/image.jpg',
-      isPrivate: false,
-    };
+    return await this.updateGameUsecase.execute(gameId, 1, body);
   }
 
   /**
+   * 게임 추천 썸네일 이미지 생성
+   *
+   * 게임의 추천 썸네일 이미지를 생성합니다.
    *
    * @tag Game
    * @summary 🟡(240726) 게임 추천 썸네일 이미지 생성
@@ -147,11 +160,14 @@ export class GameController {
   @Post(':gameId/recommend-image')
   async recommendImage(
     @Param('gameId', ParseIntPipe) gameId: number,
-  ): Promise<string> {
+  ): Promise<GetRecommentImageDto> {
     return await this.getRecommandImageUseCase.execute(gameId);
   }
 
   /**
+   * 게임 썸네일 이미지 삭제
+   *
+   * 게임의 썸네일 이미지를 삭제합니다.
    *
    * @param gameId
    * @param imageId

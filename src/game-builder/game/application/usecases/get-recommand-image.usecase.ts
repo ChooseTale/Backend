@@ -1,6 +1,6 @@
 import { IPageService } from '@@src/game-builder/page/domain/ports/input/page.service.interface';
 import { IChatGPTPagePort } from '@@src/game-builder/page/domain/ports/output/chatgpt/chatgpt.interface';
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { IGameService } from '../../domain/ports/input/game.service.interface';
 import { IImageService } from '@@src/game-builder/images/domain/port/input/image.service.interface';
 
@@ -32,10 +32,22 @@ export class GetRecommandImageUseCase {
       game.genre,
     );
 
-    await this.imageService.uploadImageForGameThumbnail(gameId, [
-      { url: image },
-    ]);
+    if(image === ''){
+      throw new BadRequestException('이미지 생성에 실패했습니다.')
+    }
 
-    return image;
+    const newImage = await this.imageService.uploadImageForGameThumbnail(
+      gameId,
+      [{ url: image }],
+    );
+
+    if (newImage.length > 1) {
+      throw new Error('Too many images');
+    }
+
+    return {
+      imageId: newImage[0].id,
+      url: newImage[0].url,
+    };
   }
 }

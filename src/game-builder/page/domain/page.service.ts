@@ -42,7 +42,7 @@ export class PageService implements IPageService {
 
     const page = new CreatePageDomainEntity(
       createPageReqDto?.content ?? '',
-      abridgedContent,
+      abridgedContent == '' ? createPageReqDto.content : abridgedContent,
       gameId,
       isStarting,
       createPageReqDto?.isEnding ?? false,
@@ -106,6 +106,7 @@ export class PageService implements IPageService {
     pageId: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<void> {
+    await this;
     await this.pageRepository.delete(pageId, transaction);
   }
 }

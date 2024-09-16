@@ -8,4 +8,5 @@ export interface IGameRepository {
     game: CreateGameDomainEntity,
     transaction: Prisma.TransactionClient,
   ): Promise<GameDomainEntity>;
+  update(game: GameDomainEntity): Promise<GameDomainEntity>;
 }

@@ -10,6 +10,7 @@ type Page = {
   abridgement: string;
   description: string;
   createdAt: Date;
+  updatedAt: Date;
   depth: number;
   isEnding: boolean;
   choices: Choice[];

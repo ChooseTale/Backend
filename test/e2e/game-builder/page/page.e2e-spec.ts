@@ -20,6 +20,17 @@ describe('Test', () => {
     app = await setupTestModule(PageModule, prisma);
   });
 
+  describe('선택지 추천받기', () => {
+    it('선택지 추천받기 성공', async () => {
+      const { statusCode, error } = await request(app.getHttpServer())
+        .get('/game/1/page/1/recommend-choices')
+        .send();
+
+      expect(statusCode).toBe(200);
+      expect(error).toBe(false);
+    });
+  });
+
   describe('페이지 생성', () => {
     it('should create a page', async () => {
       //when
