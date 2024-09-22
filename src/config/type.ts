@@ -1,6 +1,8 @@
 export type ConfigType = {
   port: number;
   socketIoPort: number;
+  allowCorsList: string[];
+  allowJwtSecret: string;
   db: {
     username: string;
     password: string;

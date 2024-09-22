@@ -9,10 +9,11 @@ import { ChoiceModule } from './game-builder/choice/applications/choice.module';
 import { AppGateGateway } from './common/socketio/gate/chat-gpt.gateway';
 import { KafkaModule } from './common/kafka/chat-gpt/kafka.module';
 import { GamePlayModule } from './game-play/game-play.module';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [GameModule, GamePlayModule, PageModule, ChoiceModule, KafkaModule],
   controllers: [AppController],
-  providers: [PrismaService, AppGateGateway],
+  providers: [PrismaService, AppGateGateway, JwtService],
 })
 export class AppModule {}
