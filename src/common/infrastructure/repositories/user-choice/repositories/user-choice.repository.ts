@@ -28,6 +28,16 @@ export class UserChoiceRepository implements UserChoiceRepositoryPort {
     });
   }
 
+  getAllByChoicePageIds(choicePageIds: number[]): Promise<UserChoice[]> {
+    return this.prismaService.userChoice.findMany({
+      where: {
+        choicePageId: {
+          in: choicePageIds,
+        },
+      },
+    });
+  }
+
   create(playGameId: number, pageId: number): Promise<UserChoice> {
     return this.prismaService.userChoice.create({
       data: { playGameId, choicePageId: pageId },

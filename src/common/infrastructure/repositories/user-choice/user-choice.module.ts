@@ -17,4 +17,4 @@ import { PrismaService } from '@@prisma/prisma.service';
     },
   ],
 })
-export class UserChoiceModule {}
+export class UserChoiceRepositoryModule {}

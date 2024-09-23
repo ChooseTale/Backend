@@ -5,10 +5,14 @@ import OpenAI from 'openai';
 import config from '@@src/config/index';
 import { createMockData } from 'test/mock/create-mock';
 import fs from 'fs';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller()
 export class AppController {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Post('/mock')
   async mock() {
@@ -25,6 +29,20 @@ export class AppController {
     });
     return 'success';
   }
+
+  // @Get('/test-jwt')
+  // async testJwt() {
+  //   const token = await this.jwtService.signAsync(
+  //     {
+  //       key: 'choose-tale',
+  //     },
+  //     {
+  //       secret: config.allowJwtSecret,
+  //     },
+  //   );
+
+  //   return token;
+  // }
 
   @Post('/test-user')
   async testUser(@Query('count', ParseIntPipe) count: number) {
