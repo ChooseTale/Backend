@@ -1,4 +1,3 @@
-import { PageChoiceRepositoryPort } from '@@src/common/infrastructure/repositories/page-choices/port/page-choice.repository.interface';
 import { UserChoiceRepositoryPort } from '@@src/common/infrastructure/repositories/user-choice/port/user-choice.repository.interface';
 
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
