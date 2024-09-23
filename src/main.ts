@@ -15,7 +15,10 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   });
 
-  app.useGlobalGuards(new JwtAuthGuard());
+  if (process.env.NODE_ENV === 'production') {
+    app.useGlobalGuards(new JwtAuthGuard());
+  }
+
   await app.listen(config.port);
 }
 bootstrap();
