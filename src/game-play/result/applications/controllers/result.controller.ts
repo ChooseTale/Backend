@@ -1,9 +1,12 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { GetResultScreenDto } from '../dto/get-result-screen.dto';
+import { GetResultScreenUsecase } from '../../domain/usecases/get-result-screen.usecase';
 
 @Controller('/result')
 export class ResultController {
-  constructor() {}
+  constructor(
+    private readonly getResultScreenUsecase: GetResultScreenUsecase,
+  ) {}
 
   /**
    * 게임 결과 화면 조회
@@ -19,6 +22,7 @@ export class ResultController {
   async getResultScreen(
     @Param('playId', ParseIntPipe) playId: number,
   ): Promise<GetResultScreenDto> {
+    return await this.getResultScreenUsecase.execute(playId, 1);
     return {
       endingPage: {
         id: 1,

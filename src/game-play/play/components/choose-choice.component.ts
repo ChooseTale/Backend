@@ -3,12 +3,13 @@ import { UserChoiceRepositoryPort } from '@@src/common/infrastructure/repositori
 
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ChooseChoiceComponentInterface } from './port/choose-choice.component.interface';
+import { ChoicePageRepositoryPort } from '@@src/common/infrastructure/repositories/choice-page/port/choice-page.repository.interface';
 
 @Injectable()
 export class ChooseChoiceComponent implements ChooseChoiceComponentInterface {
   constructor(
-    @Inject('PageChoiceRepository')
-    private readonly choiceRepository: PageChoiceRepositoryPort,
+    @Inject('ChoicePageRepository')
+    private readonly choicePageRepository: ChoicePageRepositoryPort,
     @Inject('UserChoiceRepository')
     private readonly userChoiceRepository: UserChoiceRepositoryPort,
   ) {}
@@ -18,7 +19,7 @@ export class ChooseChoiceComponent implements ChooseChoiceComponentInterface {
     playGameId: number,
     userId: number,
   ): Promise<{ pageId: number }> {
-    const choice = await this.choiceRepository.getOneByIdOrThrow(choiceId);
+    const choice = await this.choicePageRepository.getOneByIdOrThrow(choiceId);
 
     if (choice.toPageId === null) {
       throw new BadRequestException(
