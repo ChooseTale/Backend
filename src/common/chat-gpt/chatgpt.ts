@@ -2,7 +2,8 @@ import config from '@@src/config/index';
 import { IChatGPTPagePort } from '@@src/game-builder/page/domain/ports/output/chatgpt/chatgpt.interface';
 import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
-
+import fs from 'fs';
+import axios from 'axios';
 @Injectable()
 export class ChatGPT implements IChatGPTPagePort {
   private readonly apiKey: string;
@@ -78,22 +79,38 @@ export class ChatGPT implements IChatGPTPagePort {
     genre: string,
   ): Promise<string> {
     try {
-      const response = await this.openAI.images.generate({
-        model: 'dall-e-3',
-        prompt: `
-Create a single, detailed image that visually represents the following themes:
-        - Abridgement: ${abridgement}
-        - Genre: ${genre}
-        ---
-        Ensure the image does not contain any text and is presented in a realistic,
-        single-image format rather than a cartoon style.
+      //       const response = await this.openAI.images.generate({
+      //         model: 'dall-e-3',
+      //         prompt: `
+      // Create a single, detailed image that visually represents the following themes:
+      //         - Abridgement: ${abridgement}
+      //         - Genre: ${genre}
+      //         ---
+      //         Ensure the image does not contain any text and is presented in a realistic,
+      //         single-image format rather than a cartoon style.
 
-      `,
-        n: 1,
-        size: '1024x1024',
-      });
+      //       `,
+      //         n: 1,
+      //         size: '1024x1024',
+      //       });
 
-      return response.data[0].url ?? '';
+      const response = await axios.get(
+        'https://oaidalleapiprodscus.blob.core.windows.net/private/org-XyZTnjNifxUU5reDbdFFMkGG/user-7T71nvcI6lYXV6RIPeFEKyLz/img-sJRuJEYkeMPmuKn4UMzlovHY.png?st=2024-09-24T10%3A04%3A19Z&se=2024-09-24T12%3A04%3A19Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-09-23T23%3A17%3A54Z&ske=2024-09-24T23%3A17%3A54Z&sks=b&skv=2024-08-04&sig=PzLFWU2Q9xQQk2NdD0I%2BA4iy47JYor29iDjLG08g7HI%3D',
+        {
+          responseType: 'stream',
+        },
+      );
+
+      response.data
+        .pipe(fs.createWriteStream('thumbnail_image.png'))
+        .on('finish', () => {
+          console.log('이미지 다운로드 완료!');
+        })
+        .on('error', (err) => {
+          console.error('파일 저장 중 오류 발생:', err);
+        });
+
+      return '';
     } catch (err) {
       console.log(err);
       return '';
