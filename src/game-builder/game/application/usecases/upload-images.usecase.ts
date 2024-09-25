@@ -11,7 +11,7 @@ export class UploadImagesUseCase {
     return this.imageService.uploadImageForGameThumbnail(
       gameId,
       images.map((image) => ({
-        url: `${image.destination}/${image.filename}`,
+        url: `${image.destination.replace('./', '/')}/${image.filename}`,
       })),
     );
   }

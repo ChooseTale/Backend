@@ -126,6 +126,7 @@ export class GameController {
             maxSize: 3 * 1024 * 1024,
           }),
         ],
+        fileIsRequired: false,
       }),
     )
     files: Array<Express.Multer.File>,

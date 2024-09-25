@@ -18,6 +18,7 @@ import { ImageModule } from '@@src/game-builder/images/image.module';
 import { UploadImagesUseCase } from './usecases/upload-images.usecase';
 import { DeleteGameUseCase } from './usecases/delete-game.usecase';
 import { UpdateGameUseCase } from './usecases/update-game.usecase';
+import multer from 'multer';
 
 @Module({
   imports: [
@@ -25,6 +26,21 @@ import { UpdateGameUseCase } from './usecases/update-game.usecase';
     forwardRef(() => ChoiceModule),
     MulterModule.register({
       dest: config.files.gameThumnailImage.dest,
+      storage: multer.diskStorage({
+        destination: config.files.gameThumnailImage.dest,
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(
+            null,
+            file.fieldname +
+              '-' +
+              uniqueSuffix +
+              '.' +
+              file.mimetype.split('/')[1],
+          );
+        },
+      }),
     }),
     ImageModule,
   ],
