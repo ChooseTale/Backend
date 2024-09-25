@@ -18,6 +18,7 @@ export type ConfigType = {
   files: {
     gameThumnailImage: {
       dest: string;
+      savePath: string;
     };
   };
   slack: {
