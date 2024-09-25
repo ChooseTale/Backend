@@ -1,6 +1,7 @@
 export type ConfigType = {
   port: number;
   socketIoPort: number;
+  apiHost: string;
   allowCorsList: string[];
   allowJwtSecret: string;
   db: {
@@ -17,6 +18,7 @@ export type ConfigType = {
   files: {
     gameThumnailImage: {
       dest: string;
+      savePath: string;
     };
   };
   slack: {

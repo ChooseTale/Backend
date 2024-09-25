@@ -2,7 +2,8 @@ import config from '@@src/config/index';
 import { IChatGPTPagePort } from '@@src/game-builder/page/domain/ports/output/chatgpt/chatgpt.interface';
 import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
-
+import fs from 'fs';
+import axios from 'axios';
 @Injectable()
 export class ChatGPT implements IChatGPTPagePort {
   private readonly apiKey: string;
@@ -78,22 +79,31 @@ export class ChatGPT implements IChatGPTPagePort {
     genre: string,
   ): Promise<string> {
     try {
-      const response = await this.openAI.images.generate({
+      const imageResponse = await this.openAI.images.generate({
         model: 'dall-e-3',
         prompt: `
-Create a single, detailed image that visually represents the following themes:
-        - Abridgement: ${abridgement}
-        - Genre: ${genre}
-        ---
-        Ensure the image does not contain any text and is presented in a realistic,
-        single-image format rather than a cartoon style.
+      Create a single, detailed image that visually represents the following themes:
+              - Abridgement: ${abridgement}
+              - Genre: ${genre}
+              ---
+              Ensure the image does not contain any text and is presented in a realistic,
+              single-image format rather than a cartoon style.
 
-      `,
+            `,
         n: 1,
         size: '1024x1024',
       });
 
-      return response.data[0].url ?? '';
+      const response = await axios.get(imageResponse.data[0].url ?? '', {
+        responseType: 'stream',
+      });
+      const fileName = `${new Date().getTime()}-${abridgement.slice(0, 10)}.png`;
+      const filePath = config.files.gameThumnailImage.dest + `/${fileName}`;
+      response.data.pipe(fs.createWriteStream(filePath)).on('error', (err) => {
+        console.error('파일 저장 중 오류 발생:', err);
+      });
+
+      return config.files.gameThumnailImage.savePath + '/' + fileName;
     } catch (err) {
       console.log(err);
       return '';

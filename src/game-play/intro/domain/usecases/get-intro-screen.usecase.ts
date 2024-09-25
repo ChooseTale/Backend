@@ -5,6 +5,7 @@ import {
   getCompletedEndingCount,
   getExpectPlayTime,
 } from '../services/get-enrich-data.service';
+import config from '@@src/config';
 
 @Injectable()
 export class GetIntroScreenUsecase {
@@ -25,7 +26,7 @@ export class GetIntroScreenUsecase {
         title: introEntity.game.title,
         description: introEntity.game.description,
         genre: introEntity.game.genre,
-        thumbnailUrl: introEntity.game.thumbnailUrl,
+        thumbnailUrl: config.apiHost + introEntity.game.thumbnailUrl,
         producer: {
           userId: introEntity.game.producer.userId,
           nickname: introEntity.game.producer.nickname,
@@ -48,6 +49,7 @@ export class GetIntroScreenUsecase {
           .length,
       },
     };
+
     return getIntroScreenResDto;
   }
 }

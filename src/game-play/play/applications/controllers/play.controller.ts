@@ -31,51 +31,6 @@ export class PlayController {
     @Param('pageId', ParseIntPipe) pageId: number,
   ): Promise<GetPlayGameScreenDto> {
     return await this.getPlayGameScreenUsecase.execute(gameId, 1, pageId);
-    return {
-      playId: 1,
-      gameIntroData: {
-        game: {
-          id: 1,
-          title: '게임의 타이틀',
-          description: '게임의 설명',
-          genre: '게임의 장르',
-          thumbnailUrl: '게임의 썸네일 URL',
-          producer: {
-            userId: 1,
-            nickname: '게임 제작자 닉네임',
-            profileImageUrl: '게임 제작자 프로필 이미지 URL',
-          },
-        },
-        enrichData: {
-          lastUpdatedAt: new Date(),
-          totalPlayCount: 5,
-          expectPlayTime: 10,
-          completedEnding: 3,
-          totalEnding: 5,
-        },
-      },
-      page: {
-        id: 1,
-        description: '페이지의 내용들',
-        tempDescription:
-          '이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요. 이 변수값은 없어질건데 내용이 긴게 필요할까봐 넣어둘게요. 추후에는 descriptions만 남길게요.',
-        choices: [
-          {
-            id: 1,
-            title: '선택지 1',
-            description: '선택지 1의 설명 예시입니다. 길이가 길면 어떻게 되죠',
-            toPageId: 2,
-          },
-          {
-            id: 2,
-            title: '선택지 2',
-            description: '선택지 2의 설명',
-            toPageId: 3,
-          },
-        ],
-        isEnding: false,
-      },
-    };
   }
 
   /**
