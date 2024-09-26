@@ -3,6 +3,9 @@ import { UserChoiceRepositoryPort } from '@@src/common/infrastructure/repositori
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ChooseChoiceComponentInterface } from './port/choose-choice.component.interface';
 import { ChoicePageRepositoryPort } from '@@src/common/infrastructure/repositories/choice-page/port/choice-page.repository.interface';
+import { PageRepositoryPort } from '@@src/common/infrastructure/repositories/page/port/page.repository.interface';
+import { ChooseChoiceEntity } from '../domain/entities/choose-choice.entity';
+import { PlayRepositoryPort } from '@@src/common/infrastructure/repositories/play-game/port/play.repository.interface';
 
 @Injectable()
 export class ChooseChoiceComponent implements ChooseChoiceComponentInterface {
@@ -11,13 +14,16 @@ export class ChooseChoiceComponent implements ChooseChoiceComponentInterface {
     private readonly choicePageRepository: ChoicePageRepositoryPort,
     @Inject('UserChoiceRepository')
     private readonly userChoiceRepository: UserChoiceRepositoryPort,
+    @Inject('PageRepository')
+    private readonly pageRepository: PageRepositoryPort,
+    @Inject('PlayGameRepository')
+    private readonly playGameRepository: PlayRepositoryPort,
   ) {}
 
   async chooseChoice(
     choiceId: number,
     playGameId: number,
-    userId: number,
-  ): Promise<{ pageId: number }> {
+  ): Promise<ChooseChoiceEntity> {
     const choice = await this.choicePageRepository.getOneByIdOrThrow(choiceId);
 
     if (choice.toPageId === null) {
@@ -28,6 +34,14 @@ export class ChooseChoiceComponent implements ChooseChoiceComponentInterface {
 
     await this.userChoiceRepository.create(playGameId, choice.toPageId);
 
-    return { pageId: choice.toPageId };
+    const toPage = await this.pageRepository.getByIdOrThrow(choice.toPageId);
+
+    return new ChooseChoiceEntity(choice, toPage);
+  }
+
+  async updateEndingToPlayGame(playGameId: number): Promise<void> {
+    await this.playGameRepository.update(playGameId, {
+      isEnded: true,
+    });
   }
 }

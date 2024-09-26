@@ -9,5 +9,6 @@ export interface PlayRepositoryPort {
     gameId: number,
   ): Promise<PlayGame | null>;
   create(userId: number, gameId: number): Promise<PlayGame>;
+  update(playId: number, data: Partial<PlayGame>): Promise<PlayGame>;
   delete(playId: number): Promise<void>;
 }
