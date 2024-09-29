@@ -3,19 +3,13 @@ name: auto-cd(dev)
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        type: string
-        required: true
-        description: 'Branch to deploy'
       dev_command:
         type: choice
         required: true
         description: 'dev command'
         options:
-          - name: dev
-            value: 'yarn dev'
-          - name: dev:test
-            value: 'yarn dev:test'
+          - yarn dev
+          - yarn dev:test
 
 env:
   SERVER_HOST: ${{ secrets.DEV_SERVER_HOST }}
