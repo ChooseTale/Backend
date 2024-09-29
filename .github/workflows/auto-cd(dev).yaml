@@ -29,18 +29,16 @@ jobs:
           echo ${{ env.DEPLOY_PATH }}
           echo ${{ env.BRANCH }}
 
-      - name: SSH 키 설정
+      - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ env.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
-        shell: /usr/bin/bash -e {0}
-        env:
-          SERVER_HOST: ${{ secrets.DEV_SERVER_HOST }}
-          SERVER_USER: ${{ secrets.DEV_SERVER_USER }}
-          SERVER_SSH_KEY: ${{ secrets.DEV_SERVER_SSH_KEY }}
-          DEPLOY_PATH: /choose-tale/Backend
+          ssh-keyscan ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: SSH into server and execute commands
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{env.SERVER_USER}}@${{ env.SERVER_HOST }}
 
       - name: 원격 서버에 배포
         run: |
