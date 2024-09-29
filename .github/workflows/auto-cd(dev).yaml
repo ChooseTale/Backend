@@ -35,7 +35,7 @@ jobs:
           echo "${{ env.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
-        shell: /usr/bin/bash -e {0}
+        shell: bash
         env:
           SERVER_HOST: ${{ secrets.DEV_SERVER_HOST }}
           SERVER_USER: ${{ secrets.DEV_SERVER_USER }}
