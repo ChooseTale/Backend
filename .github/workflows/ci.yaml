@@ -1,0 +1,49 @@
+name: unit, e2e TEST
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - dev-test
+
+
+jobs:
+  excute-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.19.0]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Restore Yarn cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.yarn/cache
+            node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: Prisma Setting
+        run: yarn prisma generate
+
+      - name: unit test
+        run: yarn test
+
+      - name: Send Slack Message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL_WEBHOOK }}
+
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text": "Success unit test!"}' $SLACK_WEBHOOK_URL

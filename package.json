@@ -1,6 +1,6 @@
 {
   "name": "choose-tale",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "author": "",
   "private": true,
@@ -8,14 +8,18 @@
   "scripts": {
     "build": "nest build",
     "dev": "nest start --watch",
+    "dev:prod": "NODE_ENV=development nest start",
+    "dev:test": "NODE_ENV=developmentTest nest start --watch ",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "test:watch": "jest --watch",
+    "start:prod": "node dist/src/main",
+    "test": "jest",
+    "test:watch": "jest --watch ",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "docker:setup": "npx tsc ./scripts/docker-setting.ts && node ./scripts/docker-setting.js",
-    "prepare": "ts-patch install && typia patch"
+    "docker:setup": "npx ts-node ./scripts/docker-setting.ts ",
+    "prepare": "ts-patch install && typia patch",
+    "type-publish": "chmod 775 ./scripts/types-publish.sh && ./scripts/types-publish.sh"
   },
   "dependencies": {
     "@nestia/core": "^3.2.1",
@@ -24,13 +28,23 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.2",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/jwt": "^10.2.0",
     "@nestjs/platform-express": "^10.0.0",
-    "@prisma/client": "5.14.0",
+    "@nestjs/platform-socket.io": "^10.3.10",
+    "@nestjs/serve-static": "^4.0.2",
+    "@nestjs/websockets": "^10.3.10",
+    "@prisma/client": "5.17.0",
     "@testcontainers/postgresql": "^10.9.0",
+    "@types/multer": "^1.4.11",
+    "axios": "^1.7.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
+    "hanspell": "^0.9.7",
     "ioredis": "^5.4.1",
+    "kafkajs": "^2.2.4",
+    "openai": "^4.53.1",
+    "prisma": "^5.17.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "typia": "^6.0.6"
@@ -67,7 +81,11 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "moduleNameMapper": {
+      "^@@prisma/(.*)$": "<rootDir>/prisma/$1",
+      "^@@src/(.*)$": "<rootDir>/src/$1"
+    },
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -75,7 +93,10 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src/"
+    ]
   }
 }

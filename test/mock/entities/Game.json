@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "title": "좀비",
+    "description": "좀비가 나타났다. 어떻게하면 살아남을 수 있을까?",
+    "isPrivate": false,
+    "genre": "HORROR",
+    "userId": 1,
+    "thumbnailId": 1
+  },
+  {
+    "id": 2,
+    "title": "축구왕 테스터",
+    "description": "축구왕이 되기 위해선 어떻게 해야할까?",
+    "isPrivate": true,
+    "genre": "DRAMA",
+    "userId": 1
+  }
+]

@@ -14,8 +14,144 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  Game     Game[]
+  PlayGame PlayGame[]
+}
+
+model UserChoice {
+  id Int @id @default(autoincrement())
+
+  choicePage   ChoicePage @relation(fields: [choicePageId], references: [id])
+  choicePageId Int
+
+  playGame   PlayGame @relation(fields: [playGameId], references: [id])
+  playGameId Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+// novel Genres
+enum Genres {
+  FANTASY
+  SCI_FI
+  HORROR
+  MYSTERY
+  ROMANCE
+  THRILLER
+  HISTORICAL
+  WESTERN
+  DYSTOPIA
+  SATIRE
+  BIOGRAPHY
+  AUTOBIOGRAPHY
+  ESSAY
+  DRAMA
+  POETRY
+  COMIC
+  NON_FICTION
+  FICTION
+  OTHER
+}
+
+model PlayGame {
+  id Int @id @default(autoincrement())
+
+  game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  isEnded Boolean @default(false)
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  deletedAt  DateTime?
+  UserChoice UserChoice[]
+}
+
+model Game {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  isPrivate   Boolean
+  genre       Genres  @default(OTHER)
+
+  thumbnailId Int?    @unique
+  thumbnail   Image?  @relation("thumbnail", fields: [thumbnailId], references: [id])
+  Image       Image[]
+  Page        Page[]
+
+  User   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  PlayGame PlayGame[]
+}
+
+model Page {
+  id Int @id @default(autoincrement())
+
+  content String
+
+  abridgement String
+
+  Game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
+
+  fromPage ChoicePage[] @relation("fromPage")
+  toPage   ChoicePage[] @relation("toPage")
+
+  version Int @default(1)
+
+  isStarting Boolean @default(false)
+  isEnding   Boolean @default(false)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model ChoicePage {
+  id Int @id @default(autoincrement())
+
+  fromPage   Page @relation("fromPage", fields: [fromPageId], references: [id], onDelete: Cascade)
+  fromPageId Int
+
+  toPage   Page? @relation("toPage", fields: [toPageId], references: [id])
+  toPageId Int?
+
+  title       String
+  description String
+  order       Int
+
+  UserChoice UserChoice[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  deletedAt  DateTime?
+}
+
+model Image {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  Game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
+
+  thumbnail Game? @relation("thumbnail")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 }

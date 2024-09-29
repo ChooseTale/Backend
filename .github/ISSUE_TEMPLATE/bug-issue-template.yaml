@@ -1,4 +1,5 @@
 name: 버그 템플릿
+description: 버그 이슈를 작성할 때 사용하는 템플릿입니다.
 
 title: '[버그] '
 labels: ['생성페이지']

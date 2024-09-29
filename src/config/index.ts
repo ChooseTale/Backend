@@ -14,6 +14,9 @@ class ConfigLoader {
       case 'development':
         this.configFileName = 'development';
         break;
+      case 'developmentTest':
+        this.configFileName = 'development-test';
+        break;
       case 'production':
         this.configFileName = 'production';
         break;
@@ -28,7 +31,6 @@ class ConfigLoader {
       this.config = require(`./${this.configFileName}`).config;
     } catch (err) {
       console.error(`config/${this.configFileName}.ts가 필요합니다.`);
-      throw new Error(`Failed to load configuration: ${err.message}`);
     }
   }
 
