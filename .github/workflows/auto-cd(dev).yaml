@@ -16,7 +16,7 @@ env:
   SERVER_USER: ${{ secrets.DEV_SERVER_USER }}
   SERVER_SSH_KEY: ${{ secrets.DEV_SERVER_SSH_KEY }}
   DEPLOY_PATH: /choose-tale/Backend
-  BRANCH: ${{GITHUB_REF#refs/heads/}}
+  BRANCH: ${{github.ref_name}}
 
 jobs:
   deploy:
