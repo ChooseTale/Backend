@@ -34,7 +34,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ env.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
+          
 
       - name: SSH into server and execute commands
         run: |
