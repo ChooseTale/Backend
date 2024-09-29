@@ -1,0 +1,53 @@
+name: auto-cd(dev)
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        type: string
+        required: true
+        description: 'Branch to deploy'
+      dev_command:
+        type: choice
+        required: true
+        description: 'dev command'
+        options:
+          - name: dev
+            value: 'yarn dev'
+          - name: dev:test
+            value: 'yarn dev:test'
+
+env:
+  SERVER_HOST: ${{ secrets.DEV_SERVER_HOST }}
+  SERVER_USER: ${{ secrets.DEV_SERVER_USER }}
+  SERVER_SSH_KEY: ${{ secrets.DEV_SERVER_SSH_KEY }}
+  DEPLOY_PATH: /choose-tale/Backend
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: SSH 키 설정
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ env.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 원격 서버에 배포
+        run: |
+          scp -r ./* ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}:${{ env.DEPLOY_PATH }}
+          ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << EOF
+          cd ${{ env.DEPLOY_PATH }}
+          git fetch --all
+          git switch {{inputs.branch}}
+          git pull origin {{inputs.branch}}
+          yarn
+          ${{inputs.dev_command}}
+
+          EOF
+
+      - name: SSH 키 정리
+        run: rm -rf ~/.ssh
