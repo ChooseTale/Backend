@@ -34,8 +34,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ env.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ env.DEV_SERVER_HOST }} >> ~/.ssh/known_hosts
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{env.DEV_SERVER_USER}}@${{ env.DEV_SERVER_HOST }}
+          ssh-keyscan -H ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{env.SERVER_USER}}@${{ env.SERVER_HOST }}
 
       - name: 원격 서버에 배포
         run: |
