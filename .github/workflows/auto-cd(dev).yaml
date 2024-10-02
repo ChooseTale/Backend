@@ -29,26 +29,20 @@ jobs:
           echo ${{ env.DEPLOY_PATH }}
           echo ${{ env.BRANCH }}
 
-      - name: Setup SSH
+      - name: SSH into server and execute commands
         run: |
           mkdir -p ~/.ssh
           echo "${{ env.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
-
-      - name: SSH into server and execute commands
-        run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{env.SERVER_USER}}@${{ env.SERVER_HOST }}
+          ssh-keyscan -H ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{env.DEV_SERVER_USER}}@${{ env.DEV_SERVER_HOST }}
 
       - name: 원격 서버에 배포
         run: |
-          scp -r ./* ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}:${{ env.DEPLOY_PATH }}
           ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << EOF
           cd ${{ env.DEPLOY_PATH }}
-          git fetch --all
-          git switch ${{ env.BRANCH }}
           git pull origin ${{ env.BRANCH }}
-          yarn
+          yarn install --frozen-lockfile
           nohup ${{inputs.dev_command}} > /dev/null 2>&1 &
           EOF
 
