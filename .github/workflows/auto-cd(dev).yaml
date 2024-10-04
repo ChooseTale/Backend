@@ -42,12 +42,10 @@ jobs:
 
       - name: 원격 서버에 배포
         run: |
-          ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << EOF
           cd ${{ env.DEPLOY_PATH }}
           git pull origin ${{ env.BRANCH }}
           yarn install --frozen-lockfile
-          nohup ${{inputs.dev_command}} > /dev/null 2>&1 &
-          EOF
+          ${{inputs.dev_command}}
 
       - name: SSH 키 정리
         run: rm -rf ~/.ssh
