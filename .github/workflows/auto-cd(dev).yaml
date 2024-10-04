@@ -36,14 +36,11 @@ jobs:
           ssh-private-key: ${{ env.SERVER_SSH_KEY }}
           ssh-passphrase: ${{ env.SERVER_SSH_PASSPHRASE }}
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
       - name: 원격 서버에 배포
         run: |
           ssh -o StrictHostKeyChecking=no ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << 'EOF'
+          node -v
+          nvm use 18.16
           pwd
           ls
           cd ${{ env.DEPLOY_PATH }}
