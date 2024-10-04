@@ -18,6 +18,7 @@ env:
   SERVER_SSH_PASSPHRASE: ${{ secrets.DEV_SERVER_SSH_PASSPHRASE }}
   DEPLOY_PATH: choose-tale/Backend
   BRANCH: ${{github.ref_name}}
+  PORT: IF [ "${{ inputs.dev_command }}" = "yarn dev:test" ]; then 6001; else 5001; fi
 
 jobs:
   deploy:
@@ -49,8 +50,19 @@ jobs:
           git fetch --all
           git pull origin ${{ env.BRANCH }}
           yarn install --frozen-lockfile
+
+
+          if [ "${{ inputs.dev_command }}" = "yarn dev:test" ]; then
+            lsof -ti:6001 | xargs kill -9 || true
+          elif [ "${{ inputs.dev_command }}" = "yarn dev" ]; then
+            lsof -ti:5001 | xargs kill -9 || true
+          fi
           ${{ inputs.dev_command }}
           EOF
+
+      - name: 원격 서버에 배포 완료
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"배포가 완료되었습니다. port: ${{ env.PORT }} , branch: ${{ env.BRANCH }}"}' $SLACK_WEBHOOK_URL
 
       - name: SSH 키 정리
         run: rm -rf ~/.ssh
