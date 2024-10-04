@@ -39,10 +39,12 @@ jobs:
       - name: 원격 서버에 배포
         run: |
           ssh -o StrictHostKeyChecking=no ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << 'EOF'
-          node -v
-          nvm use 18.16
-          pwd
-          ls
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # nvm을 현재 세션에서 사용하기 위해 로드
+
+          nvm install 18
+          nvm use 18
           cd ${{ env.DEPLOY_PATH }}
           git fetch --all
           git pull origin ${{ env.BRANCH }}
