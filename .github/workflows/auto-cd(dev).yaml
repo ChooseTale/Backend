@@ -16,7 +16,7 @@ env:
   SERVER_USER: ${{ secrets.DEV_SERVER_USER }}
   SERVER_SSH_KEY: ${{ secrets.DEV_SERVER_SSH_KEY }}
   SERVER_SSH_PASSPHRASE: ${{ secrets.DEV_SERVER_SSH_PASSPHRASE }}
-  DEPLOY_PATH: /choose-tale/Backend
+  DEPLOY_PATH: choose-tale/Backend
   BRANCH: ${{github.ref_name}}
 
 jobs:
@@ -42,6 +42,7 @@ jobs:
 
       - name: 원격 서버에 배포
         run: |
+
           cd ${{ env.DEPLOY_PATH }}
           git pull origin ${{ env.BRANCH }}
           yarn install --frozen-lockfile
