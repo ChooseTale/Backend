@@ -57,7 +57,8 @@ jobs:
           elif [ "${{ inputs.dev_command }}" = "yarn dev" ]; then
             lsof -ti:5001 | xargs kill -9 || true
           fi
-          ${{ inputs.dev_command }}
+          ${{ inputs.dev_command }} &
+          sleep 5
           EOF
 
       - name: 원격 서버에 배포 완료
