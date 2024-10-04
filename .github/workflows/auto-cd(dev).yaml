@@ -57,7 +57,7 @@ jobs:
           elif [ "${{ inputs.dev_command }}" = "yarn dev" ]; then
             lsof -ti:5001 | xargs kill -9 || true
           fi
-          ${{ inputs.dev_command }} &
+          nohup ${{ inputs.dev_command }} > output.log 2>&1 &
           sleep 5
           EOF
 
