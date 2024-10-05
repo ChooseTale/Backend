@@ -45,7 +45,7 @@ export class GetIntroDataComponent implements GetIntroDataComponentPort {
       game,
       pages,
       producer,
-      playGameDatas,
+      playGameDatas.filter((play) => play.gameId === gameId),
       thumbnailImage,
       userChoices,
     );

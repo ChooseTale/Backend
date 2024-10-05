@@ -5,7 +5,8 @@
     "description": "좀비가 나타났다. 어떻게하면 살아남을 수 있을까?",
     "isPrivate": false,
     "genre": "HORROR",
-    "userId": 1
+    "userId": 1,
+    "thumbnailId": 1
   },
   {
     "id": 2,

@@ -9,6 +9,7 @@ import { ChooseChoiceUsecase } from '../domain/usecases/choose-choice.usecase';
 import { ChooseChoiceComponent } from '../components/choose-choice.component';
 import { UserChoiceRepositoryModule } from '@@src/common/infrastructure/repositories/user-choice/user-choice.module';
 import { ChoicePageRepositoryModule } from '@@src/common/infrastructure/repositories/choice-page/choice-page.module';
+import { PlayGameRepositoryModule } from '@@src/common/infrastructure/repositories/play-game/play-game.repository.module';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { ChoicePageRepositoryModule } from '@@src/common/infrastructure/reposito
     PageRepositoryModule,
     ChoicePageRepositoryModule,
     UserChoiceRepositoryModule,
-    ChoicePageRepositoryModule,
+    PlayGameRepositoryModule,
   ],
   controllers: [PlayController],
   providers: [

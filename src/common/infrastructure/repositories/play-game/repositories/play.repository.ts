@@ -43,6 +43,13 @@ export class PlayRepository implements PlayRepositoryPort {
     });
   }
 
+  async update(playId: number, data: Partial<PlayGame>): Promise<PlayGame> {
+    return await this.prismaService.playGame.update({
+      where: { id: playId },
+      data,
+    });
+  }
+
   async delete(playId: number): Promise<void> {
     await this.prismaService.playGame.delete({
       where: { id: playId },

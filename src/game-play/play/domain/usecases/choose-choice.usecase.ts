@@ -14,15 +14,21 @@ export class ChooseChoiceUsecase {
     choiceId: number,
     userId: number,
   ): Promise<ChooseChoiceResDto> {
-    const { pageId } = await this.chooseChoiceComponent.chooseChoice(
+    const chooseChoiceEntity = await this.chooseChoiceComponent.chooseChoice(
       choiceId,
       playGameId,
-      userId,
     );
+    if (chooseChoiceEntity.checkIsEnding()) {
+      await this.chooseChoiceComponent.updateEndingToPlayGame(
+        playGameId,
+        chooseChoiceEntity.toPage.id,
+      );
+    }
+    console.log(chooseChoiceEntity);
     return {
       playId: playGameId,
       page: {
-        id: pageId,
+        id: chooseChoiceEntity.toPage.id,
       },
     };
   }
