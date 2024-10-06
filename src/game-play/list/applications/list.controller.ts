@@ -12,7 +12,7 @@ export class ListController {
    *
    */
   @Get()
-  async getList(@Query() query: GetListReqDto): Promise<GetListResDto> {
+  async getList(@Query() query: GetListReqDto): Promise<GetListResDto[]> {
     return [
       {
         game: {
