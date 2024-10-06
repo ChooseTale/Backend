@@ -1,20 +1,18 @@
 import { Controller, Get, Query } from '@nestjs/common';
+import { GetListReqDto } from './dto/get-list/get-list.req.dto';
+import { GetCountReqDto } from './dto/get-count/get-count.req.dto';
+import { GetCountResDto } from './dto/get-count/get-count.res.dto';
+import { GetListResDto } from './dto/get-list/get-list.res.dto';
 
 @Controller('list')
 export class ListController {
   //   constructor(private readonly listService: ListService) {}
 
   /**
-   * 
-    
+   *
    */
   @Get()
-  async getList(
-    @Query('page') page: number,
-    @Query('limit') limit: number,
-    @Query('genre') genre: string,
-    @Query('sort') sort: string,
-  ) {
+  async getList(@Query() query: GetListReqDto): Promise<GetListResDto> {
     return [
       {
         game: {
@@ -47,5 +45,11 @@ export class ListController {
         },
       },
     ];
+  }
+
+  async getCount(@Query() query: GetCountReqDto): Promise<GetCountResDto> {
+    return {
+      count: 1,
+    };
   }
 }
