@@ -59,4 +59,5 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL_WEBHOOK }}
           SWAGGER_HUB_URI: ${{ secrets.SWAGGER_HUB_URI }}
         run: |
+
           curl -X POST -H 'Content-type: application/json' --data '{"text":"Swagger updated: '"$SWAGGER_HUB_URI/$SWAGGER_VERSION"'"}' $SLACK_WEBHOOK_URL
