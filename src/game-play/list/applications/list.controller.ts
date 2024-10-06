@@ -4,10 +4,14 @@ import { GetCountReqDto } from './dto/get-count/get-count.req.dto';
 import { GetCountResDto } from './dto/get-count/get-count.res.dto';
 import { GetListResDto } from './dto/get-list/get-list.res.dto';
 import { GetListUsecase } from '../domain/usecases/get-list.usecase';
+import { GetCountUsecase } from '../domain/usecases/get-count.usecase';
 
 @Controller('list')
 export class ListController {
-  constructor(private readonly getListUsecase: GetListUsecase) {}
+  constructor(
+    private readonly getListUsecase: GetListUsecase,
+    private readonly getCountUsecase: GetCountUsecase,
+  ) {}
 
   /**
    *
@@ -24,9 +28,11 @@ export class ListController {
     );
   }
 
+  /**
+   *
+   */
+  @Get('count')
   async getCount(@Query() query: GetCountReqDto): Promise<GetCountResDto> {
-    return {
-      count: 1,
-    };
+    return this.getCountUsecase.execute(query);
   }
 }

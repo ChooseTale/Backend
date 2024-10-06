@@ -21,4 +21,8 @@ export class PageNationComponent implements PageNationComponentInterface {
 
     return new ListPageEntity(games);
   }
+
+  async getCount(query: Prisma.GameCountArgs): Promise<number> {
+    return await this.gameRepository.getCount(query);
+  }
 }

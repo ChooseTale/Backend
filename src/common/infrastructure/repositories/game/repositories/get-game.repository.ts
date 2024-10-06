@@ -7,6 +7,10 @@ import { Game, Prisma } from '@prisma/client';
 export class GetGameRepository implements GetGameRepositoryPort {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async getCount(query: Prisma.GameCountArgs): Promise<number> {
+    return this.prismaService.game.count(query);
+  }
+
   async getGames(query: Prisma.GameFindManyArgs): Promise<Game[]> {
     return this.prismaService.game.findMany(query);
   }
