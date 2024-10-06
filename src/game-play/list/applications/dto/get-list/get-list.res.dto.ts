@@ -5,7 +5,7 @@ export class GetListResDto {
     thumbnail: {
       id: number;
       url: string;
-    };
+    } | null;
     genre: string;
     createdAt: Date;
     updatedAt: Date;

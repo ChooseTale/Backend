@@ -1,17 +1,21 @@
-import { Genres } from '@prisma/client';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
 import { ListParentDto } from '../list-parent.dto';
+import { Type } from 'class-transformer';
 
 export class GetListReqDto extends ListParentDto {
   @IsNumber()
-  @IsOptional()
+  @IsNotEmpty()
+  @Min(0)
+  @Type(() => Number)
   page: number;
 
   @IsNumber()
-  @IsOptional()
+  @IsNotEmpty()
+  @Min(1)
+  @Type(() => Number)
   limit: number;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   sort: 'LATEST' | 'POPULAR';
 }
