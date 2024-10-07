@@ -6,7 +6,11 @@ import { JwtAuthGuard } from './common/guard/jwt.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true, // 클래스 변환을 활성화
+    }),
+  );
 
   app.enableCors({
     origin: config.allowCorsList,

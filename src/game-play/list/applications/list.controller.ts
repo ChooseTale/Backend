@@ -21,8 +21,8 @@ export class ListController {
     return this.getListUsecase.execute(
       {
         ...query,
-        page: Number(query.page),
-        limit: Number(query.limit),
+        page: query.page,
+        limit: query.limit,
       },
       1,
     );

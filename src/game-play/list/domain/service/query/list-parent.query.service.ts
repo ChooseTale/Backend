@@ -4,6 +4,7 @@ export class ListParentQueryService {
   constructor(protected readonly query: Prisma.GameFindManyArgs) {
     this.query.where = {
       isPrivate: false,
+      OR: [],
     };
   }
 
@@ -11,13 +12,15 @@ export class ListParentQueryService {
     return this.query;
   }
 
-  setGenre(genre: Genres | 'ALL') {
-    if (genre === 'ALL') {
-      return this.query;
+  setGenre(genres: (Genres | 'ALL')[]) {
+    for (const genre of genres) {
+      if (genre === 'ALL') {
+        continue;
+      }
+      if (this.query.where && this.query.where.OR) {
+        this.query.where.OR.push({ genre: genre });
+      }
     }
-    this.query.where = {
-      genre: genre,
-    };
     return this.query;
   }
 }
