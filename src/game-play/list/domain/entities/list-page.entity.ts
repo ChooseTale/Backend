@@ -3,7 +3,11 @@ import { Game, Page, PlayGame, Prisma, User } from '@prisma/client';
 export type GameGetPayload = Prisma.GameGetPayload<{
   include: {
     User: true;
-    PlayGame: true;
+    PlayGame: {
+      include: {
+        user: true;
+      };
+    };
     Page: true;
     thumbnail: true;
   };
@@ -28,7 +32,14 @@ export class ListPageEntity {
       playGame: {
         id: number;
         isEnded: boolean;
-        userId: number;
+
+        user: {
+          id: number;
+          nickname: string;
+          profileImage: {
+            url: string;
+          };
+        };
       }[];
     };
     publisher: {
@@ -73,7 +84,14 @@ export class ListPageEntity {
             return {
               id: playGame.id,
               isEnded: playGame.isEnded,
-              userId: playGame.userId,
+
+              user: {
+                id: playGame.user.id,
+                nickname: '닉네임 준비',
+                profileImage: {
+                  url: '프로필 이미지 준비',
+                },
+              },
             };
           }),
           createdAt: game.createdAt,

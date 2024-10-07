@@ -15,6 +15,27 @@ export class ToGetListResMapper {
           genre: game.game.genre,
           createdAt: game.game.createdAt,
           updatedAt: game.game.updatedAt,
+
+          player: game.game.playGame.reduce(
+            (
+              prev: {
+                userId: number;
+                nickname: string;
+                profileImage: { url: string };
+              }[],
+              curr,
+            ) => {
+              if (!prev.some((player) => player.userId === curr.user.id)) {
+                prev.push({
+                  userId: curr.user.id,
+                  nickname: curr.user.nickname,
+                  profileImage: curr.user.profileImage,
+                });
+              }
+              return prev;
+            },
+            [],
+          ),
         },
         publisher: {
           userId: game.publisher.userId,
@@ -28,13 +49,13 @@ export class ToGetListResMapper {
           expectPlayTime: game.enrichData.expectPlayTime,
           me: {
             isExistReachedEndingPlay: game.game.playGame
-              .filter((playGame) => playGame.userId === myUser.id)
+              .filter((playGame) => playGame.user.id === myUser.id)
               .some((playGame) => playGame.isEnded),
             reachedEndingPlayCount: game.game.playGame
-              .filter((playGame) => playGame.userId === myUser.id)
+              .filter((playGame) => playGame.user.id === myUser.id)
               .reduce((acc, playGame) => acc + (playGame.isEnded ? 1 : 0), 0),
             isExistContinuePlay: game.game.playGame
-              .filter((playGame) => playGame.userId === myUser.id)
+              .filter((playGame) => playGame.user.id === myUser.id)
               .some((playGame) => !playGame.isEnded),
           },
         },
