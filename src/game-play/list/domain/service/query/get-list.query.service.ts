@@ -5,7 +5,7 @@ export class GetListQuery extends ListParentQueryService {
   constructor() {
     super({
       include: {
-        PlayGame: { where: { isEnded: true } },
+        PlayGame: { where: { isEnded: true }, include: { user: true } },
         User: true,
         Page: true,
         thumbnail: true,

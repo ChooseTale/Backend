@@ -9,6 +9,13 @@ export class GetListResDto {
     genre: string;
     createdAt: Date;
     updatedAt: Date;
+    player: {
+      userId: number;
+      nickname: string;
+      profileImage: {
+        url: string;
+      };
+    }[];
   };
   publisher: {
     userId: number;
