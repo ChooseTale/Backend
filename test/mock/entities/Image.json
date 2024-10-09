@@ -1,7 +1,80 @@
 [
   {
     "id": 1,
-    "url": "https://image.dongascience.com/Photo/2016/06/14670056721567.png",
+    "imageLink": "https://image.dongascience.com/Photo/2016/06/14670056721567.png",
+    "url": "/test-uploads/game-thumnail-images/zombie.png",
     "gameId": 1
+  },
+  {
+    "id": 2,
+    "imageLink": "https://i.namu.wiki/i/cd6kRtyL-VoInhPzeqQ7X84jVJRLZdLAogFqChCVdu17igr0plVKfmuIUWSfnPoewEOYaTllAOyOJ4mLjtsh9Q.webp",
+    "url": "/test-uploads/game-thumnail-images/soccer.png",
+    "gameId": 2
+  },
+  {
+    "id": 3,
+    "imageLink": "https://i.namu.wiki/i/IgqG9vBmTXAp_rH6aD9yWFzKHmVF44rUboXXm7Ug0dHnS04G8AFUQcXOyWFZW9ePfzCvo6TQL_Q7IE8yYzaITQ.webp",
+    "url": "/test-uploads/game-thumnail-images/mage.png",
+    "gameId": 3
+  },
+  {
+    "id": 4,
+    "imageLink": "https://i.ytimg.com/vi/FEJT9dgk29w/maxresdefault.jpg",
+    "url": "/test-uploads/game-thumnail-images/shivana.png",
+    "gameId": 4
+  },
+  {
+    "id": 5,
+    "imageLink": "https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/uLl/image/H9Igxfq7Vz3NDg0lJzk5WHB9yjo.jpg",
+    "url": "/test-uploads/game-thumnail-images/운명적인만남.png",
+    "gameId": 5
+  },
+  {
+    "id": 6,
+    "imageLink": "https://scienceoflove.co.kr/wp-content/uploads/2018/11/sol935_illu_01.png",
+    "url": "/test-uploads/game-thumnail-images/첫눈에반하다.png",
+    "gameId": 6
+  },
+  {
+    "id": 7,
+    "imageLink": "https://i.ytimg.com/vi/UPcRNPTDQhs/maxresdefault.jpg",
+    "url": "/test-uploads/game-thumnail-images/사랑은타이밍.png",
+    "gameId": 7
+  },
+  {
+    "id": 8,
+    "imageLink": "https://cdn.woodkorea.co.kr/news/photo/201006/2339_2717.jpg",
+    "url": "/test-uploads/game-thumnail-images/추격의밤.png",
+    "gameId": 8
+  },
+  {
+    "id": 9,
+    "imageLink": "https://blog.kakaocdn.net/dn/BRKC0/btsHJBQW9sM/jX5j8dniVWEeEwexZhl9Zk/img.png",
+    "url": "/test-uploads/game-thumnail-images/그림자속의진실.png",
+    "gameId": 9
+  },
+  {
+    "id": 10,
+    "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNSWLyB6mNq_fcvnIy67RaaciMAQblLSPtoQ&s",
+    "url": "/test-uploads/game-thumnail-images/불굴의혁명가.png",
+    "gameId": 10
+  },
+  {
+    "id": 11,
+    "imageLink": "https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9788950968274.jpg",
+    "url": "/test-uploads/game-thumnail-images/위대한학자의여정.png",
+    "gameId": 11
+  },
+  {
+    "id": 12,
+    "imageLink": "https://kopis.or.kr/upload/pfmPoster/PF_PF198162_220915_115622.gif",
+    "url": "/test-uploads/game-thumnail-images/슈퍼히어로의탄생.png",
+    "gameId": 12
+  },
+  {
+    "id": 13,
+    "imageLink": "https://ilovecharacter.com/news/data/20200608/p179565973484803_233.jpg",
+    "url": "/test-uploads/game-thumnail-images/시간여행자의모험.png",
+    "gameId": 13
   }
 ]

@@ -19,6 +19,11 @@ import { join } from 'path';
       rootPath: join(process.cwd(), 'uploads'), // 파일이 저장된 디렉토리
       serveRoot: '/uploads', // 클라이언트가 접근할 URL 경로
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'test-uploads'), // 파일이 저장된 디렉토리
+      serveRoot: '/test-uploads', // 클라이언트가 접근할 URL 경로
+    }),
+
     GameModule,
     GamePlayModule,
     PageModule,

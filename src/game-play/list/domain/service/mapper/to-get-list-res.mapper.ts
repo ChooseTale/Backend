@@ -1,6 +1,6 @@
 import { GetListResDto } from '@@src/game-play/list/applications/dto/get-list/get-list.res.dto';
 import { ListPageEntity } from '../../entities/list-page.entity';
-
+import config from '@@src/config';
 export class ToGetListResMapper {
   static toGetListRes(
     listPageEntity: ListPageEntity,
@@ -11,7 +11,12 @@ export class ToGetListResMapper {
         game: {
           id: game.game.id,
           title: game.game.title,
-          thumbnail: game.game.thumbnail,
+          thumbnail: game.game.thumbnail
+            ? {
+                id: game.game.thumbnail.id,
+                url: config.apiHost + game.game.thumbnail.url,
+              }
+            : null,
           genre: game.game.genre,
           createdAt: game.game.createdAt,
           updatedAt: game.game.updatedAt,
