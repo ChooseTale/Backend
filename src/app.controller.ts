@@ -16,17 +16,27 @@ export class AppController {
 
   @Post('/mock')
   async mock() {
-    await createMockData(this.prismaService);
-
-    // uploads 폴더 초기화
+    // uploads의 default 폴더를 제외하고 초기화
     fs.rmSync('uploads', { recursive: true, force: true });
 
     fs.mkdirSync('uploads');
 
-    const dirNames = ['game-thumnail-images'];
+    // test-uploads 폴더가 없으면 생성
+    if (!fs.existsSync('test-uploads')) {
+      fs.mkdirSync('test-uploads');
+    }
+
+    const dirNames = ['game-thumnail-images', 'profile-images'];
     dirNames.forEach((dirName) => {
       fs.mkdirSync(`uploads/${dirName}`);
     });
+    dirNames.forEach((dirName) => {
+      if (!fs.existsSync(`test-uploads/${dirName}`)) {
+        fs.mkdirSync(`test-uploads/${dirName}`);
+      }
+    });
+    await createMockData(this.prismaService);
+
     return 'success';
   }
 

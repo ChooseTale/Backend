@@ -87,9 +87,9 @@ export class ListPageEntity {
 
               user: {
                 id: playGame.user.id,
-                nickname: '닉네임 준비',
+                nickname: playGame.user.nickname,
                 profileImage: {
-                  url: '프로필 이미지 준비',
+                  url: playGame.user.profileImageUrl,
                 },
               },
             };
@@ -99,9 +99,9 @@ export class ListPageEntity {
         },
         publisher: {
           userId: game.User.id,
-          nickname: '생성 예정',
+          nickname: game.User.nickname,
           profileImage: {
-            url: '생성 예정',
+            url: game.User.profileImageUrl,
           },
         },
         enrichData: {

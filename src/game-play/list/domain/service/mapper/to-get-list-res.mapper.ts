@@ -1,6 +1,6 @@
 import { GetListResDto } from '@@src/game-play/list/applications/dto/get-list/get-list.res.dto';
 import { ListPageEntity } from '../../entities/list-page.entity';
-
+import config from '@@src/config';
 export class ToGetListResMapper {
   static toGetListRes(
     listPageEntity: ListPageEntity,
@@ -11,7 +11,12 @@ export class ToGetListResMapper {
         game: {
           id: game.game.id,
           title: game.game.title,
-          thumbnail: game.game.thumbnail,
+          thumbnail: game.game.thumbnail
+            ? {
+                id: game.game.thumbnail.id,
+                url: config.apiHost + game.game.thumbnail.url,
+              }
+            : null,
           genre: game.game.genre,
           createdAt: game.game.createdAt,
           updatedAt: game.game.updatedAt,
@@ -29,7 +34,9 @@ export class ToGetListResMapper {
                 prev.push({
                   userId: curr.user.id,
                   nickname: curr.user.nickname,
-                  profileImage: curr.user.profileImage,
+                  profileImage: {
+                    url: config.apiHost + curr.user.profileImage.url,
+                  },
                 });
               }
               return prev;
@@ -40,7 +47,9 @@ export class ToGetListResMapper {
         publisher: {
           userId: game.publisher.userId,
           nickname: game.publisher.nickname,
-          profileImage: game.publisher.profileImage,
+          profileImage: {
+            url: config.apiHost + game.publisher.profileImage.url,
+          },
         },
         enrichData: {
           totalEndingCount: game.enrichData.totalEndingCount,

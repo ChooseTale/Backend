@@ -25,6 +25,9 @@ export class GetListUsecase {
       queryService.getQuery(),
     );
     const user = { id: 1 };
+    console.log(
+      ToGetListResMapper.toGetListRes(listPageEntity, user)[0].game.player,
+    );
     return ToGetListResMapper.toGetListRes(listPageEntity, user);
   }
 }
