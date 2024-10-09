@@ -26,7 +26,7 @@ export class AppController {
       fs.mkdirSync('test-uploads');
     }
 
-    const dirNames = ['game-thumnail-images'];
+    const dirNames = ['game-thumnail-images', 'profile-images'];
     dirNames.forEach((dirName) => {
       fs.mkdirSync(`uploads/${dirName}`);
     });

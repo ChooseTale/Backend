@@ -67,6 +67,42 @@ export const createMockData = async (prisma: PrismaClient) => {
           });
         }
 
+        if (table.tableName === 'User') {
+          for (const data of saveData as {
+            id: number;
+            email: string;
+            nickname: string;
+            imageLink: string;
+            profileImageUrl: string;
+          }[]) {
+            const dest = '.' + data.profileImageUrl;
+            if (fs.existsSync(dest)) {
+              continue;
+            }
+
+            const response = await axios.get(data.imageLink, {
+              responseType: 'stream',
+            });
+            response.data
+              .pipe(fs.createWriteStream(dest))
+              .on('finish', () => {
+                console.log('이미지 저장 완료 : ', dest);
+              })
+              .on('error', (err) => {
+                console.error('파일 저장 중 오류 발생:', err);
+              });
+          }
+          saveData = saveData.map((d) => {
+            return {
+              id: d.id,
+              email: d.email,
+              nickname: d.nickname,
+
+              profileImageUrl: d.profileImageUrl,
+            };
+          });
+        }
+
         await prisma[table.tableName].createMany({
           data: saveData.map((d) => ({
             ...d,

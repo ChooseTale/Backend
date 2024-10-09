@@ -34,7 +34,9 @@ export class ToGetListResMapper {
                 prev.push({
                   userId: curr.user.id,
                   nickname: curr.user.nickname,
-                  profileImage: curr.user.profileImage,
+                  profileImage: {
+                    url: config.apiHost + curr.user.profileImage.url,
+                  },
                 });
               }
               return prev;
@@ -45,7 +47,9 @@ export class ToGetListResMapper {
         publisher: {
           userId: game.publisher.userId,
           nickname: game.publisher.nickname,
-          profileImage: game.publisher.profileImage,
+          profileImage: {
+            url: config.apiHost + game.publisher.profileImage.url,
+          },
         },
         enrichData: {
           totalEndingCount: game.enrichData.totalEndingCount,
