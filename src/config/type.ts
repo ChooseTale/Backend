@@ -4,6 +4,11 @@ export type ConfigType = {
   apiHost: string;
   allowCorsList: string[];
   allowJwtSecret: string;
+
+  auth: {
+    sessionSecret: string;
+    sessionMaxAge: number;
+  };
   db: {
     username: string;
     password: string;

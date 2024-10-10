@@ -12,6 +12,7 @@ import { GamePlayModule } from './game-play/game-play.module';
 import { JwtService } from '@nestjs/jwt';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { UserModule } from './user/application/user.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { join } from 'path';
       serveRoot: '/test-uploads', // 클라이언트가 접근할 URL 경로
     }),
 
+    UserModule,
     GameModule,
     GamePlayModule,
     PageModule,

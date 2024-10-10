@@ -62,6 +62,7 @@ export class AppController {
       await this.prismaService.user.create({
         data: {
           email: `test${i}@test.com`,
+          nickname: `test${i}`,
         },
       });
     }
