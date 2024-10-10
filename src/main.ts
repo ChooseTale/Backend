@@ -3,12 +3,24 @@ import { AppModule } from './app.module';
 import config from '@@config/index';
 import { ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from './common/guard/jwt.guard';
+import session from 'express-session';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true, // 클래스 변환을 활성화
+    }),
+  );
+
+  app.use(
+    session({
+      secret: config.auth.sessionSecret,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        maxAge: config.auth.sessionMaxAge,
+      },
     }),
   );
 
