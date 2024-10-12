@@ -23,9 +23,10 @@ import { DeletePageUseCase } from '../usecases/delete-page.usecase';
 import hanspell from 'hanspell';
 import { GetRecommentChoiceUsecase } from '../usecases/get-recomment-choice.usecase';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
+import { IsMyGameGuard } from '@@src/game-builder/guard/is-my-game.guard';
 
 @Controller('/game/:gameId/page')
-@UseGuards(AuthSerializeGuard)
+@UseGuards(AuthSerializeGuard, IsMyGameGuard)
 export class PageController {
   constructor(
     private readonly createPageUsecase: CreatePageUsecase,
