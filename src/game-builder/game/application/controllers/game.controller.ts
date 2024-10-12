@@ -10,7 +10,9 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Req,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateGameReqDto, CreateGameResDto } from './dto/create-game.dto';
@@ -27,8 +29,11 @@ import { DeleteGameUseCase } from '../usecases/delete-game.usecase';
 import { UpdateGameUseCase } from '../usecases/update-game.usecase';
 import { GetRecommentImageDto } from './dto/get-recomment-image.dto';
 import { GetDataGameResDto } from './dto/get-data-game.dto';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
+import { IsMyGameGuard } from '@@src/game-builder/guard/is-my-game.guard';
 
 @Controller('game')
+@UseGuards(AuthSerializeGuard)
 export class GameController {
   constructor(
     private readonly createGameUsecase: CreateGameUsecase,
@@ -55,6 +60,7 @@ export class GameController {
    * @summary 🟢(240812) 게임 데이터 불러오기
    */
   @Get('/:gameId/data')
+  @UseGuards(IsMyGameGuard)
   async getData(
     @Param('gameId', ParseIntPipe) gameId: number,
   ): Promise<GetDataGameResDto> {
@@ -78,6 +84,7 @@ export class GameController {
    * @summary 🟢(240812) 게임 전체 불러오기
    */
   @Get('/:gameId')
+  @UseGuards(IsMyGameGuard)
   async getAll(
     @Param('gameId', ParseIntPipe) gameId: number,
   ): Promise<GetAllGameResDto> {
@@ -98,9 +105,10 @@ export class GameController {
    */
   @Post()
   async create(
+    @Req() req: any,
     @Body() createGameReqDto: CreateGameReqDto,
   ): Promise<CreateGameResDto> {
-    return await this.createGameUsecase.excute(1, createGameReqDto);
+    return await this.createGameUsecase.excute(req.user.id, createGameReqDto);
   }
 
   /**
@@ -112,6 +120,7 @@ export class GameController {
    * @summary 🟢(240812) 게임 썸네일 이미지 업로드
    */
   @Post(':gameId/upload-thumbnail')
+  @UseGuards(IsMyGameGuard)
   @UseInterceptors(FilesInterceptor('images'))
   async uploadImages(
     @Param('gameId', ParseIntPipe) gameId: number,
@@ -143,11 +152,13 @@ export class GameController {
    * @summary 🟢(240812) 게임 정보 수정
    */
   @Patch(':gameId')
+  @UseGuards(IsMyGameGuard)
   async update(
+    @Req() req: any,
     @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: UpdateGameReqDto,
   ): Promise<UpdateGameResDto> {
-    return await this.updateGameUsecase.execute(gameId, 1, body);
+    return await this.updateGameUsecase.execute(gameId, req.user.id, body);
   }
 
   /**
@@ -159,6 +170,7 @@ export class GameController {
    * @summary 🟡(240726) 게임 추천 썸네일 이미지 생성
    */
   @Post(':gameId/recommend-image')
+  @UseGuards(IsMyGameGuard)
   async recommendImage(
     @Param('gameId', ParseIntPipe) gameId: number,
   ): Promise<GetRecommentImageDto> {
@@ -178,6 +190,7 @@ export class GameController {
    * @summary 🟡(240730) 게임 썸네일 이미지 삭제
    */
   @Delete(':gameId/thumbnail/:imageId')
+  @UseGuards(IsMyGameGuard)
   async deleteImage(
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('imageId', ParseIntPipe) imageId: number,

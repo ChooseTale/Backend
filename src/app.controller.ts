@@ -1,4 +1,12 @@
-import { Controller, Get, ParseIntPipe, Post, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  ParseIntPipe,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { PrismaService } from '@@prisma/prisma.service';
 import OpenAI from 'openai';
 
@@ -6,6 +14,7 @@ import config from '@@src/config/index';
 import { createMockData } from 'test/mock/create-mock';
 import fs from 'fs';
 import { JwtService } from '@nestjs/jwt';
+import { AuthSerializeGuard } from './common/guard/auth.serielize.guard';
 
 @Controller()
 export class AppController {
@@ -15,6 +24,7 @@ export class AppController {
   ) {}
 
   @Post('/mock')
+  @UseGuards(AuthSerializeGuard)
   async mock() {
     // uploads의 default 폴더를 제외하고 초기화
     fs.rmSync('uploads', { recursive: true, force: true });
@@ -81,6 +91,7 @@ export class AppController {
   }
 
   @Post('/openai')
+  @UseGuards(AuthSerializeGuard)
   async openai() {
     const openai = new OpenAI({
       apiKey: config.openAi.openAiApiKey,

@@ -1,8 +1,17 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { GetResultScreenDto } from '../dto/get-result-screen.dto';
 import { GetResultScreenUsecase } from '../../domain/usecases/get-result-screen.usecase';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 
 @Controller('/result')
+@UseGuards(AuthSerializeGuard)
 export class ResultController {
   constructor(
     private readonly getResultScreenUsecase: GetResultScreenUsecase,
@@ -21,52 +30,8 @@ export class ResultController {
   @Get('/:playId')
   async getResultScreen(
     @Param('playId', ParseIntPipe) playId: number,
+    @Req() req: any,
   ): Promise<GetResultScreenDto> {
-    return await this.getResultScreenUsecase.execute(playId, 1);
-    return {
-      endingPage: {
-        id: 1,
-        abridgement: '페이지 1의 요약',
-      },
-      choosenPages: [
-        {
-          id: 1,
-          abridgement: '페이지 1의 요약',
-          choices: [
-            {
-              id: 1,
-              title: '선택지 1의 제목',
-              percentage: 0.4,
-            },
-            {
-              id: 2,
-              title: '선택지 2의 제목',
-              percentage: 0.6,
-            },
-          ],
-        },
-        {
-          id: 2,
-          abridgement: '페이지 2의 요약',
-          choices: [
-            {
-              id: 1,
-              title: '선택지 1의 제목',
-              percentage: 0.33,
-            },
-            {
-              id: 2,
-              title: '선택지 2의 제목',
-              percentage: 0.33,
-            },
-            {
-              id: 3,
-              title: '선택지 3의 제목',
-              percentage: 0.33,
-            },
-          ],
-        },
-      ],
-    };
+    return await this.getResultScreenUsecase.execute(playId, req.user.id);
   }
 }

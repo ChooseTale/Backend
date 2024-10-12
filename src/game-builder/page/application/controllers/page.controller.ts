@@ -7,6 +7,8 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { CreatePageReqDto, CreatePageResDto } from './dto/create-page.dto';
 import {
@@ -20,8 +22,11 @@ import { UpdatePageUsecase } from '../usecases/update-page.usecase';
 import { DeletePageUseCase } from '../usecases/delete-page.usecase';
 import hanspell from 'hanspell';
 import { GetRecommentChoiceUsecase } from '../usecases/get-recomment-choice.usecase';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
+import { IsMyGameGuard } from '@@src/game-builder/guard/is-my-game.guard';
 
 @Controller('/game/:gameId/page')
+@UseGuards(AuthSerializeGuard, IsMyGameGuard)
 export class PageController {
   constructor(
     private readonly createPageUsecase: CreatePageUsecase,
@@ -146,7 +151,8 @@ export class PageController {
   async delete(
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
+    @Req() req: any,
   ): Promise<{ message: string }> {
-    return await this.deletePageUsecase.execute(gameId, pageId, 1);
+    return await this.deletePageUsecase.execute(gameId, pageId, req.user.id);
   }
 }
