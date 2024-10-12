@@ -10,7 +10,9 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Req,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateGameReqDto, CreateGameResDto } from './dto/create-game.dto';
@@ -27,8 +29,10 @@ import { DeleteGameUseCase } from '../usecases/delete-game.usecase';
 import { UpdateGameUseCase } from '../usecases/update-game.usecase';
 import { GetRecommentImageDto } from './dto/get-recomment-image.dto';
 import { GetDataGameResDto } from './dto/get-data-game.dto';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 
 @Controller('game')
+@UseGuards(AuthSerializeGuard)
 export class GameController {
   constructor(
     private readonly createGameUsecase: CreateGameUsecase,
@@ -98,9 +102,10 @@ export class GameController {
    */
   @Post()
   async create(
+    @Req() req: any,
     @Body() createGameReqDto: CreateGameReqDto,
   ): Promise<CreateGameResDto> {
-    return await this.createGameUsecase.excute(1, createGameReqDto);
+    return await this.createGameUsecase.excute(req.user.id, createGameReqDto);
   }
 
   /**
@@ -144,10 +149,11 @@ export class GameController {
    */
   @Patch(':gameId')
   async update(
+    @Req() req: any,
     @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: UpdateGameReqDto,
   ): Promise<UpdateGameResDto> {
-    return await this.updateGameUsecase.execute(gameId, 1, body);
+    return await this.updateGameUsecase.execute(gameId, req.user.id, body);
   }
 
   /**

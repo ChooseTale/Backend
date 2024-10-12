@@ -1,10 +1,20 @@
-import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { GetPlayGameScreenDto } from '../dto/get-play-game-screen.dto';
 import { ChooseChoiceResDto } from '../dto/choose-choice.dto';
 import { GetPlayGameScreenUsecase } from '../../domain/usecases/get-play-game-screen.usecase';
 import { ChooseChoiceUsecase } from '../../domain/usecases/choose-choice.usecase';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 
 @Controller('/play')
+@UseGuards(AuthSerializeGuard)
 export class PlayController {
   constructor(
     private readonly getPlayGameScreenUsecase: GetPlayGameScreenUsecase,
@@ -29,8 +39,13 @@ export class PlayController {
   async getPlayGameScreen(
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
+    @Req() req: any,
   ): Promise<GetPlayGameScreenDto> {
-    return await this.getPlayGameScreenUsecase.execute(gameId, 1, pageId);
+    return await this.getPlayGameScreenUsecase.execute(
+      gameId,
+      req.user.id,
+      pageId,
+    );
   }
 
   /**
@@ -49,7 +64,12 @@ export class PlayController {
   async chooseChoice(
     @Param('playId', ParseIntPipe) playId: number,
     @Param('choiceId', ParseIntPipe) choiceId: number,
+    @Req() req: any,
   ): Promise<ChooseChoiceResDto> {
-    return await this.chooseChoiceUsecase.execute(playId, choiceId, 1);
+    return await this.chooseChoiceUsecase.execute(
+      playId,
+      choiceId,
+      req.user.id,
+    );
   }
 }

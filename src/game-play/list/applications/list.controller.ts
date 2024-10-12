@@ -1,12 +1,14 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { GetListReqDto } from './dto/get-list/get-list.req.dto';
 import { GetCountReqDto } from './dto/get-count/get-count.req.dto';
 import { GetCountResDto } from './dto/get-count/get-count.res.dto';
 import { GetListResDto } from './dto/get-list/get-list.res.dto';
 import { GetListUsecase } from '../domain/usecases/get-list.usecase';
 import { GetCountUsecase } from '../domain/usecases/get-count.usecase';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 
 @Controller('list')
+@UseGuards(AuthSerializeGuard)
 export class ListController {
   constructor(
     private readonly getListUsecase: GetListUsecase,

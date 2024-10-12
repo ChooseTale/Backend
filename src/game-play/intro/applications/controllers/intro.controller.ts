@@ -1,11 +1,19 @@
-import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { GetIntroScreenResDto } from '../dto/get-intro-screnn.dto';
 import { FirstStartGameResDto } from '../dto/first-start-game.dto';
-import { ContinueGameResDto } from '../dto/countinue-game.dto';
 import { GetIntroScreenUsecase } from '../../domain/usecases/get-intro-screen.usecase';
 import { FirstStartGameUsecase } from '../../domain/usecases/first-start-game.usecase';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 
 @Controller('/intro')
+@UseGuards(AuthSerializeGuard)
 export class IntroController {
   constructor(
     private readonly getIntroScreenUsecase: GetIntroScreenUsecase,
