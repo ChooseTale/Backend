@@ -16,6 +16,15 @@ export class PlayRepository implements PlayRepositoryPort {
     });
   }
 
+  async getAllByUserIdAndGameId(
+    userId: number,
+    gameId: number,
+  ): Promise<PlayGame[]> {
+    return this.prismaService.playGame.findMany({
+      where: { userId, gameId },
+    });
+  }
+
   async getAllByUserId(userId: number): Promise<PlayGame[]> {
     return this.prismaService.playGame.findMany({
       where: { userId },

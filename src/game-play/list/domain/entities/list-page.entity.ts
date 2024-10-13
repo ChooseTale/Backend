@@ -1,3 +1,4 @@
+import config from '@@src/config';
 import { Game, Page, PlayGame, Prisma, User } from '@prisma/client';
 
 export type GameGetPayload = Prisma.GameGetPayload<{
@@ -101,7 +102,7 @@ export class ListPageEntity {
           userId: game.User.id,
           nickname: game.User.nickname,
           profileImage: {
-            url: game.User.profileImageUrl,
+            url: config.apiHost + game.User.profileImageUrl,
           },
         },
         enrichData: {

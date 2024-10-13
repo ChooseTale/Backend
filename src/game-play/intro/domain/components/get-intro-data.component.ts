@@ -8,6 +8,7 @@ import { ImageRepositoryPort } from '@@src/common/infrastructure/repositories/im
 import { Image } from '@prisma/client';
 import { GetIntroDataComponentPort } from './port/get-intro-data.component.interface';
 import { UserChoiceRepositoryPort } from '@@src/common/infrastructure/repositories/user-choice/port/user-choice.repository.interface';
+import { ChoicePageRepositoryPort } from '@@src/common/infrastructure/repositories/choice-page/port/choice-page.repository.interface';
 
 @Injectable()
 export class GetIntroDataComponent implements GetIntroDataComponentPort {
@@ -24,16 +25,26 @@ export class GetIntroDataComponent implements GetIntroDataComponentPort {
     private readonly imageRepository: ImageRepositoryPort,
     @Inject('UserChoiceRepository')
     private readonly userChoiceRepository: UserChoiceRepositoryPort,
+    @Inject('ChoicePageRepository')
+    private readonly choiceRepository: ChoicePageRepositoryPort,
   ) {}
 
   async getIntroEntity(gameId: number, userId: number): Promise<IntroEntity> {
     const game = await this.gameRepository.getGameByIdOrThrow(gameId);
     const pages = await this.pageRepository.getAllByGameId(gameId);
     const producer = await this.userRepository.getUserByIdOrThrow(game.userId);
-    const playGameDatas = await this.playRepository.getAllByUserId(userId);
+    const playGameDatas = await this.playRepository.getAllByUserIdAndGameId(
+      userId,
+      gameId,
+    );
     const userChoices = await this.userChoiceRepository.getAllByPlayIds(
       playGameDatas.map((play) => play.id),
     );
+
+    const userChoicePages = await this.choiceRepository.getChoicePageByIds(
+      userChoices.map((choice) => choice.choicePageId),
+    );
+
     let thumbnailImage: Image | null = null;
     if (game.thumbnailId) {
       thumbnailImage = await this.imageRepository.getImageById(
@@ -48,6 +59,7 @@ export class GetIntroDataComponent implements GetIntroDataComponentPort {
       playGameDatas.filter((play) => play.gameId === gameId),
       thumbnailImage,
       userChoices,
+      userChoicePages,
     );
   }
 }

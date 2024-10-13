@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { GetListReqDto } from './dto/get-list/get-list.req.dto';
 import { GetCountReqDto } from './dto/get-count/get-count.req.dto';
 import { GetCountResDto } from './dto/get-count/get-count.res.dto';
@@ -21,14 +21,17 @@ export class ListController {
    * genre는 ,를 이용해 여러개를 받을 수 있습니다.
    */
   @Get()
-  async getList(@Query() query: GetListReqDto): Promise<GetListResDto[]> {
+  async getList(
+    @Query() query: GetListReqDto,
+    @Req() req: any,
+  ): Promise<GetListResDto[]> {
     return this.getListUsecase.execute(
       {
         ...query,
         page: query.page,
         limit: query.limit,
       },
-      1,
+      req.user.id,
     );
   }
 
