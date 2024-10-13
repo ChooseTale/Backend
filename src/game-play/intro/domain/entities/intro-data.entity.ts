@@ -1,6 +1,14 @@
 import config from '@@src/config';
 import { ConflictException } from '@nestjs/common';
-import { Game, Page, User, Image, PlayGame, UserChoice } from '@prisma/client';
+import {
+  Game,
+  Page,
+  User,
+  Image,
+  PlayGame,
+  UserChoice,
+  ChoicePage,
+} from '@prisma/client';
 
 export class IntroEntity {
   game: {
@@ -50,6 +58,12 @@ export class IntroEntity {
     playGameId: number;
   }[];
 
+  choicePages: {
+    id: number;
+    fromPageId: number;
+    toPageId: number | null;
+  }[];
+
   getThumbnailUrl(thumbnailUrl: Image | null) {
     if (!thumbnailUrl) {
       return '';
@@ -66,6 +80,7 @@ export class IntroEntity {
     playGameDatas: PlayGame[],
     thumbnailImage: Image | null,
     userChoices: UserChoice[],
+    choicePages: ChoicePage[],
   ) {
     this.game = {
       id: game.id,
@@ -77,8 +92,8 @@ export class IntroEntity {
       pages: pages,
       producer: {
         userId: producer.id,
-        nickname: '추가 예정',
-        profileImageUrl: '추가 예정',
+        nickname: producer.nickname,
+        profileImageUrl: producer.profileImageUrl,
       },
       firstPage: pages.filter((page) => page.isStarting === true)[0],
     };
@@ -92,7 +107,15 @@ export class IntroEntity {
       return {
         id: userChoice.id,
         choicePageId: userChoice.choicePageId,
+
         playGameId: userChoice.playGameId,
+      };
+    });
+    this.choicePages = choicePages.map((choicePage) => {
+      return {
+        id: choicePage.id,
+        fromPageId: choicePage.fromPageId,
+        toPageId: choicePage.toPageId,
       };
     });
     this.getPlayGameData(playGameDatas, pages);
@@ -124,11 +147,16 @@ export class IntroEntity {
       return;
     }
 
-    const currentPage = pages.find(
-      (page) =>
-        page.id ===
+    const currentPlayGameFromPageId = this.choicePages.find(
+      (choicePage) =>
+        choicePage.id ===
         currentGameChoices.sort((a, b) => a.id - b.id)[0].choicePageId,
+    )?.fromPageId;
+
+    const currentPage = pages.find(
+      (page) => page.id === currentPlayGameFromPageId,
     );
+
     if (!currentPage) {
       throw new ConflictException('현재 페이지를 찾을 수 없습니다.');
     }

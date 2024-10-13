@@ -24,8 +24,7 @@ export class GetListUsecase {
     const listPageEntity = await this.pageNationComponent.getPageEntity(
       queryService.getQuery(),
     );
-    const user = { id: 1 };
 
-    return ToGetListResMapper.toGetListRes(listPageEntity, user);
+    return ToGetListResMapper.toGetListRes(listPageEntity, { id: myUserId });
   }
 }

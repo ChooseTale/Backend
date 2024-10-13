@@ -32,12 +32,12 @@ export class GoogleSocialLoginUsecase {
 
     const { email, given_name, family_name, picture } = response.data;
     let user = await this.userComponent.getUserEntityOrNull(email);
-    const newNickname = await this.userComponent.getNewNickname(
-      given_name,
-      family_name,
-    );
 
     if (!user) {
+      const newNickname = await this.userComponent.getNewNickname(
+        given_name,
+        family_name,
+      );
       user = await this.userComponent.createUser(
         response.data.email,
         newNickname,

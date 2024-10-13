@@ -32,7 +32,7 @@ export class ChooseChoiceComponent implements ChooseChoiceComponentInterface {
       );
     }
 
-    await this.userChoiceRepository.create(playGameId, choice.toPageId);
+    await this.userChoiceRepository.create(playGameId, choice.id);
 
     const toPage = await this.pageRepository.getByIdOrThrow(choice.toPageId);
 
