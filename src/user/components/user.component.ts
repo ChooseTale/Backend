@@ -1,6 +1,7 @@
 import { UserRepositoryPort } from '@@src/common/infrastructure/repositories/user/port/user.repository.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { UserEntity } from '../domain/entities/user.entity';
+import { MeEntity } from '../domain/entities/me.entity';
 
 @Injectable()
 export class UserComponent {
@@ -8,6 +9,11 @@ export class UserComponent {
     @Inject('UserRepository')
     private readonly userRepository: UserRepositoryPort,
   ) {}
+
+  async getMeEntity(userId: number): Promise<MeEntity> {
+    const user = await this.userRepository.getUserByIdOrThrow(userId);
+    return new MeEntity(user);
+  }
 
   async getUserEntityOrNull(email: string): Promise<UserEntity | null> {
     const user = await this.userRepository.getUserByEmail(email);
