@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UserModule } from './user/application/user.module';
+import { MyPageModule } from './my-page/application/my-page.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UserModule } from './user/application/user.module';
     GamePlayModule,
     PageModule,
     ChoiceModule,
+    MyPageModule,
     KafkaModule,
   ],
   controllers: [AppController],
