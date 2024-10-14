@@ -9,6 +9,7 @@ export class MyPageController {
    * 진행중인 게임 리스트를 출력합니다.
    * 가로스크롤 리스트에서는 limit, order, genre를 각각 8, LATEST, ALL로 보내주시면 됩니다.
    * 정렬의 기준은 '최근 플레이한 순서' 입니다.
+   * order은 LATEST, OLDEST 중 하나를 선택할 수 있습니다.
    *
    * @tag MyPage
    * @summary 진행중인 게임 리스트
@@ -41,6 +42,7 @@ export class MyPageController {
    * 완료한 엔딩 리스트를 출력합니다.
    * '날짜별' 에 출력될 수 있는 Response타입을 가집니다.
    * 정렬의 기준은 '최근 플레이한 순서' 입니다.
+   * order은 LATEST, OLDEST 중 하나를 선택할 수 있습니다.
    *
    * @tag MyPage
    * @summary 완료한 엔딩 리스트
@@ -67,7 +69,8 @@ export class MyPageController {
    * '게임별' 에 출력될 수 있는 Response타입을 가집니다.
    * 정렬의 기준은 '최근 플레이한 순서' 입니다.
    * 최근에 플레이한 기록이 있는 게임이 먼저 출력됩니다.
-   *
+   * order은 LATEST, OLDEST 중 하나를 선택할 수 있습니다.
+
    * @tag MyPage
    * @summary 완료한 그룹 게임 리스트
    */
