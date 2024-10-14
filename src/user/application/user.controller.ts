@@ -1,19 +1,31 @@
 import { Body, Controller, Get, Post, Req, Session } from '@nestjs/common';
 import { LoginReqDto } from './dto/login.req.dto';
 import { GoogleSocialLoginUsecase } from '../domain/usecases/google-social-login.usecase';
+import { GetMeUsecase } from '../domain/usecases/get-me.usecase';
+import { MeResDto } from './dto/me.res.dto';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly googleSocialLoginUsecase: GoogleSocialLoginUsecase,
+    private readonly getMeUsecase: GetMeUsecase,
   ) {}
 
+  /**
+   * 내 정보 조회
+   *
+   * 세션에 저장된 유저의 정보를 조회합니다.
+   *
+   * @tag User
+   * @summary  내 정보 조회
+   * @param request
+   * @returns
+   */
   @Get('/me')
-  async getMe(@Session() session: Record<string, any>) {
-    console.log(session);
-    return {
-      message: 'success get me',
-    };
+  async getMe(@Req() request: any): Promise<MeResDto> {
+    const userId = request.session.userId;
+    const meEntity = await this.getMeUsecase.execute(userId);
+    return meEntity;
   }
 
   /**
