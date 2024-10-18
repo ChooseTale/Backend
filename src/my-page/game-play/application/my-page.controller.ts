@@ -83,6 +83,9 @@ export class MyPageController {
           title: '부산행: 열차에 좀비가 나타났다.',
           genre: 'HORROR',
           totalEndingCount: 4,
+          thumbnail: {
+            url: 'http://localhost:5001/...',
+          },
           endings: [
             {
               playId: 1,

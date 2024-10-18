@@ -13,7 +13,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UserModule } from './user/application/user.module';
-import { MyPageModule } from './my-page/application/my-page.module';
+import { MyPageModule } from './my-page/game-play/application/my-page.module';
+import { GameBuilderMyPageModule } from './my-page/game-builder/application/game-builder-my-page.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { MyPageModule } from './my-page/application/my-page.module';
     PageModule,
     ChoiceModule,
     MyPageModule,
+    GameBuilderMyPageModule,
     KafkaModule,
   ],
   controllers: [AppController],
