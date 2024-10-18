@@ -2,6 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { GetContinuedGameListQueryDto } from './dto/req/get-continued-game-list.req.dto';
 import { GetEndedGameListQueryDto } from './dto/req/get-ended-game-list.req.dto';
 import { GetEndedGroupGameListQueryDto } from './dto/req/get-ended-group-game-list.req.dto';
+import config from '@@src/config';
 
 @Controller('my-page')
 export class MyPageController {
@@ -22,7 +23,9 @@ export class MyPageController {
           id: 1,
           title: '게임 제목',
           thumbnail: {
-            url: 'https://example.com/thumbnail.jpg',
+            url:
+              config.apiHost +
+              '/test-uploads/game-thumnail-images/사랑은타이밍.png',
           },
           genre: 'HORROR',
         },
@@ -55,7 +58,9 @@ export class MyPageController {
           id: 1,
           title: '게임 제목',
           thumbnail: {
-            url: 'https://example.com/thumbnail.jpg',
+            url:
+              config.apiHost +
+              '/test-uploads/game-thumnail-images/사랑은타이밍.png',
           },
           genre: 'HORROR',
           reachedEndingAt: new Date(),
@@ -84,7 +89,9 @@ export class MyPageController {
           genre: 'HORROR',
           totalEndingCount: 4,
           thumbnail: {
-            url: 'http://localhost:5001/...',
+            url:
+              config.apiHost +
+              '/test-uploads/game-thumnail-images/사랑은타이밍.png',
           },
           endings: [
             {

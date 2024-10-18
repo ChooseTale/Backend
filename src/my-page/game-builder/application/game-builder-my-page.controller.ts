@@ -2,6 +2,7 @@ import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { GetMyBuildedGamesQueryDto } from './dto/req/get-my-builded-game.req.dto';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 import { GetMyBuildedGameResDto } from './dto/res/get-my-builded-game.res.dto';
+import config from '@@src/config';
 
 @Controller('my-page/game-builder')
 @UseGuards(AuthSerializeGuard)
@@ -20,6 +21,8 @@ export class GameBuilderMyPageController {
    * reponse: reactEndingPlayerCount는 status가 PUBLISHED일 때만 존재합니다.
    * 그 외에는 null 입니다.
    *
+   * @tag MyPage-GameBuilder
+   * @summary 내가 제작한 게임 조회
    */
   @Get()
   async getMyBuildedGames(
@@ -32,7 +35,9 @@ export class GameBuilderMyPageController {
           id: 1,
           title: '게임 제목',
           thumbnail: {
-            url: 'https://example.com/thumbnail.jpg',
+            url:
+              config.apiHost +
+              '/test-uploads/game-thumnail-images/사랑은타이밍.png',
           },
           firstPageAbridgement: '첫 페이지의 요약입니다.',
           genre: 'HORROR',
@@ -50,7 +55,9 @@ export class GameBuilderMyPageController {
           id: 2,
           title: '30자게임제목입니다30자게임제목입니다30자게임제목입니다',
           thumbnail: {
-            url: 'https://example.com/thumbnail.jpg',
+            url:
+              config.apiHost +
+              '/test-uploads/game-thumnail-images/사랑은타이밍.png',
           },
           firstPageAbridgement:
             '짱 긴 첫 페이지 요약입니다.짱 긴 첫 페이지 요약입니다.짱 긴 첫 페이지 요약입니다.짱 긴 첫 페이지 요약입니다.짱 긴 첫 페이지 요약입니다.',
