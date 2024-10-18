@@ -1,11 +1,18 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Query, Req, UseGuards } from '@nestjs/common';
 import { GetContinuedGameListQueryDto } from './dto/req/get-continued-game-list.req.dto';
 import { GetEndedGameListQueryDto } from './dto/req/get-ended-game-list.req.dto';
 import { GetEndedGroupGameListQueryDto } from './dto/req/get-ended-group-game-list.req.dto';
 import config from '@@src/config';
+import { GetContinuedGameUsecase } from '../domain/usecases/get-continued-game.usecase';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 
 @Controller('my-page')
+@UseGuards(AuthSerializeGuard)
 export class MyPageController {
+  constructor(
+    private readonly getContinuedGameUsecase: GetContinuedGameUsecase,
+  ) {}
+
   /**
    * 진행중인 게임 리스트를 출력합니다.
    * 가로스크롤 리스트에서는 limit, order, genre를 각각 8, LATEST, ALL로 보내주시면 됩니다.
@@ -16,7 +23,11 @@ export class MyPageController {
    * @summary 진행중인 게임 리스트
    */
   @Get('/continued-game')
-  async getContinuedGameList(@Query() query: GetContinuedGameListQueryDto) {
+  async getContinuedGameList(
+    @Req() req: any,
+    @Query() query: GetContinuedGameListQueryDto,
+  ) {
+    return this.getContinuedGameUsecase.execute(req.user.id, query);
     return [
       {
         game: {
