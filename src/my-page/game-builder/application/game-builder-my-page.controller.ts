@@ -1,9 +1,9 @@
-import { Controller, Query, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { GetMyBuildedGamesQueryDto } from './dto/req/get-my-builded-game.req.dto';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 import { GetMyBuildedGameResDto } from './dto/res/get-my-builded-game.res.dto';
 
-@Controller('game-builder/my-page')
+@Controller('my-page/game-builder')
 @UseGuards(AuthSerializeGuard)
 export class GameBuilderMyPageController {
   /**
@@ -21,6 +21,7 @@ export class GameBuilderMyPageController {
    * 그 외에는 null 입니다.
    *
    */
+  @Get()
   async getMyBuildedGames(
     @Req() req: any,
     @Query() query: GetMyBuildedGamesQueryDto,

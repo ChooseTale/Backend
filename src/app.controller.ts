@@ -79,6 +79,9 @@ export class AppController {
     return 'success';
   }
 
+  @Get('/test-user/login')
+  async testUserLogin() {}
+
   @Get('/ping')
   ping(): { key: string } {
     return { key: 'pong' };
