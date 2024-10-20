@@ -10,9 +10,10 @@ export type GetEndedGameInclude = {
   UserChoice: boolean;
 };
 
-export class GetEndedGameQueryService {
-  private query: Prisma.PlayGameFindManyArgs<any>;
+export class GetEndedGameQueryService extends ListParentQueryService {
+  query: Prisma.PlayGameFindManyArgs<any>;
   constructor(userId: number) {
+    super({});
     const include: GetEndedGameInclude = {
       game: {
         include: {
@@ -28,24 +29,6 @@ export class GetEndedGameQueryService {
       },
       include,
     };
-  }
-
-  setPagenation(page: number, limit: number) {
-    this.query.skip = (page - 1) * limit;
-    this.query.take = limit;
-  }
-
-  setGenres(genres: (Genres | 'ALL')[]) {
-    for (const genre of genres) {
-      if (genre === 'ALL') {
-        break;
-      }
-      if (this.query.where && this.query.where.OR) {
-        this.query.where.OR.push({ game: { genre } });
-      } else if (this.query.where) {
-        this.query.where.OR = [{ game: { genre } }];
-      }
-    }
   }
 
   get getQuery() {

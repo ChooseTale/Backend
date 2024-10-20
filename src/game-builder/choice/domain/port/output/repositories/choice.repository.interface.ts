@@ -20,6 +20,7 @@ export interface IChoiceRepository {
     transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity | null>;
   create(
+    gameId: number,
     order: number,
     createChoiceReqDto: CreateChoiceReqDto,
     pageVersion: number,

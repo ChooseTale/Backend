@@ -100,7 +100,8 @@ model Game {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  PlayGame PlayGame[]
+  PlayGame   PlayGame[]
+  ChoicePage ChoicePage[]
 }
 
 model Page {
@@ -134,6 +135,9 @@ model ChoicePage {
 
   toPage   Page? @relation("toPage", fields: [toPageId], references: [id])
   toPageId Int?
+
+  game   Game @relation(fields: [gameId], references: [id])
+  gameId Int  @default(1)
 
   title       String
   description String

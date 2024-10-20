@@ -21,6 +21,19 @@ export class ListParentQueryService {
     this.query.take = limit;
   }
 
+  setOrder(order: 'LATEST' | 'OLDEST') {
+    if (order === 'LATEST') {
+      this.query.orderBy = {
+        lastPlayedAt: 'desc',
+      };
+    }
+    if (order === 'OLDEST') {
+      this.query.orderBy = {
+        lastPlayedAt: 'asc',
+      };
+    }
+  }
+
   get getQuery() {
     return this.query;
   }
