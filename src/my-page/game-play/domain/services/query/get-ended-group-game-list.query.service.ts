@@ -1,4 +1,5 @@
 import { Genres, Prisma } from '@prisma/client';
+import { ListParentQueryService } from './list-parent.query.service';
 
 export type EndedGroupGameInclude = {
   game: {
@@ -40,9 +41,10 @@ export type EndedGroupGameInclude = {
   };
 };
 
-export class GetEndedGroupGameListQueryService {
-  private query: Prisma.PlayGameFindManyArgs;
+export class GetEndedGroupGameListQueryService extends ListParentQueryService {
+  query: Prisma.PlayGameFindManyArgs;
   constructor(private readonly userId: number) {
+    super({});
     const include: EndedGroupGameInclude = {
       game: {
         include: {
@@ -93,36 +95,6 @@ export class GetEndedGroupGameListQueryService {
         lastPlayedAt: 'desc',
       },
     };
-  }
-
-  setPagenation(page: number, limit: number) {
-    this.query.skip = (page - 1) * limit;
-    this.query.take = limit;
-  }
-
-  setOrder(order: 'LATEST' | 'OLDEST') {
-    if (order === 'LATEST') {
-      this.query.orderBy = {
-        lastPlayedAt: 'desc',
-      };
-    } else {
-      this.query.orderBy = {
-        lastPlayedAt: 'asc',
-      };
-    }
-  }
-
-  setGenres(genres: (Genres | 'ALL')[]) {
-    for (const genre of genres) {
-      if (genre === 'ALL') {
-        break;
-      }
-      if (this.query.where && this.query.where.OR) {
-        this.query.where.OR.push({ game: { genre } });
-      } else if (this.query.where) {
-        this.query.where.OR = [{ game: { genre } }];
-      }
-    }
   }
 
   get getQuery() {

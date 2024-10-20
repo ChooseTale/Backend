@@ -15,6 +15,7 @@ export class GetEndedGameListUsecase {
     const queryService = new GetEndedGameQueryService(userId);
     queryService.setPagenation(reqQuery.page, reqQuery.limit);
     queryService.setGenres(reqQuery.genre);
+    queryService.setOrder(reqQuery.order);
 
     const games = await this.getGameListComponent.getEndedGameListEntity(
       queryService.getQuery,

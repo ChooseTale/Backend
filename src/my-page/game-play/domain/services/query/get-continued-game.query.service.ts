@@ -45,11 +45,4 @@ export class GetContinuedGameQueryService extends ListParentQueryService {
       isEnded: false,
     };
   }
-
-  setOrder(order: 'LATEST' | 'OLDEST') {
-    const orderBy: Prisma.PlayGameOrderByWithRelationInput = {
-      createdAt: order === 'LATEST' ? 'desc' : 'asc',
-    };
-    this.query.orderBy = orderBy;
-  }
 }
