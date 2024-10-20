@@ -65,6 +65,7 @@ export class ChoiceRepository implements IChoiceRepository {
   }
 
   async create(
+    gameId: number,
     order: number,
     createChoiceReqDto: CreateChoiceReqDto,
     fromPageVersion: number,
@@ -91,6 +92,7 @@ export class ChoiceRepository implements IChoiceRepository {
       // 선택지 생성
       await (transaction ?? this.prisma).choicePage.create({
         data: {
+          gameId,
           toPageId: createChoiceReqDto.childPageId ?? null,
           title: createChoiceReqDto.title,
           description: createChoiceReqDto.description,

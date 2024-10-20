@@ -20,7 +20,10 @@ export interface IChoiceService {
     id: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity | null>;
-  create(createChoiceReqDto: CreateChoiceReqDto): Promise<ChoiceDomainEntity>;
+  create(
+    gameId: number,
+    createChoiceReqDto: CreateChoiceReqDto,
+  ): Promise<ChoiceDomainEntity>;
   update(
     choiceId: number,
     updateChoiceReqDto: UpdateChoiceReqDto,

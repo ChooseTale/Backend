@@ -42,6 +42,7 @@ export class ChoiceService implements IChoiceService {
   }
 
   async create(
+    gameId: number,
     createChoiceReqDto: CreateChoiceReqDto,
   ): Promise<ChoiceDomainEntity> {
     const fromPage = await this.pageService.getOneById(
@@ -74,6 +75,7 @@ export class ChoiceService implements IChoiceService {
     pageChoice.checkChoiceLength();
 
     const choice = await this.choiceRepository.create(
+      gameId,
       pageChoices.length + 1,
       createChoiceReqDto,
       fromPage.version,

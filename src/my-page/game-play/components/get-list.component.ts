@@ -8,6 +8,8 @@ import { GetEndedGameListEntity } from '../domain/entities/get-ended-game-list.e
 import { PlayRepositoryPort } from '@@src/common/infrastructure/repositories/play-game/port/play.repository.interface';
 import { EndedGroupGameInclude } from '../domain/services/query/get-ended-group-game-list.query.service';
 import { GetEndedGroupGameListEntity } from '../domain/entities/get-ended-group-game-list.entity';
+import { GetMyBuildedGamesEntity } from '@@src/my-page/game-builder/domain/entities/get-my-builded-games.entity';
+import { GetMyBuildedGameInclude } from '@@src/my-page/game-builder/domain/services/query/get-my-builded-game.query.service';
 
 @Injectable()
 export class GetGameListComponent {
@@ -17,6 +19,17 @@ export class GetGameListComponent {
     @Inject('PlayGameRepository')
     private readonly playRepository: PlayRepositoryPort,
   ) {}
+
+  async getMyBuildedGameListEntity(
+    getMyBuildedGameListQuery: Prisma.GameFindManyArgs<any>,
+  ) {
+    const games = (await this.gameRepository.getGames(
+      getMyBuildedGameListQuery,
+    )) as unknown as Prisma.GameGetPayload<{
+      include: GetMyBuildedGameInclude;
+    }>[];
+    return new GetMyBuildedGamesEntity(games);
+  }
 
   async getContinuedGameListEntity(
     getContinuedGameListQuery: Prisma.PlayGameFindManyArgs<any>,
