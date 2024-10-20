@@ -4,6 +4,9 @@ export class GetEndedGroupGameListResDto {
     title: string;
     genre: string;
     totalEndingCount: number;
+    thumbnail: {
+      url: string;
+    };
     endings: {
       playId: number;
       endingNumber: number;
