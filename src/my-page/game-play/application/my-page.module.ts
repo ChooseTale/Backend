@@ -5,6 +5,7 @@ import { GameRepositoryModule } from '@@src/common/infrastructure/repositories/g
 import { GetGameListComponent } from '../components/get-list.component';
 import { PlayGameRepositoryModule } from '@@src/common/infrastructure/repositories/play-game/play-game.repository.module';
 import { GetEndedGameListUsecase } from '../domain/usecases/get-ended-game-list.usecase';
+import { GetEndedGroupGameListUsecase } from '../domain/usecases/get-ended-group-game-list.usecase';
 
 @Module({
   imports: [GameRepositoryModule, PlayGameRepositoryModule],
@@ -12,6 +13,7 @@ import { GetEndedGameListUsecase } from '../domain/usecases/get-ended-game-list.
   providers: [
     GetContinuedGameUsecase,
     GetEndedGameListUsecase,
+    GetEndedGroupGameListUsecase,
     {
       provide: 'GetGameListComponent',
       useClass: GetGameListComponent,

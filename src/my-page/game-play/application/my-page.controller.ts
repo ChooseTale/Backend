@@ -6,6 +6,10 @@ import config from '@@src/config';
 import { GetContinuedGameUsecase } from '../domain/usecases/get-continued-game.usecase';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 import { GetEndedGameListUsecase } from '../domain/usecases/get-ended-game-list.usecase';
+import { GetEndedGameListResDto } from './dto/res/get-ended-game-list.res.dto';
+import { GetContinuedGameListResDto } from './dto/res/get-continued-game-list.res.dto';
+import { GetEndedGroupGameListUsecase } from '../domain/usecases/get-ended-group-game-list.usecase';
+import { GetEndedGroupGameListResDto } from './dto/res/get-ended-group-game-list.res.dto';
 
 @Controller('my-page')
 @UseGuards(AuthSerializeGuard)
@@ -13,6 +17,7 @@ export class MyPageController {
   constructor(
     private readonly getContinuedGameUsecase: GetContinuedGameUsecase,
     private readonly getEndedGameUsecase: GetEndedGameListUsecase,
+    private readonly getEndedGroupGameListUsecase: GetEndedGroupGameListUsecase,
   ) {}
 
   /**
@@ -28,7 +33,7 @@ export class MyPageController {
   async getContinuedGameList(
     @Req() req: any,
     @Query() query: GetContinuedGameListQueryDto,
-  ) {
+  ): Promise<GetContinuedGameListResDto[]> {
     return this.getContinuedGameUsecase.execute(req.user.id, query);
   }
 
@@ -45,7 +50,7 @@ export class MyPageController {
   async getEndedGameList(
     @Req() req: any,
     @Query() query: GetEndedGameListQueryDto,
-  ) {
+  ): Promise<GetEndedGameListResDto[]> {
     return this.getEndedGameUsecase.execute(req.user.id, query);
   }
 
@@ -60,35 +65,10 @@ export class MyPageController {
    * @summary 완료한 그룹 게임 리스트
    */
   @Get('/ended-game/group-game')
-  async getEndedGroupGameList(@Query() query: GetEndedGroupGameListQueryDto) {
-    return [
-      {
-        game: {
-          id: 1,
-          title: '부산행: 열차에 좀비가 나타났다.',
-          genre: 'HORROR',
-          totalEndingCount: 4,
-          thumbnail: {
-            url:
-              config.apiHost +
-              '/test-uploads/game-thumnail-images/사랑은타이밍.png',
-          },
-          endings: [
-            {
-              playId: 1,
-              endingNumber: 1,
-              abridgement: '지안은 탈출한다.',
-              reachedEndingAt: new Date(),
-            },
-            {
-              playId: 2,
-              endingNumber: 3,
-              abridgement: '지안은 탈출하지 못한다.',
-              reachedEndingAt: new Date(),
-            },
-          ],
-        },
-      },
-    ];
+  async getEndedGroupGameList(
+    @Req() req: any,
+    @Query() query: GetEndedGroupGameListQueryDto,
+  ): Promise<GetEndedGroupGameListResDto[]> {
+    return await this.getEndedGroupGameListUsecase.execute(req.user.id, query);
   }
 }

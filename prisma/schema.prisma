@@ -74,10 +74,11 @@ model PlayGame {
 
   isEnded Boolean @default(false)
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  deletedAt  DateTime?
-  UserChoice UserChoice[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  lastPlayedAt DateTime     @default(now())
+  deletedAt    DateTime?
+  UserChoice   UserChoice[]
 }
 
 model Game {
