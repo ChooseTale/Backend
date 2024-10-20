@@ -75,6 +75,9 @@ export class MyPageController {
           },
           genre: 'HORROR',
           reachedEndingAt: new Date(),
+          ending: {
+            playId: 1,
+          },
         },
       },
     ];
