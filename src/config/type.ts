@@ -1,4 +1,5 @@
 export type ConfigType = {
+  serverMode: 'local' | 'development' | 'production';
   port: number;
   socketIoPort: number;
   apiHost: string;

@@ -1,11 +1,18 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Query, Req, UseGuards } from '@nestjs/common';
 import { GetContinuedGameListQueryDto } from './dto/req/get-continued-game-list.req.dto';
 import { GetEndedGameListQueryDto } from './dto/req/get-ended-game-list.req.dto';
 import { GetEndedGroupGameListQueryDto } from './dto/req/get-ended-group-game-list.req.dto';
 import config from '@@src/config';
+import { GetContinuedGameUsecase } from '../domain/usecases/get-continued-game.usecase';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 
 @Controller('my-page')
+@UseGuards(AuthSerializeGuard)
 export class MyPageController {
+  constructor(
+    private readonly getContinuedGameUsecase: GetContinuedGameUsecase,
+  ) {}
+
   /**
    * 진행중인 게임 리스트를 출력합니다.
    * 가로스크롤 리스트에서는 limit, order, genre를 각각 8, LATEST, ALL로 보내주시면 됩니다.
@@ -16,29 +23,11 @@ export class MyPageController {
    * @summary 진행중인 게임 리스트
    */
   @Get('/continued-game')
-  async getContinuedGameList(@Query() query: GetContinuedGameListQueryDto) {
-    return [
-      {
-        game: {
-          id: 1,
-          title: '게임 제목',
-          thumbnail: {
-            url:
-              config.apiHost +
-              '/test-uploads/game-thumnail-images/사랑은타이밍.png',
-          },
-          genre: 'HORROR',
-        },
-        play: {
-          id: 1,
-          createdAt: new Date(),
-          page: {
-            id: 1,
-            abridgement: '민수는 공동체와 협력해 대피소를 강화한다.',
-          },
-        },
-      },
-    ];
+  async getContinuedGameList(
+    @Req() req: any,
+    @Query() query: GetContinuedGameListQueryDto,
+  ) {
+    return this.getContinuedGameUsecase.execute(req.user.id, query);
   }
 
   /**
@@ -64,6 +53,9 @@ export class MyPageController {
           },
           genre: 'HORROR',
           reachedEndingAt: new Date(),
+          ending: {
+            playId: 1,
+          },
         },
       },
     ];
