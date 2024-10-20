@@ -11,6 +11,9 @@ export const toGetEndedGroupGameListResDto = (
         title: game.game.title,
         genre: game.game.genre,
         totalEndingCount: game.game.totalEndingCount,
+        thumbnail: {
+          url: game.game.thumbnailUrl,
+        },
         endings: game.endings.map((ending) => {
           return {
             playId: ending.playId,
