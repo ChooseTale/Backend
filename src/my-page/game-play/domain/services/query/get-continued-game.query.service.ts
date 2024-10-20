@@ -3,8 +3,8 @@ import { ListParentQueryService } from './list-parent.query.service';
 export type GetContinuedGameInclude = {
   PlayGame: {
     where: {
-      isEnded: false;
       userId: number;
+      isEnded: false;
     };
     include: {
       UserChoice: {
@@ -27,8 +27,8 @@ export class GetContinuedGameQueryService extends ListParentQueryService {
     const include: GetContinuedGameInclude = {
       PlayGame: {
         where: {
-          isEnded: false,
           userId,
+          isEnded: false,
         },
         include: {
           UserChoice: {
@@ -47,5 +47,14 @@ export class GetContinuedGameQueryService extends ListParentQueryService {
     super({
       include,
     });
+
+    this.query.where = {
+      PlayGame: {
+        some: {
+          userId,
+          isEnded: false,
+        },
+      },
+    };
   }
 }

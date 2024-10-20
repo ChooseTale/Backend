@@ -31,6 +31,7 @@ export class GetContinuedGameListEntity {
         throw new ConflictException('중복된 플레이 게임이 존재합니다.');
       }
       const play = game.PlayGame[0];
+
       const page = play.UserChoice.sort((a, b) => b.id - a.id)[0].choicePage
         .toPage;
       if (!page) {

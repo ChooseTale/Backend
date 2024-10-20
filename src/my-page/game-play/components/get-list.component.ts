@@ -19,7 +19,7 @@ export class GetContinuedGameListComponent {
     )) as unknown as Prisma.GameGetPayload<{
       include: GetContinuedGameInclude;
     }>[];
-    console.log(games);
+
     return new GetContinuedGameListEntity(games);
   }
 }
