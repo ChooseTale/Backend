@@ -70,8 +70,28 @@
     "choicePageId": 5
   },
   {
-    "id": 15,
+    "id": 19,
     "playGameId": 10,
-    "choicePageId": 8
+    "choicePageId": 9
+  },
+  {
+    "id": 15,
+    "playGameId": 11,
+    "choicePageId": 13
+  },
+  {
+    "id": 16,
+    "playGameId": 11,
+    "choicePageId": 14
+  },
+  {
+    "id": 17,
+    "playGameId": 11,
+    "choicePageId": 16
+  },
+  {
+    "id": 18,
+    "playGameId": 11,
+    "choicePageId": 18
   }
 ]

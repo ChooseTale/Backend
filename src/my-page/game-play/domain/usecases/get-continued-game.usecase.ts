@@ -1,30 +1,26 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { GetContinuedGameQueryService } from '../services/query/get-continued-game.query.service';
 import { GetContinuedGameListQueryDto } from '../../application/dto/req/get-continued-game-list.req.dto';
-import { GetContinuedGameListComponent } from '../../components/get-list.component';
+import { GetGameListComponent } from '../../components/get-list.component';
+import { toGetContinuedGameListResDto } from '../services/mapper/to-get-countinued-game-list.mapper.service';
 
 @Injectable()
 export class GetContinuedGameUsecase {
   constructor(
-    @Inject('GetContinuedGameListComponent')
-    private readonly getContinuedGameListComponent: GetContinuedGameListComponent,
+    @Inject('GetGameListComponent')
+    private readonly getContinuedGameListComponent: GetGameListComponent,
   ) {}
 
-  async execute(
-    userId: number,
-    getCountinuedGameListQueryDto: GetContinuedGameListQueryDto,
-  ) {
+  async execute(userId: number, reqQuery: GetContinuedGameListQueryDto) {
     const query = new GetContinuedGameQueryService(userId);
-    query.setPagenation(
-      getCountinuedGameListQueryDto.page,
-      getCountinuedGameListQueryDto.limit,
-    );
-    query.setGenres(getCountinuedGameListQueryDto.genre);
+    query.setPagenation(reqQuery.page, reqQuery.limit);
+    query.setGenres(reqQuery.genre);
+    query.setOrder(reqQuery.order);
 
     const games =
       await this.getContinuedGameListComponent.getContinuedGameListEntity(
         query.getQuery,
       );
-    return games;
+    return toGetContinuedGameListResDto(games);
   }
 }

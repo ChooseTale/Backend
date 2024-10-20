@@ -1,60 +1,55 @@
+import { Prisma } from '@prisma/client';
 import { ListParentQueryService } from './list-parent.query.service';
 
 export type GetContinuedGameInclude = {
-  PlayGame: {
-    where: {
-      userId: number;
-      isEnded: false;
-    };
+  game: {
     include: {
-      UserChoice: {
+      thumbnail: true;
+    };
+  };
+  UserChoice: {
+    include: {
+      choicePage: {
         include: {
-          choicePage: {
-            include: {
-              toPage: true;
-            };
-          };
+          toPage: true;
         };
       };
     };
   };
-
-  thumbnail: true;
 };
 
 export class GetContinuedGameQueryService extends ListParentQueryService {
   constructor(userId: number) {
     const include: GetContinuedGameInclude = {
-      PlayGame: {
-        where: {
-          userId,
-          isEnded: false,
-        },
+      game: {
         include: {
-          UserChoice: {
+          thumbnail: true,
+        },
+      },
+      UserChoice: {
+        include: {
+          choicePage: {
             include: {
-              choicePage: {
-                include: {
-                  toPage: true,
-                },
-              },
+              toPage: true,
             },
           },
         },
       },
-      thumbnail: true,
     };
     super({
       include,
     });
 
     this.query.where = {
-      PlayGame: {
-        some: {
-          userId,
-          isEnded: false,
-        },
-      },
+      userId,
+      isEnded: false,
     };
+  }
+
+  setOrder(order: 'LATEST' | 'OLDEST') {
+    const orderBy: Prisma.PlayGameOrderByWithRelationInput = {
+      createdAt: order === 'LATEST' ? 'desc' : 'asc',
+    };
+    this.query.orderBy = orderBy;
   }
 }

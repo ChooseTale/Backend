@@ -5,12 +5,14 @@ import { GetEndedGroupGameListQueryDto } from './dto/req/get-ended-group-game-li
 import config from '@@src/config';
 import { GetContinuedGameUsecase } from '../domain/usecases/get-continued-game.usecase';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
+import { GetEndedGameListUsecase } from '../domain/usecases/get-ended-game-list.usecase';
 
 @Controller('my-page')
 @UseGuards(AuthSerializeGuard)
 export class MyPageController {
   constructor(
     private readonly getContinuedGameUsecase: GetContinuedGameUsecase,
+    private readonly getEndedGameUsecase: GetEndedGameListUsecase,
   ) {}
 
   /**
@@ -40,25 +42,11 @@ export class MyPageController {
    * @summary 완료한 엔딩 리스트
    */
   @Get('/ended-game')
-  async getEndedGameList(@Query() query: GetEndedGameListQueryDto) {
-    return [
-      {
-        game: {
-          id: 1,
-          title: '게임 제목',
-          thumbnail: {
-            url:
-              config.apiHost +
-              '/test-uploads/game-thumnail-images/사랑은타이밍.png',
-          },
-          genre: 'HORROR',
-          reachedEndingAt: new Date(),
-          ending: {
-            playId: 1,
-          },
-        },
-      },
-    ];
+  async getEndedGameList(
+    @Req() req: any,
+    @Query() query: GetEndedGameListQueryDto,
+  ) {
+    return this.getEndedGameUsecase.execute(req.user.id, query);
   }
 
   /**

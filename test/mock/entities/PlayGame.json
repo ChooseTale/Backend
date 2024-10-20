@@ -59,5 +59,11 @@
     "userId": 1,
     "gameId": 3,
     "isEnded": false
+  },
+  {
+    "id": 11,
+    "userId": 1,
+    "gameId": 4,
+    "isEnded": true
   }
 ]

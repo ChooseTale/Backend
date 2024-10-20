@@ -1,7 +1,7 @@
 import { Genres, Prisma } from '@prisma/client';
 
 export class ListParentQueryService {
-  constructor(protected readonly query: Prisma.GameFindManyArgs<any>) {}
+  constructor(protected readonly query: Prisma.PlayGameFindManyArgs<any>) {}
 
   setGenres(genres: (Genres | 'ALL')[]) {
     for (const genre of genres) {
@@ -9,9 +9,9 @@ export class ListParentQueryService {
         continue;
       }
       if (this.query.where && this.query.where.OR) {
-        this.query.where.OR.push({ genre: genre });
+        this.query.where.OR.push({ game: { genre } });
       } else if (this.query.where) {
-        this.query.where.OR = [{ genre: genre }];
+        this.query.where.OR = [{ game: { genre } }];
       }
     }
   }
