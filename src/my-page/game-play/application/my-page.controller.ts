@@ -28,28 +28,6 @@ export class MyPageController {
     @Query() query: GetContinuedGameListQueryDto,
   ) {
     return this.getContinuedGameUsecase.execute(req.user.id, query);
-    return [
-      {
-        game: {
-          id: 1,
-          title: '게임 제목',
-          thumbnail: {
-            url:
-              config.apiHost +
-              '/test-uploads/game-thumnail-images/사랑은타이밍.png',
-          },
-          genre: 'HORROR',
-        },
-        play: {
-          id: 1,
-          createdAt: new Date(),
-          page: {
-            id: 1,
-            abridgement: '민수는 공동체와 협력해 대피소를 강화한다.',
-          },
-        },
-      },
-    ];
   }
 
   /**
