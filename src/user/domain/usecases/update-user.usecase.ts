@@ -1,4 +1,3 @@
-import config from '@@src/config';
 import { UserComponent } from '@@src/user/components/user.component';
 import { Inject, Injectable } from '@nestjs/common';
 
@@ -10,10 +9,17 @@ export class UpdateUserUsecase {
   ) {}
 
   async execute(userId: number, body: any, image: Express.Multer.File) {
-    const profileImageUrl = '/' + image.path;
     const user = await this.userComponent.getUserEntityByIdOrThrow(userId);
-    user.updateNickname(body.nickname);
-    user.updateProfileImageUrl(profileImageUrl);
+
+    const newNickname = await this.userComponent.getNewNickname(
+      body.nickname,
+      ``,
+      userId,
+    );
+
+    user.updateNickname(newNickname);
+    user.updateProfileImageUrl(image.path);
     await this.userComponent.updateByUserEntity(user);
+    return user;
   }
 }

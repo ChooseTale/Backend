@@ -97,6 +97,18 @@ export class UserController {
     };
   }
 
+  /**
+   * 유저 정보 수정
+   *
+   * 유저의 닉네임과 프로필 이미지를 수정합니다.
+   *
+   * @tag User
+   * @summary 🟡(241022) 유저 정보 수정
+   * @param request
+   * @param image
+   * @param body
+   * @returns
+   */
   @Patch('/')
   @UseGuards(AuthSerializeGuard)
   @UseInterceptors(FileInterceptor('image'))
@@ -109,8 +121,15 @@ export class UserController {
       }),
     )
     image: Express.Multer.File,
+    @Body() body: any,
   ) {
     const userId = request.user.id;
-    await this.updateUserUsecase.execute(userId, {}, image);
+
+    const updatedUser = await this.updateUserUsecase.execute(
+      userId,
+      body,
+      image,
+    );
+    return updatedUser;
   }
 }

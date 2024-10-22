@@ -27,11 +27,15 @@ export class UserComponent {
   }
 
   // 중복된 닉네임이 있으면 랜덤한 숫자를 붙임
-  async getNewNickname(givenName: string, familyName: string): Promise<string> {
+  async getNewNickname(
+    givenName: string,
+    familyName: string = '',
+    userId?: number,
+  ): Promise<string> {
     const user = await this.userRepository.getUserByNickname(
       `${givenName}${familyName}`,
     );
-    if (user) {
+    if (user && user.id !== userId) {
       return `${givenName}${familyName}#${Math.floor(Math.random() * 1000)}`;
     }
     return `${givenName}${familyName}`;
@@ -56,7 +60,7 @@ export class UserComponent {
       nickname: user.nickname,
       profileImageUrl: user.profileImageUrl,
     };
-    console.log(dbUser);
+
     const updatedUser = await this.userRepository.updateUser(user.id, dbUser);
     return new UserEntity(updatedUser);
   }
