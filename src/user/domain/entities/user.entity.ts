@@ -17,11 +17,15 @@ export class UserEntity {
     this.updatedAt = user.updatedAt;
   }
 
+  get getNickname() {
+    return this.nickname;
+  }
+
   updateNickname(nickname: string) {
     this.nickname = nickname;
   }
 
-  updateProfileImageUrl(profileImageUrl: string) {
-    this.profileImageUrl = profileImageUrl;
+  updateProfileImageUrl(multerImagePath: string) {
+    this.profileImageUrl = '/' + multerImagePath;
   }
 }
