@@ -102,6 +102,12 @@ export class UserController {
    *
    * 유저의 닉네임과 프로필 이미지를 수정합니다.
    *
+   * 이미지파일은 jpeg, png, gif 형식만 허용합니다.
+   * image key를 가집니다.
+   *
+   * 그 외의 값은 formdata text형식으로 보내주시면 됩니다.
+   *
+   *
    * @tag User
    * @summary 🟡(241022) 유저 정보 수정
    * @param request
@@ -121,7 +127,10 @@ export class UserController {
       }),
     )
     image: Express.Multer.File,
-    @Body() body: any,
+    @Body()
+    body: {
+      nickname: string;
+    },
   ) {
     const userId = request.user.id;
 
