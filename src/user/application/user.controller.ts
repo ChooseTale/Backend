@@ -111,6 +111,6 @@ export class UserController {
     image: Express.Multer.File,
   ) {
     const userId = request.user.id;
-    await this.updateUserUsecase.execute(userId, body, image);
+    await this.updateUserUsecase.execute(userId, {}, image);
   }
 }
