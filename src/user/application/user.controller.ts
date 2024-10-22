@@ -1,14 +1,31 @@
-import { Body, Controller, Get, Post, Req, Session } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  FileTypeValidator,
+  Get,
+  ParseFilePipe,
+  Patch,
+  Post,
+  Req,
+  Session,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { LoginReqDto } from './dto/login.req.dto';
 import { GoogleSocialLoginUsecase } from '../domain/usecases/google-social-login.usecase';
 import { GetMeUsecase } from '../domain/usecases/get-me.usecase';
 import { MeResDto } from './dto/me.res.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
+import { UpdateUserUsecase } from '../domain/usecases/update-user.usecase';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly googleSocialLoginUsecase: GoogleSocialLoginUsecase,
     private readonly getMeUsecase: GetMeUsecase,
+    private readonly updateUserUsecase: UpdateUserUsecase,
   ) {}
 
   /**
@@ -22,8 +39,9 @@ export class UserController {
    * @returns
    */
   @Get('/me')
+  @UseGuards(AuthSerializeGuard)
   async getMe(@Req() request: any): Promise<MeResDto> {
-    const userId = request.session.userId;
+    const userId = request.user.id;
     const meEntity = await this.getMeUsecase.execute(userId);
     return meEntity;
   }
@@ -77,5 +95,22 @@ export class UserController {
     return {
       message: 'success logout',
     };
+  }
+
+  @Patch('/')
+  @UseGuards(AuthSerializeGuard)
+  @UseInterceptors(FileInterceptor('image'))
+  async updateUser(
+    @Req() request: any,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: /jpeg|png|gif/ })],
+        fileIsRequired: false,
+      }),
+    )
+    image: Express.Multer.File,
+  ) {
+    const userId = request.user.id;
+    await this.updateUserUsecase.execute(userId, {}, image);
   }
 }
