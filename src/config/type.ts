@@ -26,6 +26,10 @@ export type ConfigType = {
       dest: string;
       savePath: string;
     };
+    userImage: {
+      dest: string;
+      savePath: string;
+    };
   };
   slack: {
     githubActionsChannelWebhookUrl: string;

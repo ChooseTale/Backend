@@ -29,4 +29,15 @@ export class UserRepository implements UserRepositoryPort {
     const newUser = await this.prisma.user.create({ data: user });
     return newUser;
   }
+
+  async updateUser(
+    userId: number,
+    user: Prisma.UserUpdateInput,
+  ): Promise<User> {
+    const updatedUser = await this.prisma.user.update({
+      where: { id: userId },
+      data: user,
+    });
+    return updatedUser;
+  }
 }

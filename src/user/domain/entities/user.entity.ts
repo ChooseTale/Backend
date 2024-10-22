@@ -16,4 +16,12 @@ export class UserEntity {
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
   }
+
+  updateNickname(nickname: string) {
+    this.nickname = nickname;
+  }
+
+  updateProfileImageUrl(profileImageUrl: string) {
+    this.profileImageUrl = profileImageUrl;
+  }
 }
