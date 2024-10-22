@@ -46,6 +46,7 @@ jobs:
           nvm install 18
           nvm use 18
           cd ${{ env.DEPLOY_PATH }}
+          git restore
           git fetch --all
           git pull origin ${{ env.BRANCH }}
           yarn install --frozen-lockfile
