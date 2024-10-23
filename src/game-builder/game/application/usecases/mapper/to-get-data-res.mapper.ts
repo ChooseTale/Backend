@@ -23,7 +23,7 @@ export const toGetDataRes = (
     if (thumbnail) {
       thumbnails.unshift({
         id: thumbnail.id,
-        url: thumbnail.url,
+        url: getImagePath(thumbnail.url),
       });
     }
   }
