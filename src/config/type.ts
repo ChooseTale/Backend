@@ -33,6 +33,7 @@ export type ConfigType = {
   };
   slack: {
     githubActionsChannelWebhookUrl: string;
+    errorChannelWebhookUrl: string;
   };
   openAi: {
     openAiApiKey: string;
