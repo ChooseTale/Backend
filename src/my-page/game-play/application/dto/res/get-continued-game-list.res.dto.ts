@@ -3,7 +3,7 @@ export class GetContinuedGameListResDto {
     id: number;
     title: string;
     thumbnail: {
-      url: string;
+      url: string | null;
     };
     genre: string;
   };

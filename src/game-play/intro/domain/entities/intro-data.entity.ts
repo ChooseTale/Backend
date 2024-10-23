@@ -1,4 +1,4 @@
-import config from '@@src/config';
+import { getImagePath } from '@@src/common/components/images/get-path.component';
 import { ConflictException } from '@nestjs/common';
 import {
   Game,
@@ -68,9 +68,7 @@ export class IntroEntity {
     if (!thumbnailUrl) {
       return '';
     }
-    return thumbnailUrl.url.includes('http')
-      ? thumbnailUrl.url
-      : config.apiHost + thumbnailUrl.url;
+    return getImagePath(thumbnailUrl.url);
   }
 
   constructor(

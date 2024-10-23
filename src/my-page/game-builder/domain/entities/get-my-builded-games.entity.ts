@@ -1,14 +1,15 @@
 import { Prisma } from '@prisma/client';
 import { GetMyBuildedGameInclude } from '../services/query/get-my-builded-game.query.service';
-import config from '@@src/config';
+
 import { ConflictException } from '@nestjs/common';
+import { getImagePathOrNull } from '@@src/common/components/images/get-path.component';
 
 export class GetMyBuildedGamesEntity {
   list: {
     id: number;
     title: string;
     thumbnail: {
-      url: string;
+      url: string | null;
     };
     firstPageAbridgement: string;
     genre: string;
@@ -30,12 +31,11 @@ export class GetMyBuildedGamesEntity {
       if (!startingPage) {
         throw new ConflictException('Starting page not found');
       }
-
       return {
         id: game.id,
         title: game.title,
         thumbnail: {
-          url: config.apiHost + game.thumbnail?.url,
+          url: getImagePathOrNull(game.thumbnail?.url),
         },
         firstPageAbridgement: startingPage.abridgement,
         genre: game.genre,

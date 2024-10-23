@@ -3,7 +3,7 @@ export class GetEndedGameListResDto {
     id: number;
     title: string;
     thumbnail: {
-      url: string;
+      url: string | null;
     };
     genre: string;
     reachedEndingAt: Date;

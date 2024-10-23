@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { GetEndedGameInclude } from '../services/query/get-ended-game.query.service';
-import config from '@@src/config';
+import { getImagePathOrNull } from '@@src/common/components/images/get-path.component';
 
 export class GetEndedGameListEntity {
   list: {
@@ -8,7 +8,7 @@ export class GetEndedGameListEntity {
       id: number;
       title: string;
       thumbnail: {
-        url: string;
+        url: string | null;
       };
       genre: string;
       reachedEndingAt: Date;
@@ -27,7 +27,7 @@ export class GetEndedGameListEntity {
           id: playGame.game.id,
           title: playGame.game.title,
           thumbnail: {
-            url: config.apiHost + playGame.game.thumbnail?.url,
+            url: getImagePathOrNull(playGame.game.thumbnail?.url),
           },
           genre: playGame.game.genre,
           reachedEndingAt: playGame.UserChoice.sort((a, b) => a.id - b.id)[0]

@@ -1,6 +1,6 @@
 import { GetListResDto } from '@@src/game-play/list/applications/dto/get-list/get-list.res.dto';
 import { ListPageEntity } from '../../entities/list-page.entity';
-import config from '@@src/config';
+import { getImagePath } from '@@src/common/components/images/get-path.component';
 export class ToGetListResMapper {
   static toGetListRes(
     listPageEntity: ListPageEntity,
@@ -14,7 +14,7 @@ export class ToGetListResMapper {
           thumbnail: game.game.thumbnail
             ? {
                 id: game.game.thumbnail.id,
-                url: config.apiHost + game.game.thumbnail.url,
+                url: getImagePath(game.game.thumbnail.url),
               }
             : null,
           genre: game.game.genre,
@@ -35,7 +35,7 @@ export class ToGetListResMapper {
                   userId: curr.user.id,
                   nickname: curr.user.nickname,
                   profileImage: {
-                    url: config.apiHost + curr.user.profileImage.url,
+                    url: getImagePath(curr.user.profileImage.url),
                   },
                 });
               }
@@ -48,7 +48,7 @@ export class ToGetListResMapper {
           userId: game.publisher.userId,
           nickname: game.publisher.nickname,
           profileImage: {
-            url: config.apiHost + game.publisher.profileImage.url,
+            url: getImagePath(game.publisher.profileImage.url),
           },
         },
         enrichData: {

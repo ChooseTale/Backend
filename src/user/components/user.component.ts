@@ -2,7 +2,7 @@ import { UserRepositoryPort } from '@@src/common/infrastructure/repositories/use
 import { Inject, Injectable } from '@nestjs/common';
 import { UserEntity } from '../domain/entities/user.entity';
 import { MeEntity } from '../domain/entities/me.entity';
-import { Prisma, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserComponent {

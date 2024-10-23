@@ -1,7 +1,7 @@
-import { Page, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { GetContinuedGameInclude } from '../services/query/get-continued-game.query.service';
-import config from '@@src/config';
 import { ConflictException } from '@nestjs/common';
+import { getImagePathOrNull } from '@@src/common/components/images/get-path.component';
 
 export class GetContinuedGameListEntity {
   list: {
@@ -9,7 +9,7 @@ export class GetContinuedGameListEntity {
       id: number;
       title: string;
       thumbnail: {
-        url: string;
+        url: string | null;
       };
       genre: string;
     };
@@ -41,7 +41,7 @@ export class GetContinuedGameListEntity {
         game: {
           id: playGame.game.id,
           title: playGame.game.title,
-          thumbnail: { url: config.apiHost + playGame.game.thumbnail?.url },
+          thumbnail: { url: getImagePathOrNull(playGame.game.thumbnail?.url) },
           genre: playGame.game.genre,
         },
         play: {

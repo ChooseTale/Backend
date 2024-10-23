@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { EndedGroupGameInclude } from '../services/query/get-ended-group-game-list.query.service';
 import { ConflictException } from '@nestjs/common';
-import config from '@@src/config';
+import { getImagePathOrNull } from '@@src/common/components/images/get-path.component';
 
 export class GetEndedGroupGameListEntity {
   list: {
@@ -10,7 +10,7 @@ export class GetEndedGroupGameListEntity {
       title: string;
       genre: string;
       totalEndingCount: number;
-      thumbnailUrl: string;
+      thumbnailUrl: string | null;
     };
     endings: {
       playId: number;
@@ -32,7 +32,7 @@ export class GetEndedGroupGameListEntity {
           title: playGame.game.title,
           genre: playGame.game.genre,
           totalEndingCount: playGame.game.Page.length,
-          thumbnailUrl: config.apiHost + playGame.game.thumbnail?.url,
+          thumbnailUrl: getImagePathOrNull(playGame.game.thumbnail?.url),
         },
         endings: playGame.game.PlayGame.map((p) => {
           const endingPage = p.UserChoice[0].choicePage.toPage;

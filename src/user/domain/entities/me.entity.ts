@@ -1,3 +1,4 @@
+import { getImagePathOrNull } from '@@src/common/components/images/get-path.component';
 import { User } from '@prisma/client';
 
 export class MeEntity {
@@ -5,7 +6,7 @@ export class MeEntity {
   email: string;
   nickname: string;
   profileImage: {
-    url: string;
+    url: string | null;
   };
   admin: {
     isMaster: boolean;
@@ -15,7 +16,7 @@ export class MeEntity {
     this.id = user.id;
     this.email = user.email;
     this.nickname = user.nickname;
-    this.profileImage = { url: user.profileImageUrl };
+    this.profileImage = { url: getImagePathOrNull(user.profileImageUrl) };
     this.admin = { isMaster: true };
   }
 }
