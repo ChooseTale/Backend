@@ -29,7 +29,7 @@ path: ${request.path}
 params: ${JSON.stringify(request.params)}
 body: ${JSON.stringify(request.body)}
 status: ${status}
-message: ${message}
+message: ${typeof message === 'string' ? message : JSON.stringify(message)}
 exception: ${exception}
               `;
     if (config.serverMode === 'development') {

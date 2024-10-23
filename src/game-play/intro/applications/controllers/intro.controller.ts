@@ -4,6 +4,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { GetIntroScreenResDto } from '../dto/get-intro-screnn.dto';
@@ -33,9 +34,10 @@ export class IntroController {
    */
   @Get('/:gameId')
   async getIntroScreen(
+    @Req() req: any,
     @Param('gameId', ParseIntPipe) gameId: number,
   ): Promise<GetIntroScreenResDto> {
-    return await this.getIntroScreenUsecase.execute(gameId, 1);
+    return await this.getIntroScreenUsecase.execute(gameId, req.user.id);
   }
 
   /**
@@ -50,7 +52,8 @@ export class IntroController {
   @Post('/:gameId/first-start')
   async firstStartGame(
     @Param('gameId', ParseIntPipe) gameId: number,
+    @Req() req: any,
   ): Promise<FirstStartGameResDto> {
-    return await this.firstStartGameUsecase.execute(gameId, 1);
+    return await this.firstStartGameUsecase.execute(gameId, req.user.id);
   }
 }
