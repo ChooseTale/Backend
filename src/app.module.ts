@@ -15,6 +15,8 @@ import { join } from 'path';
 import { UserModule } from './user/application/user.module';
 import { MyPageModule } from './my-page/game-play/application/my-page.module';
 import { GameBuilderMyPageModule } from './my-page/game-builder/application/game-builder-my-page.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './common/middleware/exceptions/execption-handller';
 
 @Module({
   imports: [
@@ -37,6 +39,14 @@ import { GameBuilderMyPageModule } from './my-page/game-builder/application/game
     KafkaModule,
   ],
   controllers: [AppController],
-  providers: [PrismaService, AppGateGateway, JwtService],
+  providers: [
+    PrismaService,
+    AppGateGateway,
+    JwtService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule {}

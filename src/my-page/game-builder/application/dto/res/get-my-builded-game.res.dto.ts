@@ -3,7 +3,7 @@ export class GetMyBuildedGameResDto {
     id: number;
     title: string;
     thumbnail: {
-      url: string;
+      url: string | null;
     };
     firstPageAbridgement: string;
     genre: string;

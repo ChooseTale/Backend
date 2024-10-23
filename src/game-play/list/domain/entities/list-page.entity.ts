@@ -1,5 +1,5 @@
-import config from '@@src/config';
-import { Game, Page, PlayGame, Prisma, User } from '@prisma/client';
+import { getImagePath } from '@@src/common/components/images/get-path.component';
+import { Page, PlayGame, Prisma } from '@prisma/client';
 
 export type GameGetPayload = Prisma.GameGetPayload<{
   include: {
@@ -102,7 +102,7 @@ export class ListPageEntity {
           userId: game.User.id,
           nickname: game.User.nickname,
           profileImage: {
-            url: config.apiHost + game.User.profileImageUrl,
+            url: getImagePath(game.User.profileImageUrl),
           },
         },
         enrichData: {
