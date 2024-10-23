@@ -24,11 +24,11 @@ export class ChooseChoiceUsecase {
         chooseChoiceEntity.toPage.id,
       );
     }
-    console.log(chooseChoiceEntity);
     return {
       playId: playGameId,
       page: {
         id: chooseChoiceEntity.toPage.id,
+        isEnding: chooseChoiceEntity.checkIsEnding(),
       },
     };
   }
