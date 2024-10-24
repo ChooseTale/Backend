@@ -61,8 +61,19 @@ export class ToGetListResMapper {
               .filter((playGame) => playGame.user.id === myUser.id)
               .some((playGame) => playGame.isEnded),
             reachedEndingPlayCount: game.game.playGame
-              .filter((playGame) => playGame.user.id === myUser.id)
-              .reduce((acc, playGame) => acc + (playGame.isEnded ? 1 : 0), 0),
+              .filter(
+                (playGame) =>
+                  playGame.user.id === myUser.id && playGame.isEnded,
+              )
+              .reduce((acc: number[], playGame) => {
+                if (
+                  playGame.endingPageId &&
+                  !acc.some((id) => id === playGame.endingPageId)
+                ) {
+                  acc.push(playGame.endingPageId);
+                }
+                return acc;
+              }, []).length,
             isExistContinuePlay: game.game.playGame
               .filter((playGame) => playGame.user.id === myUser.id)
               .some((playGame) => !playGame.isEnded),

@@ -16,7 +16,7 @@ export class PlayRepository implements PlayRepositoryPort {
     gameId: number,
   ): Promise<PlayGame | null> {
     return this.prismaService.playGame.findFirst({
-      where: { userId, gameId, isEnded: false },
+      where: { userId, gameId, endingPageId: null },
     });
   }
 

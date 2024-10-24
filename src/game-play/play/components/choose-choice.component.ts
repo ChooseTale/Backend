@@ -39,9 +39,12 @@ export class ChooseChoiceComponent implements ChooseChoiceComponentInterface {
     return new ChooseChoiceEntity(choice, toPage);
   }
 
-  async updateEndingToPlayGame(playGameId: number): Promise<void> {
+  async updateEndingToPlayGame(
+    playGameId: number,
+    toPageId: number,
+  ): Promise<void> {
     await this.playGameRepository.update(playGameId, {
-      isEnded: true,
+      endingPageId: toPageId,
     });
   }
 }

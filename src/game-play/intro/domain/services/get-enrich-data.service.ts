@@ -14,8 +14,11 @@ export const getExpectPlayTime = (introEntity: IntroEntity) => {
 
 export const getCompletedEndingCount = (introEntity: IntroEntity) => {
   const playGameDatas = introEntity.playGameDatas;
-  const completedEndingCount = playGameDatas.filter(
-    (play) => play.isEnded,
-  ).length;
+  const uniqueEndingPageIds = new Set(
+    playGameDatas
+      .filter((play) => play.endingPageId !== null)
+      .map((play) => play.endingPageId),
+  );
+  const completedEndingCount = uniqueEndingPageIds.size;
   return completedEndingCount;
 };
