@@ -1,7 +1,8 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import config from '@@src/config/index';
-const tables = ['Page', 'ChoicePage', 'Image', 'PlayGame'];
+
+const tables = Object.values(Prisma.ModelName);
 
 export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
@@ -33,9 +34,17 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   }
 
   async softDeleteMiddleware(params: any, next: (params: any) => Promise<any>) {
-    if (tables.includes(params.model) && params.action == 'delete') {
+    if (params.args.mock) {
+      delete params.args.mock;
+      return next(params);
+    }
+    if (
+      tables.includes(params.model) &&
+      (params.action == 'delete' || params.action == 'deleteMany')
+    ) {
       // Change action to an update
-      params.action = 'update';
+
+      params.action = params.action == 'delete' ? 'update' : 'updateMany';
 
       params.args.data = {
         ...params.args.data,

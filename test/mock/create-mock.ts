@@ -18,7 +18,7 @@ export const createMockData = async (prisma: PrismaClient) => {
 
     // 모든 테이블 데이터 삭제
     for (const table of tables) {
-      await prisma[table.tableName].deleteMany();
+      await prisma[table.tableName].deleteMany({ mock: true });
       // 시퀀스 업데이트
       await prisma.$executeRawUnsafe(`
         SELECT setval(pg_get_serial_sequence('"${table.tableName}"', 'id'), coalesce(max(id), 0) + 1, false)

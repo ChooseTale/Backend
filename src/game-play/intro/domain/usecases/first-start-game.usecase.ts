@@ -12,10 +12,9 @@ export class FirstStartGameUsecase {
 
   async execute(gameId: number, userId: number): Promise<FirstStartGameResDto> {
     const playGameEntity = await this.startGameComponent.getContinuePlayGame(
-      gameId,
       userId,
+      gameId,
     );
-
     let newPlayGame: PlayGameEntity;
     // 현재 진행중인 플레이가 있으면 초기화하고 새로운 플레이 생성
     if (playGameEntity) {
