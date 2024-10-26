@@ -18,6 +18,7 @@ import { MeResDto } from './dto/me.res.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 import { UpdateUserUsecase } from '../domain/usecases/update-user.usecase';
+import { LoginResDto } from './dto/login.res.dto';
 
 @Controller('user')
 export class UserController {
@@ -59,11 +60,18 @@ export class UserController {
    * @returns
    */
   @Post('/login')
-  async login(@Body() body: LoginReqDto, @Req() request: any) {
-    let userId: number;
+  async login(
+    @Body() body: LoginReqDto,
+    @Req() request: any,
+  ): Promise<LoginResDto> {
+    let userInfo: {
+      userId: number;
+      isFirstLogin: boolean;
+    };
+
     switch (body.type) {
       case 'google': {
-        userId = await this.googleSocialLoginUsecase.execute(body.token);
+        userInfo = await this.googleSocialLoginUsecase.execute(body.token);
         break;
       }
       default: {
@@ -71,11 +79,12 @@ export class UserController {
       }
     }
 
-    request.session.userId = userId;
+    request.session.userId = userInfo.userId;
     request.session.type = body.type;
 
     return {
-      message: `success login userId: ${userId}`,
+      message: `success login userId: ${userInfo.userId}`,
+      isFirstLogin: userInfo.isFirstLogin,
     };
   }
 

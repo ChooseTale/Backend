@@ -10,7 +10,11 @@ export class GoogleSocialLoginUsecase {
     private readonly userComponent: UserComponentInterface,
   ) {}
 
-  async execute(token: string): Promise<number> {
+  async execute(token: string): Promise<{
+    userId: number;
+    isFirstLogin: boolean;
+  }> {
+    let isFirstLogin = false;
     const url = `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`;
     let response;
     try {
@@ -43,7 +47,11 @@ export class GoogleSocialLoginUsecase {
         newNickname,
         response.data.picture,
       );
+      isFirstLogin = true;
     }
-    return user.id;
+    return {
+      userId: user.id,
+      isFirstLogin,
+    };
   }
 }
