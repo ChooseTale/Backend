@@ -42,7 +42,7 @@ export class GetContinuedGameQueryService extends ListParentQueryService {
 
     this.query.where = {
       userId,
-      isEnded: false,
+      endingPageId: null,
     };
   }
 }

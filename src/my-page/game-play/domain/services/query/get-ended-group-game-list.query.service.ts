@@ -87,7 +87,7 @@ export class GetEndedGroupGameListQueryService extends ListParentQueryService {
     this.query = {
       where: {
         userId,
-        isEnded: true,
+        endingPageId: { not: null },
       },
       include,
       distinct: ['gameId'],

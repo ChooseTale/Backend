@@ -38,7 +38,7 @@ export class IntroEntity {
 
   playGameDatas: {
     id: number | null;
-    isEnded: boolean;
+    endingPageId: number | null;
   }[];
 
   currentPlayGameData: {
@@ -98,7 +98,7 @@ export class IntroEntity {
     this.playGameDatas = playGameDatas.map((play) => {
       return {
         id: play.id,
-        isEnded: play.isEnded,
+        endingPageId: play.endingPageId,
       };
     });
     this.userChoices = userChoices.map((userChoice) => {
@@ -120,7 +120,7 @@ export class IntroEntity {
   }
 
   private getPlayGameData(play: PlayGame[], pages: Page[]) {
-    const currentPlayGame = play.find((p) => p.isEnded === false);
+    const currentPlayGame = play.find((p) => p.endingPageId === null);
     if (!currentPlayGame) {
       this.currentPlayGameData = null;
       return;

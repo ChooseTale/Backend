@@ -33,7 +33,7 @@ export class ListPageEntity {
       playGame: {
         id: number;
         isEnded: boolean;
-
+        endingPageId: number | null;
         user: {
           id: number;
           nickname: string;
@@ -84,8 +84,8 @@ export class ListPageEntity {
           playGame: game.PlayGame.map((playGame) => {
             return {
               id: playGame.id,
-              isEnded: playGame.isEnded,
-
+              isEnded: playGame.endingPageId !== null,
+              endingPageId: playGame.endingPageId,
               user: {
                 id: playGame.user.id,
                 nickname: playGame.user.nickname,
@@ -113,7 +113,7 @@ export class ListPageEntity {
           expectPlayTime: 0,
           me: {
             isExistReachedEndingPlay: false,
-            reachedEndingPlayCount: 0,
+
             isExistContinuePlay: false,
           },
         },
@@ -126,7 +126,8 @@ export class ListPageEntity {
   }
 
   public getTotalRechedEndingPlayCount(playGames: PlayGame[]) {
-    return playGames.filter((playGame) => playGame.isEnded).length;
+    return playGames.filter((playGame) => playGame.endingPageId !== null)
+      .length;
   }
 
   // public getMeData(playGames: PlayGame[], userId: number) {

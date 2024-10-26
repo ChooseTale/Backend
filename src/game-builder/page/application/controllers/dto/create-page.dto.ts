@@ -12,5 +12,4 @@ export class CreatePageResDto {
   id: number;
   abridgement: string;
   content: string;
-  
 }
