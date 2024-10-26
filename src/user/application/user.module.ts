@@ -8,6 +8,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import config from '@@src/config';
 import multer from 'multer';
 import { UpdateUserUsecase } from '../domain/usecases/update-user.usecase';
+import { DeleteUserUsecase } from '../domain/usecases/delete-user.usecase';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UpdateUserUsecase } from '../domain/usecases/update-user.usecase';
     GoogleSocialLoginUsecase,
     GetMeUsecase,
     UpdateUserUsecase,
+    DeleteUserUsecase,
     {
       provide: 'UserComponent',
       useClass: UserComponent,

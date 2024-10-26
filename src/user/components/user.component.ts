@@ -64,4 +64,8 @@ export class UserComponent {
     const updatedUser = await this.userRepository.updateUser(user.id, dbUser);
     return new UserEntity(updatedUser);
   }
+
+  async deleteUser(userId: number) {
+    await this.userRepository.deleteUser(userId);
+  }
 }

@@ -41,4 +41,10 @@ export class GetListQuery extends ListParentQueryService {
     this.query.skip = (page - 1) * limit;
     this.query.take = limit;
   }
+
+  setOrder(order: 'LATEST' | 'OLDEST') {
+    this.query.orderBy = {
+      createdAt: order === 'LATEST' ? 'desc' : 'asc',
+    };
+  }
 }

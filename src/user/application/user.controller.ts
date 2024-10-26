@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
   Get,
   ParseFilePipe,
@@ -18,6 +19,8 @@ import { MeResDto } from './dto/me.res.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 import { UpdateUserUsecase } from '../domain/usecases/update-user.usecase';
+import { LoginResDto } from './dto/login.res.dto';
+import { DeleteUserUsecase } from '../domain/usecases/delete-user.usecase';
 
 @Controller('user')
 export class UserController {
@@ -25,6 +28,7 @@ export class UserController {
     private readonly googleSocialLoginUsecase: GoogleSocialLoginUsecase,
     private readonly getMeUsecase: GetMeUsecase,
     private readonly updateUserUsecase: UpdateUserUsecase,
+    private readonly deleteUserUsecase: DeleteUserUsecase,
   ) {}
 
   /**
@@ -59,11 +63,18 @@ export class UserController {
    * @returns
    */
   @Post('/login')
-  async login(@Body() body: LoginReqDto, @Req() request: any) {
-    let userId: number;
+  async login(
+    @Body() body: LoginReqDto,
+    @Req() request: any,
+  ): Promise<LoginResDto> {
+    let userInfo: {
+      userId: number;
+      isFirstLogin: boolean;
+    };
+
     switch (body.type) {
       case 'google': {
-        userId = await this.googleSocialLoginUsecase.execute(body.token);
+        userInfo = await this.googleSocialLoginUsecase.execute(body.token);
         break;
       }
       default: {
@@ -71,11 +82,12 @@ export class UserController {
       }
     }
 
-    request.session.userId = userId;
+    request.session.userId = userInfo.userId;
     request.session.type = body.type;
 
     return {
-      message: `success login userId: ${userId}`,
+      message: `success login userId: ${userInfo.userId}`,
+      isFirstLogin: userInfo.isFirstLogin,
     };
   }
 
@@ -139,5 +151,29 @@ export class UserController {
       image,
     );
     return updatedUser;
+  }
+
+  /**
+   * 회원 탈퇴
+   *
+   * 회원 탈퇴를 진행합니다.
+   *
+   * 탈퇴한 유저의 닉네임과 이메일은 랜덤 문자열을 붙여 업데이트 합니다.
+   * (재가입을 위함)
+   *
+   * @tag User
+   * @summary 🟡(241026) 회원 탈퇴
+   * @param request
+   * @returns
+   */
+  @Delete('/')
+  @UseGuards(AuthSerializeGuard)
+  async signOut(@Req() request: any) {
+    const userId = request.user.id;
+    await this.deleteUserUsecase.execute(userId);
+    request.session.destroy();
+    return {
+      message: 'success sign out',
+    };
   }
 }

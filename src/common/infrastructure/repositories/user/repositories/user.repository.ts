@@ -40,4 +40,8 @@ export class UserRepository implements UserRepositoryPort {
     });
     return updatedUser;
   }
+
+  async deleteUser(userId: number): Promise<void> {
+    await this.prisma.user.delete({ where: { id: userId } });
+  }
 }

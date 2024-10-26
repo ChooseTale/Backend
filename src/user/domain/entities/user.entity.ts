@@ -21,6 +21,14 @@ export class UserEntity {
     return this.nickname;
   }
 
+  get getEmail() {
+    return this.email;
+  }
+
+  updateEmail(email: string) {
+    this.email = email;
+  }
+
   updateNickname(nickname: string) {
     this.nickname = nickname;
   }

@@ -103,12 +103,22 @@ export const createMockData = async (prisma: PrismaClient) => {
           });
         }
 
+        const dates = [
+          new Date(),
+          new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+          new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
+        ];
+
         await prisma[table.tableName].createMany({
-          data: saveData.map((d) => ({
-            ...d,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          })),
+          data: saveData.map((d) => {
+            const randomDate = dates[Math.floor(Math.random() * dates.length)];
+            return {
+              ...d,
+              createdAt: randomDate,
+              updatedAt: randomDate,
+            };
+          }),
         });
 
         // 시퀀스 업데이트

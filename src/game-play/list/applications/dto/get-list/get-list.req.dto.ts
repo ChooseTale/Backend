@@ -18,4 +18,8 @@ export class GetListReqDto extends ListParentDto {
   @IsString()
   @IsNotEmpty()
   sort: 'LATEST' | 'POPULAR';
+
+  @IsString()
+  @IsNotEmpty()
+  order: 'LATEST' | 'OLDEST';
 }
