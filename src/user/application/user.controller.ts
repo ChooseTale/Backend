@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
   Get,
   ParseFilePipe,
@@ -19,6 +20,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 import { UpdateUserUsecase } from '../domain/usecases/update-user.usecase';
 import { LoginResDto } from './dto/login.res.dto';
+import { DeleteUserUsecase } from '../domain/usecases/delete-user.usecase';
 
 @Controller('user')
 export class UserController {
@@ -26,6 +28,7 @@ export class UserController {
     private readonly googleSocialLoginUsecase: GoogleSocialLoginUsecase,
     private readonly getMeUsecase: GetMeUsecase,
     private readonly updateUserUsecase: UpdateUserUsecase,
+    private readonly deleteUserUsecase: DeleteUserUsecase,
   ) {}
 
   /**
@@ -148,5 +151,16 @@ export class UserController {
       image,
     );
     return updatedUser;
+  }
+
+  @Delete('/')
+  @UseGuards(AuthSerializeGuard)
+  async signOut(@Req() request: any) {
+    const userId = request.user.id;
+    await this.deleteUserUsecase.execute(userId);
+    request.session.destroy();
+    return {
+      message: 'success sign out',
+    };
   }
 }

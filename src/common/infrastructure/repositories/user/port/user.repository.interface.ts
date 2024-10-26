@@ -6,4 +6,5 @@ export interface UserRepositoryPort {
   getUserByIdOrThrow(userId: number): Promise<User>;
   getUserByEmail(email: string): Promise<User | null>;
   updateUser(userId: number, user: Prisma.UserUpdateInput): Promise<User>;
+  deleteUser(userId: number): Promise<void>;
 }
