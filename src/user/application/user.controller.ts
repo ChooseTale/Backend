@@ -153,6 +153,19 @@ export class UserController {
     return updatedUser;
   }
 
+  /**
+   * 회원 탈퇴
+   *
+   * 회원 탈퇴를 진행합니다.
+   *
+   * 탈퇴한 유저의 닉네임과 이메일은 랜덤 문자열을 붙여 업데이트 합니다.
+   * (재가입을 위함)
+   *
+   * @tag User
+   * @summary 🟡(241026) 회원 탈퇴
+   * @param request
+   * @returns
+   */
   @Delete('/')
   @UseGuards(AuthSerializeGuard)
   async signOut(@Req() request: any) {
