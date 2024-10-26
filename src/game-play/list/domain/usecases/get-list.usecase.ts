@@ -16,11 +16,12 @@ export class GetListUsecase {
     query: GetListReqDto,
     myUserId: number,
   ): Promise<GetListResDto[]> {
-    const { page, limit, sort, genre } = query;
+    const { page, limit, sort, genre, order } = query;
     const queryService = new GetListQuery();
     queryService.setGenre(genre);
     queryService.setSort(sort);
     queryService.setPagenation(page, limit);
+    queryService.setOrder(order);
     const listPageEntity = await this.pageNationComponent.getPageEntity(
       queryService.getQuery(),
     );
