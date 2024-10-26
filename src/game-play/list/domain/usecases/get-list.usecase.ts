@@ -22,6 +22,7 @@ export class GetListUsecase {
     queryService.setSort(sort);
     queryService.setPagenation(page, limit);
     queryService.setOrder(order);
+
     const listPageEntity = await this.pageNationComponent.getPageEntity(
       queryService.getQuery(),
     );
