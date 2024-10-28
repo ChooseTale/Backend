@@ -149,7 +149,7 @@ export class IntroEntity {
       (choicePage) =>
         choicePage.id ===
         currentGameChoices.sort((a, b) => a.id - b.id)[0].choicePageId,
-    )?.fromPageId;
+    )?.toPageId;
 
     const currentPage = pages.find(
       (page) => page.id === currentPlayGameFromPageId,
