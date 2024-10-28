@@ -6,6 +6,9 @@ export const toGetEndedGameListResDto = (
 ): GetEndedGameListResDto[] => {
   return endedGameListEntity.list.map((game) => {
     return {
+      ending: {
+        playId: game.ending.playId,
+      },
       game: {
         id: game.game.id,
         title: game.game.title,

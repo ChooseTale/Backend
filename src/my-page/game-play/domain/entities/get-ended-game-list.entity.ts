@@ -4,6 +4,9 @@ import { getImagePathOrNull } from '@@src/common/components/images/get-path.comp
 
 export class GetEndedGameListEntity {
   list: {
+    ending: {
+      playId: number;
+    };
     game: {
       id: number;
       title: string;
@@ -23,6 +26,9 @@ export class GetEndedGameListEntity {
   ) {
     this.list = playGames.map((playGame) => {
       return {
+        ending: {
+          playId: playGame.id,
+        },
         game: {
           id: playGame.game.id,
           title: playGame.game.title,
