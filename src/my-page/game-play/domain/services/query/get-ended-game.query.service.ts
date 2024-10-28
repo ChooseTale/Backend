@@ -23,6 +23,7 @@ export class GetEndedGameQueryService extends ListParentQueryService {
       UserChoice: true,
     };
     this.query = {
+      distinct: ['endingPageId'],
       where: {
         userId,
         endingPageId: { not: null },

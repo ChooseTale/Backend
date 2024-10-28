@@ -1,4 +1,7 @@
 export class GetEndedGameListResDto {
+  ending: {
+    playId: number;
+  };
   game: {
     id: number;
     title: string;

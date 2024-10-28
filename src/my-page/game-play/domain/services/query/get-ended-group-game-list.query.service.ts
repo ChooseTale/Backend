@@ -7,15 +7,17 @@ export type EndedGroupGameInclude = {
       thumbnail: true;
       PlayGame: {
         where: {
+          deletedAt: null;
           userId: number;
         };
         orderBy: {
           lastPlayedAt: 'desc';
         };
-        distinct: ['gameId'];
+        distinct: ['endingPageId'];
         include: {
           UserChoice: {
             where: {
+              deletedAt: null;
               choicePage: {
                 toPage: {
                   isEnding: true;
@@ -35,6 +37,7 @@ export type EndedGroupGameInclude = {
       Page: {
         where: {
           isEnding: true;
+          deletedAt: null;
         };
       };
     };
@@ -50,16 +53,18 @@ export class GetEndedGroupGameListQueryService extends ListParentQueryService {
         include: {
           thumbnail: true,
           PlayGame: {
-            distinct: ['gameId'],
+            distinct: ['endingPageId'],
             orderBy: {
               lastPlayedAt: 'desc',
             },
             where: {
+              deletedAt: null,
               userId,
             },
             include: {
               UserChoice: {
                 where: {
+                  deletedAt: null,
                   choicePage: {
                     toPage: {
                       isEnding: true,
@@ -79,6 +84,7 @@ export class GetEndedGroupGameListQueryService extends ListParentQueryService {
           Page: {
             where: {
               isEnding: true,
+              deletedAt: null,
             },
           },
         },
