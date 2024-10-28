@@ -30,7 +30,7 @@ async function bootstrap() {
     origin: config.allowCorsList,
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   });
 
   if (process.env.NODE_ENV === 'production') {
