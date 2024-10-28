@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  NotFoundException,
   ParseIntPipe,
   Post,
   Query,
@@ -80,7 +81,22 @@ export class AppController {
   }
 
   @Get('/test-user/login')
-  async testUserLogin() {}
+  async testUserLogin(
+    @Query('userId', ParseIntPipe) userId: number,
+    @Req() request: any,
+  ) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('유저가 존재하지 않습니다.');
+    }
+
+    request.session.userId = user.id;
+
+    return 'success';
+  }
 
   @Get('/ping')
   ping(): { key: string } {
