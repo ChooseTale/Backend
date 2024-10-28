@@ -16,10 +16,9 @@ export class GetListUsecase {
     query: GetListReqDto,
     myUserId: number,
   ): Promise<GetListResDto[]> {
-    const { page, limit, sort, genre, order } = query;
+    const { page, limit, genre, order } = query;
     const queryService = new GetListQuery();
     queryService.setGenre(genre);
-    queryService.setSort(sort);
     queryService.setPagenation(page, limit);
     queryService.setOrder(order);
 

@@ -20,7 +20,9 @@ export class ListController {
    *
    * genre는 ,를 이용해 여러개를 받을 수 있습니다.
    *
-   * order는 LATEST, OLDEST를 받을 수 있습니다.
+   * order는 LATEST, OLDEST, POPULAR를 받을 수 있습니다.
+   *
+   * @tag Play-Game
    */
   @Get()
   async getList(
@@ -38,7 +40,9 @@ export class ListController {
   }
 
   /**
+   * 게임 리스트 카운트 조회
    *
+   * @tag Play-Game
    */
   @Get('count')
   async getCount(@Query() query: GetCountReqDto): Promise<GetCountResDto> {
