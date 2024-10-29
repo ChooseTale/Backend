@@ -54,8 +54,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     return next(params);
   }
 
-  constructor(dataSources: any) {
-    super(dataSources);
+  constructor() {
+    super();
     this.$use(this.softDeleteMiddleware);
     this.$use(this.softDeleteFindMiddleware);
   }
