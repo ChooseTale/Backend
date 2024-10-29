@@ -5,6 +5,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from './common/guard/jwt.guard';
 import session from 'express-session';
 import { AllExceptionsFilter } from './common/middleware/exceptions/execption-handller';
+import { PrismaSessionStore } from '@quixo3/prisma-session-store';
+import { PrismaClient } from '@prisma/client';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -22,6 +24,11 @@ async function bootstrap() {
       cookie: {
         maxAge: config.auth.sessionMaxAge,
       },
+      store: new PrismaSessionStore(new PrismaClient(), {
+        checkPeriod: 2 * 60 * 1000, //ms
+        dbRecordIdIsSessionId: true,
+        dbRecordIdFunction: undefined,
+      }),
     }),
   );
 
