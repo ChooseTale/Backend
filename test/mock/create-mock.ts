@@ -6,13 +6,15 @@ import fs from 'fs';
 export const createMockData = async (prisma: PrismaClient) => {
   await prisma.$transaction(async (prisma) => {
     const tables: { tableName: string }[] =
-      await prisma.$queryRaw`SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename != '_prisma_migrations';`.then(
-        (tables: any) => {
+      await prisma.$queryRaw`SELECT tablename FROM pg_tables WHERE schemaname = 'public'  AND tablename != '_prisma_migrations';`
+        .then((tables: any) => {
           return tables.map((table) => {
             return { tableName: table.tablename };
           });
-        },
-      );
+        })
+        .then((tables) => {
+          return tables.filter((table) => table.tableName !== 'Session');
+        });
 
     await prisma.$executeRaw`SET session_replication_role = 'replica';`;
 
@@ -23,7 +25,7 @@ export const createMockData = async (prisma: PrismaClient) => {
       await prisma.$executeRawUnsafe(`
         SELECT setval(pg_get_serial_sequence('"${table.tableName}"', 'id'), coalesce(max(id), 0) + 1, false)
         FROM "${table.tableName}";
-      `);
+        `);
     }
 
     for (const table of jsonEntities) {
@@ -122,6 +124,7 @@ export const createMockData = async (prisma: PrismaClient) => {
         });
 
         // 시퀀스 업데이트
+
         await prisma.$executeRawUnsafe(`
           SELECT setval(pg_get_serial_sequence('"${table.tableName}"', 'id'), coalesce(max(id), 0) + 1, false)
           FROM "${table.tableName}";
