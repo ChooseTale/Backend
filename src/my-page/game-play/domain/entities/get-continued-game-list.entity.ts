@@ -28,16 +28,21 @@ export class GetContinuedGameListEntity {
       include: GetContinuedGameInclude;
     }>[],
   ) {
-    this.list = playGames.map((playGame) => {
-      const page = playGame.UserChoice.sort((a, b) => b.id - a.id)[0]
-        .choicePage;
+    this.list = playGames.reduce((acc: any, playGame) => {
+      let page;
+      if (playGame.UserChoice.length > 0) {
+        page = playGame.UserChoice.sort((a, b) => b.id - a.id)[0].choicePage;
+      } else {
+        return acc;
+      }
 
       if (!page.toPage) {
         throw new ConflictException(
           '진행중인 게임의 다음 페이지가 존재하지 않음',
         );
       }
-      return {
+
+      acc.push({
         game: {
           id: playGame.game.id,
           title: playGame.game.title,
@@ -52,7 +57,9 @@ export class GetContinuedGameListEntity {
             abridgement: page.toPage.abridgement,
           },
         },
-      };
-    });
+      });
+
+      return acc;
+    }, []);
   }
 }
