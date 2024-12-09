@@ -11,10 +11,9 @@ export class AuthSerializeGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
 
-    if (config.serverMode === 'local') {
-      request.user = { id: 8 };
-      return true;
-    }
+    // if (config.serverMode === 'local') {
+    //   return true;
+    // }
 
     if (!request.session || !request.session.userId) {
       throw new UnauthorizedException();
