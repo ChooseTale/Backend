@@ -3,9 +3,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { UserEntity } from '../domain/entities/user.entity';
 import { MeEntity } from '../domain/entities/me.entity';
 import { Prisma } from '@prisma/client';
+import { UserComponentInterface } from './port/user.component.interface';
 
 @Injectable()
-export class UserComponent {
+export class UserComponent implements UserComponentInterface {
   constructor(
     @Inject('UserRepository')
     private readonly userRepository: UserRepositoryPort,

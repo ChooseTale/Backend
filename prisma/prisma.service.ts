@@ -19,7 +19,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   ) {
     if (
       tables.includes(params.model) &&
-      (params.action == 'findUnique' || params.action == 'findMany')
+      (params.action == 'findUnique' ||
+        params.action == 'findMany' ||
+        params.action == 'findFirst')
     ) {
       // Exclude soft-deleted records
       if (!params.args) {

@@ -94,8 +94,12 @@ export class AppController {
     }
 
     request.session.userId = user.id;
+    request.session.type = 'google';
 
-    return 'success';
+    return {
+      message: 'success',
+      isFirstLogin: false,
+    };
   }
 
   @Get('/ping')

@@ -12,6 +12,7 @@ export class AuthSerializeGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     // if (config.serverMode === 'local') {
+    //   // request.user = { id: 1 };
     //   return true;
     // }
 
