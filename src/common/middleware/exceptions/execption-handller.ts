@@ -32,7 +32,8 @@ status: ${status}
 message: ${typeof message === 'string' ? message : JSON.stringify(message)}
 exception: ${exception}
               `;
-    if (config.serverMode === 'development') {
+    if (config.serverMode === 'development' || config.serverMode === 'docker') {
+      console.log('errorMessage', errorMessage);
       axios.post(
         config.slack.errorChannelWebhookUrl,
         {
