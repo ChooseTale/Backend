@@ -9,7 +9,6 @@ on:
         description: 'dev command'
         options:
           - yarn dev
-          - yarn dev:test
 
 env:
   SERVER_HOST: ${{ secrets.DEV_SERVER_HOST }}
@@ -39,24 +38,17 @@ jobs:
       - name: 원격 서버에 배포
         run: |
           ssh -o StrictHostKeyChecking=no ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << 'EOF'
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # nvm을 현재 세션에서 사용하기 위해 로드
 
-          nvm install 18
-          nvm use 18
+
           cd ${{ env.DEPLOY_PATH }}
           git restore
           git fetch --all
           git pull origin ${{ env.BRANCH }}
-          yarn install --frozen-lockfile
 
+          docker-compose -f dev.docker-compose.yml build --no-cache
+          docker-compose -f dev.docker-compose.yml up -d
+          docker image prune -f
 
-          if [ "${{ inputs.dev_command }}" = "yarn dev:test" ]; then
-            lsof -ti:6001 | xargs kill -9 || true
-          elif [ "${{ inputs.dev_command }}" = "yarn dev" ]; then
-            lsof -ti:5001 | xargs kill -9 || true
-          fi
           nohup ${{ inputs.dev_command }} > output.log 2>&1 &
           sleep 5
           EOF
@@ -65,14 +57,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL_WEBHOOK }}
         run: |
-          if [ "${{ inputs.dev_command }}" = "yarn dev:test" ]; then
-            PORT=6001
-          elif [ "${{ inputs.dev_command }}" = "yarn dev" ]; then
-            PORT=5001
-          else
-            PORT="알 수 없음"
-          fi
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"배포가 완료되었습니다. port: ${{ env.PORT }} , branch: ${{ env.BRANCH }}"}' $SLACK_WEBHOOK_URL
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"백엔드 배포가 완료되었습니다. port: 5001 , branch: ${{ env.BRANCH }}"}' $SLACK_WEBHOOK_URL
 
       - name: SSH 키 정리
         run: rm -rf ~/.ssh
