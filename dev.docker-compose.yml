@@ -40,8 +40,8 @@ services:
       context: .
       dockerfile: dev.dockerfile
     ports:
-      - '6001:6001'
-      - '6002:6002'
+      - '5001:5001'
+      - '5002:5002'
     depends_on:
       - db
       - kafka
