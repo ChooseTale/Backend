@@ -1,4 +1,3 @@
-import config from '@@src/config';
 import {
   Injectable,
   CanActivate,
@@ -10,11 +9,6 @@ import {
 export class AuthSerializeGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-
-    if (config.serverMode === 'local' || config.serverMode === 'docker') {
-      // request.user = { id: 1 };
-      return true;
-    }
 
     if (!request.session || !request.session.userId) {
       throw new UnauthorizedException();
