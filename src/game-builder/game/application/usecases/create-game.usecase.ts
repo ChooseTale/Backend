@@ -38,7 +38,7 @@ export class CreateGameUsecase {
         id: newGame.id,
         page: {
           id: newPage.id,
-          abridgement: newPage.abridgement,
+          title: newPage.title,
           content: newPage.content,
         },
       };

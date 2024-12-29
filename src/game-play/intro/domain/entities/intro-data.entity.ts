@@ -20,7 +20,7 @@ export class IntroEntity {
     updatedAt: Date;
     pages: {
       id: number;
-      abridgement: string;
+      title: string;
       content: string;
       isEnding: boolean;
       isStarting: boolean;
@@ -32,7 +32,7 @@ export class IntroEntity {
     };
     firstPage: {
       id: number;
-      abridgement: string;
+      title: string;
     };
   };
 
@@ -45,7 +45,7 @@ export class IntroEntity {
     id: number;
     page: {
       id: number;
-      abridgement: string;
+      title: string;
       content: string;
       isEnding: boolean;
       isStarting: boolean;

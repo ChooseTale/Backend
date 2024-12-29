@@ -18,7 +18,7 @@ export const toGetEndedGroupGameListResDto = (
           return {
             playId: ending.playId,
             endingNumber: ending.endingNumber,
-            abridgement: ending.abridgement,
+            title: ending.title,
             reachedEndingAt: ending.reachedEndingAt,
           };
         }),

@@ -5,7 +5,7 @@ export const toDomain = (page: Page): PageDomainEntity => {
   const pageDomainEntity = new PageDomainEntity(
     page.id,
     page.content,
-    page.abridgement,
+    page.title,
     page.gameId,
     page.isStarting,
     page.isEnding,
@@ -22,7 +22,7 @@ export const toEntity = (
   return {
     id: page.id,
     content: page.content,
-    abridgement: page.abridgement,
+    title: page.title,
     gameId: page.gameId,
     isStarting: page.isStarting,
     isEnding: page.isEnding,
@@ -37,7 +37,7 @@ export const toEntityForCreate = (
 ): Omit<Page, 'id' | 'deletedAt' | 'version'> => {
   return {
     content: page.content,
-    abridgement: page.abridgement,
+    title: page.title,
     gameId: page.gameId,
     isStarting: page.isStarting,
     isEnding: page.isEnding,

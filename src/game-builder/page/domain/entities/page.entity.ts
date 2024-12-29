@@ -4,7 +4,7 @@ export class PageDomainEntity {
   constructor(
     public id: number,
     public content: string,
-    public abridgement: string,
+    public title: string,
     public gameId: number,
     public isStarting: boolean,
     public isEnding: boolean,
@@ -17,8 +17,8 @@ export class PageDomainEntity {
     this.content = content;
   }
 
-  public setAbridgement(abridgement: string) {
-    this.abridgement = abridgement;
+  public setTitle(title: string) {
+    this.title = title;
   }
 
   public checkIsEnding() {
@@ -33,27 +33,27 @@ export class PageDomainEntity {
     }
   }
 
-  private checkEqualUpdateContent(content: string) {
-    return this.content === content; // 내용이 변경되었는지 확인
-  }
+  // private checkEqualUpdateContent(content: string) {
+  //   return this.content === content; // 내용이 변경되었는지 확인
+  // }
 
-  private checkEqualUpdateAbridgement(abridgement: string) {
-    return this.abridgement === abridgement;
-  }
+  // private checkEqualUpdateTitle(title: string) {
+  //   return this.title === title;
+  // }
 
-  public checkShouldUpdateAbridgement(content: string, abridgement: string) {
-    return (
-      !this.checkEqualUpdateContent(content) &&
-      this.checkEqualUpdateAbridgement(abridgement)
-    );
-  }
+  // public checkShouldUpdateAbridgement(content: string, abridgement: string) {
+  //   return (
+  //     !this.checkEqualUpdateContent(content) &&
+  //     this.checkEqualUpdateTitle(title)
+  //   );
+  // }
 
-  public checkCanUpdateByUpdatedData(content: string, abridgement: string) {
-    return (
-      (!this.checkEqualUpdateContent(content) &&
-        !this.checkEqualUpdateAbridgement(abridgement)) ||
-      (this.checkEqualUpdateContent(content) &&
-        !this.checkEqualUpdateAbridgement(abridgement))
-    );
-  }
+  // public checkCanUpdateByUpdatedData(content: string, abridgement: string) {
+  //   return (
+  //     (!this.checkEqualUpdateContent(content) &&
+  //       !this.checkEqualUpdateAbridgement(abridgement)) ||
+  //     (this.checkEqualUpdateContent(content) &&
+  //       !this.checkEqualUpdateAbridgement(abridgement))
+  //   );
+  // }
 }

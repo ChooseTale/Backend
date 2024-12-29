@@ -36,7 +36,7 @@ export const toGetAllResMapper = (
     ) as PageDomainEntity[];
     result.push({
       id: page.id,
-      abridgement: page.abridgement,
+      title: page.title,
       createdAt: page.createdAt,
       updatedAt: page.updatedAt,
       isEnding: page.isEnding,
@@ -60,7 +60,7 @@ export const toGetAllResMapper = (
   for (const page of unconnectedPages) {
     result.push({
       id: page.id,
-      abridgement: page.abridgement,
+      title: page.title,
       createdAt: page.createdAt,
       updatedAt: page.updatedAt,
       description: page.content,

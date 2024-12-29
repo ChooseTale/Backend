@@ -1,6 +1,6 @@
 export interface IChatGPTKafkaPort {
   produceRecommendChoices(message: {
-    abridgement: string;
+    title: string;
     choices: {
       title: string;
       description: string;

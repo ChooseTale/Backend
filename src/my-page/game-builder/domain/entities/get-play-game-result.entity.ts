@@ -1,15 +1,14 @@
 import { ConflictException } from '@nestjs/common';
 import { ChoicePage, Game, Page, UserChoice } from '@prisma/client';
-import { groupBy } from 'rxjs';
 
 export class GetPlayGameResultEntity {
   endingPage: {
     id: number;
-    abridgement: string;
+    title: string;
   };
   choosenPages: {
     id: number;
-    abridgement: string;
+    title: string;
     choices: {
       id: number;
       title: string;
@@ -56,7 +55,7 @@ export class GetPlayGameResultEntity {
 
       this.choosenPages.push({
         id: page.id,
-        abridgement: page.abridgement,
+        title: page.title,
         choices,
       });
       for (const c of cp) {

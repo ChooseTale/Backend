@@ -27,13 +27,13 @@ export class GetRecommandImageUseCase {
       throw new Error('Starting page not found');
     }
     const image = await this.chatGPT.getThumbnailImage(
-      startingPage.abridgement,
+      startingPage.title,
       startingPage.content,
       game.genre,
     );
 
-    if(image === ''){
-      throw new BadRequestException('이미지 생성에 실패했습니다.')
+    if (image === '') {
+      throw new BadRequestException('이미지 생성에 실패했습니다.');
     }
 
     const newImage = await this.imageService.uploadImageForGameThumbnail(

@@ -39,7 +39,7 @@ export class ChatGPT implements IChatGPTPagePort {
   }
 
   async getRecommandedChoices(
-    abridgement: string,
+    title: string,
     choices: { title: string; description: string }[],
   ): Promise<{ title: string; description: string }[]> {
     try {
@@ -57,7 +57,7 @@ export class ChatGPT implements IChatGPTPagePort {
           },
           {
             role: 'user',
-            content: `${abridgement}  ${JSON.stringify(choices)}`,
+            content: `${title}  ${JSON.stringify(choices)}`,
           },
         ],
         model: 'gpt-4o',
@@ -74,7 +74,7 @@ export class ChatGPT implements IChatGPTPagePort {
   }
 
   async getThumbnailImage(
-    abridgement: string,
+    title: string,
     content: string,
     genre: string,
   ): Promise<string> {
@@ -83,7 +83,7 @@ export class ChatGPT implements IChatGPTPagePort {
         model: 'dall-e-3',
         prompt: `
       Create a single, detailed image that visually represents the following themes:
-              - Abridgement: ${abridgement}
+              - Abridgement: ${title}
               - Genre: ${genre}
               ---
               Ensure the image does not contain any text and is presented in a realistic,
@@ -97,7 +97,7 @@ export class ChatGPT implements IChatGPTPagePort {
       const response = await axios.get(imageResponse.data[0].url ?? '', {
         responseType: 'stream',
       });
-      const fileName = `${new Date().getTime()}-${abridgement.slice(0, 10)}.png`;
+      const fileName = `${new Date().getTime()}-${title.slice(0, 10)}.png`;
       const filePath = config.files.gameThumnailImage.dest + `/${fileName}`;
       response.data.pipe(fs.createWriteStream(filePath)).on('error', (err) => {
         console.error('파일 저장 중 오류 발생:', err);

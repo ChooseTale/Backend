@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { IPageService } from '../../domain/ports/input/page.service.interface';
 import {
   UpdatePageReqDto,
@@ -26,14 +31,16 @@ export class UpdatePageUsecase {
     }
     const choices = await this.choiceService.getAllByFromPageId(pageId);
 
-    if(choices.length >0 && body.isEnding){
-      throw new BadRequestException('선택지가 있는 페이지는 엔딩 페이지로 지정할 수 없습니다.')
+    if (choices.length > 0 && body.isEnding) {
+      throw new BadRequestException(
+        '선택지가 있는 페이지는 엔딩 페이지로 지정할 수 없습니다.',
+      );
     }
 
     const updatedPage = await this.pageService.update(pageId, body);
     return {
       id: updatedPage.id,
-      abridgement: updatedPage.abridgement,
+      title: updatedPage.title,
       isEnding: updatedPage.isEnding,
       content: updatedPage.content,
     };

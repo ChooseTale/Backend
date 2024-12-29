@@ -15,7 +15,7 @@ export class GetEndedGroupGameListEntity {
     endings: {
       playId: number;
       endingNumber: number;
-      abridgement: string;
+      title: string;
       reachedEndingAt: Date;
     }[];
   }[];
@@ -47,7 +47,7 @@ export class GetEndedGroupGameListEntity {
               playGame.game.Page.findIndex(
                 (page) => page.id === endingPage.id,
               ) + 1,
-            abridgement: endingPage.abridgement,
+            title: endingPage.title,
             reachedEndingAt: p.lastPlayedAt,
           };
         }),

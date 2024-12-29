@@ -7,7 +7,7 @@ type Choice = {
 
 type Page = {
   id: number;
-  abridgement: string;
+  title: string;
   description: string;
   createdAt: Date;
   updatedAt: Date;

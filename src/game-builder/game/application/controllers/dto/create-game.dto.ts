@@ -17,7 +17,7 @@ export class CreateGameResDto {
 
   page: {
     id: number;
-    abridgement: string;
+    title: string;
     content: string;
   };
 }

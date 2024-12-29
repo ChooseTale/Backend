@@ -1,11 +1,11 @@
 export interface GetPlayGameResultDto {
   endingPage: {
     id: number;
-    abridgement: string;
+    title: string;
   };
   choosenPages: {
     id: number;
-    abridgement: string;
+    title: string;
     choices: {
       id: number;
       title: string;
