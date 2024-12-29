@@ -1,7 +1,7 @@
 import { GameDomainEntity } from '@@src/game-builder/game/domain/entities/game.entity';
 import { IGameRepository } from '@@src/game-builder/game/domain/ports/output/repositories/game.repository.interface';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Genres, Prisma } from '@prisma/client';
 import { IGameService } from './ports/input/game.service.interface';
 import { CreateGameDomainEntity } from './entities/create-game.entity';
 import { UpdateGameReqDto } from '../application/controllers/dto/update-game.dto';
@@ -19,9 +19,11 @@ export class GameService implements IGameService {
   async create(
     userId: number,
     title: string,
+    description: string,
+    genre: Genres,
     transaction: Prisma.TransactionClient,
   ): Promise<GameDomainEntity> {
-    const game = new CreateGameDomainEntity(userId, title);
+    const game = new CreateGameDomainEntity(userId, title, description, genre);
 
     const newGame = await this.gameRepository.create(game, transaction);
 

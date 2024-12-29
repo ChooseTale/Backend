@@ -24,23 +24,13 @@ export class CreateGameUsecase {
       const newGame = await this.gameService.create(
         userId,
         createGameReqDto.title,
+        createGameReqDto.description,
+        createGameReqDto.genre,
         transaction,
       );
-      // const newPage = await this.pageService.create(
-      //   newGame.id,
-      //   {
-      //     content: createGameReqDto.pageOneContent,
-      //   },
-      //   true,
-      //   transaction,
-      // );
+
       return {
         id: newGame.id,
-        page: {
-          // id: newPage.id,
-          // title: newPage.title,
-          // content: newPage.content,
-        } as any,
       };
     });
   }
