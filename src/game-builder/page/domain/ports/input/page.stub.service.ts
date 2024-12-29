@@ -5,7 +5,7 @@ export const PageStubService: IPageService = {
   getAllByGameId: jest.fn(),
   getOneById: jest.fn().mockResolvedValue(PageStubEntity),
   getStartingPage: jest.fn().mockResolvedValue(PageStubEntity),
-  create: jest.fn(),
-  update: jest.fn(),
+  //  create: jest.fn(),
+  //  update: jest.fn(),
   delete: jest.fn(),
 };

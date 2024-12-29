@@ -16,16 +16,16 @@ export interface IPageService {
     gameId: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity | null>;
-  create(
-    gameId: number,
-    createPageReqDto: CreatePageReqDto,
-    isStarting: boolean,
-    transaction?: Prisma.TransactionClient,
-  ): Promise<PageDomainEntity>;
-  update(
-    pageId: number,
-    updatePageReqDto: UpdatePageReqDto,
-    transaction?: Prisma.TransactionClient,
-  ): Promise<PageDomainEntity>;
+  // create(
+  //   gameId: number,
+  //   createPageReqDto: CreatePageReqDto,
+  //   isStarting: boolean,
+  //   transaction?: Prisma.TransactionClient,
+  // ): Promise<PageDomainEntity>;
+  // update(
+  //   pageId: number,
+  //   updatePageReqDto: UpdatePageReqDto,
+  //   transaction?: Prisma.TransactionClient,
+  // ): Promise<PageDomainEntity>;
   delete(pageId: number, transaction?: Prisma.TransactionClient): Promise<void>;
 }

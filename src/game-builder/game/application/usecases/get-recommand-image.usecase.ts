@@ -28,7 +28,7 @@ export class GetRecommandImageUseCase {
     }
     const image = await this.chatGPT.getThumbnailImage(
       startingPage.title,
-      startingPage.content,
+      '여기 수정해야함',
       game.genre,
     );
 

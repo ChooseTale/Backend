@@ -5,7 +5,7 @@ export class GetMyBuildedGameResDto {
     thumbnail: {
       url: string | null;
     };
-    firstPageAbridgement: string;
+    firstPageTitle: string;
     genre: string;
     createdAt: Date;
     updatedAt: Date;

@@ -8,6 +8,7 @@ import {
   PlayGame,
   UserChoice,
   ChoicePage,
+  Prisma,
 } from '@prisma/client';
 
 export class IntroEntity {
@@ -21,7 +22,7 @@ export class IntroEntity {
     pages: {
       id: number;
       title: string;
-      content: string;
+      contents: Prisma.JsonArray;
       isEnding: boolean;
       isStarting: boolean;
     }[];
@@ -46,7 +47,7 @@ export class IntroEntity {
     page: {
       id: number;
       title: string;
-      content: string;
+      contents: Prisma.JsonArray;
       isEnding: boolean;
       isStarting: boolean;
     };

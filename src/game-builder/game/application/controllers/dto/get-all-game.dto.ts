@@ -8,7 +8,9 @@ type Choice = {
 type Page = {
   id: number;
   title: string;
-  description: string;
+  contents: {
+    content: string;
+  }[];
   createdAt: Date;
   updatedAt: Date;
   depth: number;

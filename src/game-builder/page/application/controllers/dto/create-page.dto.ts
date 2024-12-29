@@ -10,6 +10,8 @@ export class CreatePageReqDto {
 
 export class CreatePageResDto {
   id: number;
-  abridgement: string;
-  content: string;
+  title: string;
+  contents: {
+    content: string;
+  }[];
 }

@@ -40,7 +40,7 @@ export const toGetAllResMapper = (
       createdAt: page.createdAt,
       updatedAt: page.updatedAt,
       isEnding: page.isEnding,
-      description: page.content,
+      contents: page.contents,
       depth,
       choices: childChoices,
     });
@@ -63,7 +63,7 @@ export const toGetAllResMapper = (
       title: page.title,
       createdAt: page.createdAt,
       updatedAt: page.updatedAt,
-      description: page.content,
+      contents: page.contents,
       isEnding: page.isEnding,
       depth: -1,
       choices: [],

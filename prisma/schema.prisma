@@ -115,7 +115,7 @@ model Game {
 model Page {
   id Int @id @default(autoincrement())
 
-  content Json[]
+  contents Json[]
 
   title String
 

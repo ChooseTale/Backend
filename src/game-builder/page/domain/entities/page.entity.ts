@@ -1,9 +1,10 @@
 import { ConflictException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 
 export class PageDomainEntity {
   constructor(
     public id: number,
-    public content: string,
+    public contents: { content: string }[],
     public title: string,
     public gameId: number,
     public isStarting: boolean,
@@ -11,10 +12,15 @@ export class PageDomainEntity {
     public version: number,
     public createdAt: Date,
     public updatedAt: Date,
+    public backgroundImageId: number | null,
   ) {}
 
-  public setContent(content: string) {
-    this.content = content;
+  public setContent(
+    contents: {
+      content: string;
+    }[],
+  ) {
+    this.contents = contents;
   }
 
   public setTitle(title: string) {

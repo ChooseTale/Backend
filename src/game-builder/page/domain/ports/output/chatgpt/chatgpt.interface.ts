@@ -5,8 +5,8 @@ export interface IChatGPTPagePort {
     choices: { title: string; description: string }[],
   ): Promise<{ title: string; description: string }[]>;
   getThumbnailImage(
-    abridgement: string,
-    content: string,
+    title: string,
+    description: string,
     genre: string,
   ): Promise<string>;
 }

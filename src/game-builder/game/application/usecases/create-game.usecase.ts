@@ -26,21 +26,21 @@ export class CreateGameUsecase {
         createGameReqDto.title,
         transaction,
       );
-      const newPage = await this.pageService.create(
-        newGame.id,
-        {
-          content: createGameReqDto.pageOneContent,
-        },
-        true,
-        transaction,
-      );
+      // const newPage = await this.pageService.create(
+      //   newGame.id,
+      //   {
+      //     content: createGameReqDto.pageOneContent,
+      //   },
+      //   true,
+      //   transaction,
+      // );
       return {
         id: newGame.id,
         page: {
-          id: newPage.id,
-          title: newPage.title,
-          content: newPage.content,
-        },
+          // id: newPage.id,
+          // title: newPage.title,
+          // content: newPage.content,
+        } as any,
       };
     });
   }

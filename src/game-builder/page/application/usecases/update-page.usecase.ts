@@ -37,12 +37,12 @@ export class UpdatePageUsecase {
       );
     }
 
-    const updatedPage = await this.pageService.update(pageId, body);
+    // const updatedPage = await this.pageService.update(pageId, body);
     return {
-      id: updatedPage.id,
-      title: updatedPage.title,
-      isEnding: updatedPage.isEnding,
-      content: updatedPage.content,
-    };
+      // id: updatedPage.id,
+      // title: updatedPage.title,
+      // isEnding: updatedPage.isEnding,
+      // contents: updatedPage.contents,
+    } as any;
   }
 }

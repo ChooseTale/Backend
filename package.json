@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "dev": "nest start --watch",
+    "dev": "NODE_ENV=development nest start --watch ",
     "dev:docker": "NODE_ENV=dockerDevelopment nest start --watch",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "docker:setup": "npx ts-node ./scripts/docker-setting.ts ",
@@ -49,6 +49,7 @@
     "@nestia/sdk": "^3.2.1",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
+    "@nestjs/swagger": "^8.1.0",
     "@nestjs/testing": "^10.0.0",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.2",

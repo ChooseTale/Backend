@@ -3,8 +3,10 @@ export class CreatePageDomainEntity {
   public updatedAt: Date;
 
   constructor(
-    public content: string,
-    public abridgement: string,
+    public content: {
+      content: string;
+    }[],
+    public title: string,
     public gameId: number,
     public isStarting: boolean,
     public isEnding: boolean,

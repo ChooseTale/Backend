@@ -1,8 +1,8 @@
-import { ChoicePage, Page } from '@prisma/client';
+import { ChoicePage, Page, Prisma } from '@prisma/client';
 
 export class PlayPageEntity {
   id: number;
-  content: string;
+  contents: Prisma.JsonArray;
   title: string;
   choices: {
     id: number;
@@ -15,7 +15,7 @@ export class PlayPageEntity {
 
   constructor(page: Page, choices: ChoicePage[]) {
     this.id = page.id;
-    this.content = page.content;
+    this.contents = page.contents;
     this.title = page.title;
     this.choices = choices.map((choice) => ({
       id: choice.id,
