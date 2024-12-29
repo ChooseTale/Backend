@@ -115,9 +115,12 @@ model Game {
 model Page {
   id Int @id @default(autoincrement())
 
-  content String
+  content Json[]
 
-  abridgement String
+  title String
+
+  backgroundImageId Int?
+  backgroundImage   Image[]
 
   Game   Game @relation(fields: [gameId], references: [id])
   gameId Int
@@ -170,4 +173,6 @@ model Image {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  Page Page[]
 }
