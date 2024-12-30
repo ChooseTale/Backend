@@ -45,6 +45,7 @@ export class PageController {
    * @tag Page
    * @summary 선택지 추천받기 🟡(2407329)
    */
+  // 241229 페이지가 블럭단위로 변경됨에 따라 추천 방식을 변경해야 함.
   @Get(':pageId/recommend-choices')
   async recommendChoicesByExternalService(
     @Param('gameId', ParseIntPipe) gameId: number,
@@ -65,6 +66,7 @@ export class PageController {
    * @tag Page
    * @summary 맞춤법 검사하기 🟡(240730)
    */
+  // chatgpt를 사용하는 방안으로 변경
   @Post('/check-spelling')
   async checkSpellingByExternalService(
     @Param('gameId', ParseIntPipe) gameId: number,

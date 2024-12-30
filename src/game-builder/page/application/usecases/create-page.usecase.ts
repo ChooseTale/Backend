@@ -9,11 +9,13 @@ export class CreatePageUsecase {
   ) {}
 
   public async create(gameId: number, body: CreatePageReqDto) {
-    // const newPage = await this.pageService.create(gameId, body, false);
+    const pages = await this.pageService.getAllByGameId(gameId);
+    const isStarting = pages.length === 0;
+
+    const newPage = await this.pageService.create(gameId, isStarting);
     return {
-      // id: newPage.id,
-      // title: newPage.title,
-      // content: newPage.content,
-    } as any;
+      id: newPage.id,
+      title: newPage.title,
+    };
   }
 }

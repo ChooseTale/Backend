@@ -30,26 +30,15 @@ export class PageService implements IPageService {
     return await this.pageRepository.getStartingPage(gameId, transaction);
   }
 
-  // async create(
-  //   gameId: number,
-  //   createPageReqDto: CreatePageReqDto,
-  //   isStarting: boolean,
-  //   transaction?: Prisma.TransactionClient,
-  // ): Promise<PageDomainEntity> {
-  //   const abridgedContent = await this.chatGPT.getAbridgedContent(
-  //     createPageReqDto?.content,
-  //   );
-
-  //   const page = new CreatePageDomainEntity(
-  //     createPageReqDto?.content ?? '',
-  //     abridgedContent == '' ? createPageReqDto.content : abridgedContent,
-  //     gameId,
-  //     isStarting,
-  //     createPageReqDto?.isEnding ?? false,
-  //   );
-  //   const newPage = await this.pageRepository.create(page, transaction);
-  //   return newPage;
-  // }
+  async create(
+    gameId: number,
+    isStarting: boolean,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<PageDomainEntity> {
+    const page = new CreatePageDomainEntity(gameId, isStarting);
+    const newPage = await this.pageRepository.create(page, transaction);
+    return newPage;
+  }
 
   // async update(
   //   pageId: number,
