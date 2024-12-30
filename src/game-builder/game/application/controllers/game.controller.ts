@@ -96,12 +96,12 @@ export class GameController {
    *
    * 새로운 게임을 생성합니다.
    *
-   * `pageOneContent`를 이용해 게임의 첫 페이지에 들어갈 내용을 설정합니다.
+   * 241229 게임 생성 페이지가 변경됨에 따라 장르 추가
    *
-   *
+   * - 기획 변경에 따라 썸네일 이미지 업로드를 추가해야할 수 있음.
    *
    * @tag Game
-   * @summary 🟢(240718)
+   * @summary 🟢(241229) 게임 생성하기
    */
   @Post()
   async create(
