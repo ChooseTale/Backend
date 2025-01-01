@@ -40,6 +40,7 @@ export class ChatGPT implements IChatGPTPagePort {
 
   async getRecommandedChoices(
     title: string,
+    contents: { content: string }[],
     choices: { title: string; description: string }[],
   ): Promise<{ title: string; description: string }[]> {
     try {
@@ -47,17 +48,18 @@ export class ChatGPT implements IChatGPTPagePort {
         messages: [
           {
             role: 'system',
-            content: `I'm going to create a choice after looking at the content of the novel.
-            If I present an example of options together, please recommend only non-overlapping options.
-            I recommend up to four options, but subtract the number of options I offer,
-            and give me the return value in the form of {tittle: string, description: string}[] for typescript JSON.parse.
-            The description should be a maximum of 100 characters.
-            The description should be predictable of the situation, and finish with a verb.
-            If you can't create a choice, return 'error'. The language must be the same language as the content of the novel.`,
+            content: `역할: 너는 소설의 선택지를 추천해주는 챗봇이야.
+            소설의 내용과 이전의 선택지들을 보고 추천해줘.
+            추천해준 선택지는 이전의 선택지들과 겹치면 안돼.
+            추천해준 선택지는 최대 4개까지만 추천해줘.
+            추천해준 선택지의 설명은 최대 100자까지만 써줘.
+            추천해준 선택지의 설명은 상황에 맞게 써줘.
+            반환 타입은 {tittle: string, description: string}[]이야.
+            만약 선택지를 추천할 수 없다면 'error'를 반환해.`,
           },
           {
             role: 'user',
-            content: `${title}  ${JSON.stringify(choices)}`,
+            content: `제목 : ${title} 내용: ${JSON.stringify(contents)} 선택지 : ${JSON.stringify(choices)}`,
           },
         ],
         model: 'gpt-4o',
@@ -75,21 +77,33 @@ export class ChatGPT implements IChatGPTPagePort {
 
   async getThumbnailImage(
     title: string,
-    content: string,
+    description: string,
     genre: string,
   ): Promise<string> {
     try {
+      const promptGPT = await this.openAI.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+          {
+            role: 'system',
+            content: `너는 게임의 썸네일을 제작하기 위한 프롬프트를 제작하는 제작가야.
+나는 너에게 게임의 제목과 간단한 설명, 장르를 제시할 것이고, 너는 dall e-2가 이미지를 적합하게 뽑아낼 수 있도록 프롬프트를 작성해 줘야해.
+만약, 이미지를 생성하기에 정보가 부족하다면 'error'를 반환해줘.`,
+          },
+          {
+            role: 'user',
+            content: `제목 : ${title} 설명 : ${description} 장르 : ${genre}`,
+          },
+        ],
+      });
+
+      if (promptGPT.choices[0].message.content === 'error') {
+        return '';
+      }
+
       const imageResponse = await this.openAI.images.generate({
         model: 'dall-e-3',
-        prompt: `
-      Create a single, detailed image that visually represents the following themes:
-              - Abridgement: ${title}
-              - Genre: ${genre}
-              ---
-              Ensure the image does not contain any text and is presented in a realistic,
-              single-image format rather than a cartoon style.
-
-            `,
+        prompt: promptGPT.choices[0].message.content ?? '',
         n: 1,
         size: '1024x1024',
       });

@@ -24,6 +24,7 @@ export class GetRecommentChoiceUsecase {
 
     await this.kafkaService.produceRecommendChoices({
       title: title,
+      contents: page.contents,
       choices: choices.map((choice) => {
         return { title: choice.title, description: choice.description };
       }),

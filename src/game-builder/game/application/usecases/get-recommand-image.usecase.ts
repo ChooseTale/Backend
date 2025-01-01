@@ -27,8 +27,8 @@ export class GetRecommandImageUseCase {
       throw new Error('Starting page not found');
     }
     const image = await this.chatGPT.getThumbnailImage(
-      startingPage.title,
-      '여기 수정해야함',
+      game.title,
+      game.description,
       game.genre,
     );
 
