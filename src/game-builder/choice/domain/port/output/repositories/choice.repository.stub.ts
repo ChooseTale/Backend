@@ -13,5 +13,6 @@ export const IChoiceStubRepository: IChoiceRepository = {
     }
   }),
   update: jest.fn(),
-  delete: jest.fn(),
+  deleteMany: jest.fn(),
+  deleteById: jest.fn(),
 };

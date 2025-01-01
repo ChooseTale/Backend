@@ -13,6 +13,7 @@ import { ChoiceModule } from '@@src/game-builder/choice/applications/choice.modu
 
 import { AppGateGateway } from '@@src/common/socketio/gate/chat-gpt.gateway';
 import { KafkaModule } from '@@src/common/kafka/chat-gpt/kafka.module';
+import { ChoiceRepository } from '@@src/game-builder/choice/infrastructure/repositories/choice.repository';
 
 @Module({
   imports: [
@@ -39,6 +40,10 @@ import { KafkaModule } from '@@src/common/kafka/chat-gpt/kafka.module';
     {
       provide: 'IChatGPTPagePort',
       useClass: ChatGPT,
+    },
+    {
+      provide: 'IChoicePageRepository',
+      useClass: ChoiceRepository,
     },
     PrismaService,
   ],

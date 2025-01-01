@@ -1,6 +1,8 @@
 export class UpdatePageReqDto {
   title: string;
-  contents: string;
+  contents: {
+    content: string;
+  }[];
   isEnding: boolean;
 }
 

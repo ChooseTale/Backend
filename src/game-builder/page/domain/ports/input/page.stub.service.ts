@@ -6,6 +6,6 @@ export const PageStubService: IPageService = {
   getOneById: jest.fn().mockResolvedValue(PageStubEntity),
   getStartingPage: jest.fn().mockResolvedValue(PageStubEntity),
   create: jest.fn(),
-  //  update: jest.fn(),
+  update: jest.fn(),
   delete: jest.fn(),
 };

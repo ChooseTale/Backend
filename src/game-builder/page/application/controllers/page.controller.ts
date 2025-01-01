@@ -128,8 +128,9 @@ export class PageController {
    * 페이지의 내용을 수정합니다.
    *
    * 240826 페이지에 선택지가 있다면 엔딩 페이지로 지정할 수 없음
+   * 250101 페이지 수정 기능에 contents 추가
    * @tag Page
-   * @summary 페이지 수정하기 🟢(240721)
+   * @summary 페이지 수정하기 🟢(250101)
    */
   @Patch('/:pageId')
   async update(

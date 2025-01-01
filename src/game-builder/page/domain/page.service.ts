@@ -7,12 +7,14 @@ import { IPageService } from './ports/input/page.service.interface';
 import { CreatePageDomainEntity } from './entities/create-page.entity';
 import { IChatGPTPagePort } from './ports/output/chatgpt/chatgpt.interface';
 import { UpdatePageReqDto } from '../application/controllers/dto/update-page.dto';
+import { IChoiceRepository } from '@@src/game-builder/choice/domain/port/output/repositories/choice.repository.interface';
 
 @Injectable()
 export class PageService implements IPageService {
   constructor(
     @Inject('IPageRepository') private readonly pageRepository: IPageRepository,
-    @Inject('IChatGPTPagePort') private readonly chatGPT: IChatGPTPagePort,
+    @Inject('IChoicePageRepository')
+    private readonly choicePageRepository: IChoiceRepository,
   ) {}
 
   async getAllByGameId(gameId: number, transaction?: Prisma.TransactionClient) {
@@ -40,62 +42,56 @@ export class PageService implements IPageService {
     return newPage;
   }
 
-  // async update(
-  //   pageId: number,
-  //   updatePageReqDto: UpdatePageReqDto,
-  //   transaction?: Prisma.TransactionClient | undefined,
-  // ): Promise<PageDomainEntity> {
-  //   const page = await this.pageRepository.getOneById(pageId, transaction);
-  //   if (!page) {
-  //     throw new NotFoundException('페이지를 찾을 수 없습니다.');
-  //   }
-  //   const newPage = new PageDomainEntity(
-  //     page.id,
-  //     page.content,
-  //     page.title,
-  //     page.gameId,
-  //     page.isStarting,
-  //     page.isEnding,
-  //     page.version,
-  //     page.createdAt,
-  //     page.updatedAt,
-  //   );
+  async update(
+    pageId: number,
+    updatePageReqDto: UpdatePageReqDto,
+    transaction?: Prisma.TransactionClient | undefined,
+  ): Promise<PageDomainEntity> {
+    const page = await this.pageRepository.getOneById(pageId, transaction);
+    if (!page) {
+      throw new NotFoundException('페이지를 찾을 수 없습니다.');
+    }
+    const pageEntity = new PageDomainEntity(
+      page.id,
+      page.contents,
+      page.title,
+      page.gameId,
+      page.isStarting,
+      page.isEnding,
+      page.version,
+      page.createdAt,
+      page.updatedAt,
+      page.backgroundImageId,
+    );
 
-  //   // 요약본이 같은데 컨텐츠가 변경되었다면 새로운 요약본을 생성한다.
-  //   if (
-  //     page.checkShouldUpdateAbridgement(
-  //       updatePageReqDto.content,
-  //       updatePageReqDto.title,
-  //     )
-  //   ) {
-  //     newPage.setAbridgement(
-  //       await this.chatGPT.getAbridgedContent(updatePageReqDto?.content),
-  //     );
-  //   }
+    pageEntity.setContent(updatePageReqDto.contents);
+    pageEntity.setTitle(updatePageReqDto.title);
+    pageEntity.setIsEnding(updatePageReqDto.isEnding);
 
-  //   // 요약본이 다르고 컨텐츠가 다르다면 그대로 저장한다.
-  //   // 또는 요약본이 다르고 컨텐츠가 같다면 그대로 저장한다.
-  //   if (
-  //     page.checkCanUpdateByUpdatedData(
-  //       updatePageReqDto.content,
-  //       updatePageReqDto.title,
-  //     )
-  //   ) {
-  //     newPage.setContent(updatePageReqDto.content);
-  //     newPage.setAbridgement(updatePageReqDto.title);
-  //   }
+    const updatedPage = await this.pageRepository.update(
+      pageEntity,
+      transaction,
+    );
 
-  //   newPage.isEnding = updatePageReqDto.isEnding;
+    // 페이지를 엔딩으로 설정한다면 해당 페이지에 연결된 선택지를 모두 삭제한다.
+    if (pageEntity.isEnding) {
+      await this.choicePageRepository.deleteMany(
+        {
+          where: {
+            fromPageId: pageId,
+          },
+        },
+        transaction,
+      );
+    }
 
-  //   const updatedPage = await this.pageRepository.update(newPage, transaction);
-  //   return updatedPage;
-  // }
+    return updatedPage;
+  }
 
   async delete(
     pageId: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<void> {
-    await this;
     await this.pageRepository.delete(pageId, transaction);
   }
 }
