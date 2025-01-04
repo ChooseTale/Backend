@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "PlayGame" ALTER COLUMN "lastPlayedAt" SET DEFAULT CURRENT_TIMESTAMP;

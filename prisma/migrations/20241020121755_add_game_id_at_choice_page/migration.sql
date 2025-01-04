@@ -1,5 +1,0 @@
--- AlterTable
-ALTER TABLE "ChoicePage" ADD COLUMN     "gameId" INTEGER NOT NULL DEFAULT 1;
-
--- AddForeignKey
-ALTER TABLE "ChoicePage" ADD CONSTRAINT "ChoicePage_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

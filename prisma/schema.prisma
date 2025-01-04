@@ -119,8 +119,8 @@ model Page {
 
   title String
 
-  backgroundImageId Int?
-  backgroundImage   Image[]
+  backgroundImage   PageImage? @relation(fields: [backgroundImageId], references: [id])
+  backgroundImageId Int?       @unique
 
   Game   Game @relation(fields: [gameId], references: [id])
   gameId Int
@@ -161,6 +161,16 @@ model ChoicePage {
   deletedAt  DateTime?
 }
 
+model PageImage {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  Page      Page?
+}
+
 model Image {
   id  Int    @id @default(autoincrement())
   url String
@@ -173,6 +183,4 @@ model Image {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-
-  Page Page[]
 }
