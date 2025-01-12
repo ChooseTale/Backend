@@ -25,7 +25,7 @@ export class AppController {
   ) {}
 
   @Post('/mock')
-  @UseGuards(AuthSerializeGuard)
+  // @UseGuards(AuthSerializeGuard)
   async mock() {
     // uploads의 default 폴더를 제외하고 초기화
     fs.rmSync('uploads', { recursive: true, force: true });
