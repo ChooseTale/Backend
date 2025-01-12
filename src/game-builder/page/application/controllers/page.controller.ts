@@ -24,6 +24,7 @@ import hanspell from 'hanspell';
 import { GetRecommentChoiceUsecase } from '../usecases/get-recomment-choice.usecase';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 import { IsMyGameGuard } from '@@src/game-builder/guard/is-my-game.guard';
+import { GetPageUseCase } from '../usecases/get-page.usecase';
 
 @Controller('/game/:gameId/page')
 @UseGuards(AuthSerializeGuard, IsMyGameGuard)
@@ -33,6 +34,7 @@ export class PageController {
     private readonly updatePageUsecase: UpdatePageUsecase,
     private readonly deletePageUsecase: DeletePageUseCase,
     private readonly getRecommentChoiceUsecase: GetRecommentChoiceUsecase,
+    private readonly getPageUsecase: GetPageUseCase,
   ) {}
 
   /**
@@ -102,6 +104,15 @@ export class PageController {
     return {
       text: testSentence,
     };
+  }
+
+  /** 페이지 조회하기 */
+  @Get('/:pageId')
+  async getPage(
+    @Param('gameId', ParseIntPipe) gameId: number,
+    @Param('pageId', ParseIntPipe) pageId: number,
+  ) {
+    return await this.getPageUsecase.execute(gameId, pageId);
   }
 
   /**

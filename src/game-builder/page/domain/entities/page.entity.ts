@@ -1,7 +1,11 @@
 import { ConflictException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { PageImage, Prisma } from '@prisma/client';
 
 export class PageDomainEntity {
+  public backgroundImage: {
+    url: string | null;
+  } = { url: null };
+
   constructor(
     public id: number,
     public contents: { content: string }[],
@@ -29,6 +33,11 @@ export class PageDomainEntity {
 
   public setIsEnding(isEnding: boolean) {
     this.isEnding = isEnding;
+  }
+
+  public setBackgroundImage(backgroundImage: PageImage) {
+    this.backgroundImage = backgroundImage;
+    this.backgroundImage.url = backgroundImage.url;
   }
 
   public checkIsEnding() {
