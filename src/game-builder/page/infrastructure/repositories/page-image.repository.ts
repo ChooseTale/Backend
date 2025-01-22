@@ -1,8 +1,9 @@
 import { PageImage } from '@prisma/client';
 import { IPageImageRepository } from '../../domain/ports/output/repositories/page-image.repository.interface';
-import { NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@@prisma/prisma.service';
 
+@Injectable()
 export class PageImageRepository implements IPageImageRepository {
   constructor(private readonly prisma: PrismaService) {}
 
@@ -14,5 +15,11 @@ export class PageImageRepository implements IPageImageRepository {
       throw new NotFoundException('Page image not found');
     }
     return pageImage;
+  }
+
+  async uploadImageForPage(file: { url: string }): Promise<PageImage> {
+    return await this.prisma.pageImage.create({
+      data: { url: file.url },
+    });
   }
 }

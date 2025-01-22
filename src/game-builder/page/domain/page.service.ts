@@ -8,6 +8,7 @@ import { CreatePageDomainEntity } from './entities/create-page.entity';
 import { IChatGPTPagePort } from './ports/output/chatgpt/chatgpt.interface';
 import { UpdatePageReqDto } from '../application/controllers/dto/update-page.dto';
 import { IChoiceRepository } from '@@src/game-builder/choice/domain/port/output/repositories/choice.repository.interface';
+import { IPageImageRepository } from './ports/output/repositories/page-image.repository.interface';
 
 @Injectable()
 export class PageService implements IPageService {
@@ -15,6 +16,8 @@ export class PageService implements IPageService {
     @Inject('IPageRepository') private readonly pageRepository: IPageRepository,
     @Inject('IChoicePageRepository')
     private readonly choicePageRepository: IChoiceRepository,
+    @Inject('IPageImageRepository')
+    private readonly pageImageRepository: IPageImageRepository,
   ) {}
 
   async getAllByGameId(gameId: number, transaction?: Prisma.TransactionClient) {
@@ -22,7 +25,17 @@ export class PageService implements IPageService {
   }
 
   async getOneById(id: number, transaction?: Prisma.TransactionClient) {
-    return await this.pageRepository.getOneById(id, transaction);
+    const pageEntity = await this.pageRepository.getOneById(id, transaction);
+    if (!pageEntity) {
+      throw new NotFoundException('Page not found');
+    }
+    if (pageEntity.backgroundImageId) {
+      const backgroundImage = await this.pageImageRepository.getOneByIdOrThrow(
+        pageEntity.backgroundImageId,
+      );
+      pageEntity.setBackgroundImage(backgroundImage);
+    }
+    return pageEntity;
   }
 
   async getStartingPage(
@@ -45,6 +58,7 @@ export class PageService implements IPageService {
   async update(
     pageId: number,
     updatePageReqDto: UpdatePageReqDto,
+    backgroundImageId: number | null,
     transaction?: Prisma.TransactionClient | undefined,
   ): Promise<PageDomainEntity> {
     const page = await this.pageRepository.getOneById(pageId, transaction);
@@ -61,7 +75,7 @@ export class PageService implements IPageService {
       page.version,
       page.createdAt,
       page.updatedAt,
-      page.backgroundImageId,
+      backgroundImageId,
     );
 
     pageEntity.setContent(updatePageReqDto.contents);

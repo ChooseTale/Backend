@@ -2,13 +2,18 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseIntPipe,
   Patch,
   Post,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreatePageReqDto, CreatePageResDto } from './dto/create-page.dto';
 import {
@@ -25,6 +30,8 @@ import { GetRecommentChoiceUsecase } from '../usecases/get-recomment-choice.usec
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 import { IsMyGameGuard } from '@@src/game-builder/guard/is-my-game.guard';
 import { GetPageUseCase } from '../usecases/get-page.usecase';
+import { GetPageResDto } from './dto/get-page.dto';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('/game/:gameId/page')
 @UseGuards(AuthSerializeGuard, IsMyGameGuard)
@@ -111,7 +118,7 @@ export class PageController {
   async getPage(
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
-  ) {
+  ): Promise<GetPageResDto> {
     return await this.getPageUsecase.execute(gameId, pageId);
   }
 
@@ -140,16 +147,33 @@ export class PageController {
    *
    * 240826 페이지에 선택지가 있다면 엔딩 페이지로 지정할 수 없음
    * 250101 페이지 수정 기능에 contents 추가
+   * 250122 이미지 업로드 기능 추가
    * @tag Page
    * @summary 페이지 수정하기 🟢(250101)
    */
   @Patch('/:pageId')
+  @UseInterceptors(FileInterceptor('image'))
   async update(
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          // jpeg와 png, gif 허용
+          new FileTypeValidator({
+            fileType: /jpeg|png|gif/,
+          }),
+          new MaxFileSizeValidator({
+            maxSize: 3 * 1024 * 1024,
+          }),
+        ],
+        fileIsRequired: false,
+      }),
+    )
+    file: Express.Multer.File,
     @Body() body: UpdatePageReqDto,
   ): Promise<UpdatePageResDto> {
-    return await this.updatePageUsecase.excute(gameId, pageId, body);
+    return await this.updatePageUsecase.excute(gameId, pageId, body, file);
   }
 
   /**
