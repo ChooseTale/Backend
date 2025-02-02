@@ -13,12 +13,39 @@ import { ChoiceModule } from '@@src/game-builder/choice/applications/choice.modu
 
 import { AppGateGateway } from '@@src/common/socketio/gate/chat-gpt.gateway';
 import { KafkaModule } from '@@src/common/kafka/chat-gpt/kafka.module';
+import { ChoiceRepository } from '@@src/game-builder/choice/infrastructure/repositories/choice.repository';
+import { GetPageUseCase } from './usecases/get-page.usecase';
+
+import { ImageService } from '@@src/game-builder/images/domain/image.service';
+import { ImageModule } from '@@src/game-builder/images/image.module';
+import { MulterModule } from '@nestjs/platform-express';
+import config from '@@src/config';
+import multer from 'multer';
 
 @Module({
   imports: [
     forwardRef(() => GameModule),
     forwardRef(() => ChoiceModule),
     KafkaModule,
+    ImageModule,
+    MulterModule.register({
+      dest: config.files.pageImage.dest,
+      storage: multer.diskStorage({
+        destination: config.files.pageImage.dest,
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(
+            null,
+            file.fieldname +
+              '-' +
+              uniqueSuffix +
+              '.' +
+              file.mimetype.split('/')[1],
+          );
+        },
+      }),
+    }),
   ],
   controllers: [PageController],
   providers: [
@@ -26,6 +53,8 @@ import { KafkaModule } from '@@src/common/kafka/chat-gpt/kafka.module';
     UpdatePageUsecase,
     DeletePageUseCase,
     GetRecommentChoiceUsecase,
+    GetPageUseCase,
+    ImageService,
     ChatGPT,
     AppGateGateway,
     {
@@ -39,6 +68,10 @@ import { KafkaModule } from '@@src/common/kafka/chat-gpt/kafka.module';
     {
       provide: 'IChatGPTPagePort',
       useClass: ChatGPT,
+    },
+    {
+      provide: 'IChoicePageRepository',
+      useClass: ChoiceRepository,
     },
     PrismaService,
   ],

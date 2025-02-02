@@ -3,6 +3,7 @@ import { GetAllGameResDto } from '../../controllers/dto/get-all-game.dto';
 import { GameDomainEntity } from '@@src/game-builder/game/domain/entities/game.entity';
 import { ChoiceDomainEntity } from '@@src/game-builder/choice/domain/entities/choice.entity';
 import { NotFoundException } from '@nestjs/common';
+import { getImagePathOrNull } from '@@src/common/components/images/get-path.component';
 
 export const toGetAllResMapper = (
   game: GameDomainEntity,
@@ -36,11 +37,15 @@ export const toGetAllResMapper = (
     ) as PageDomainEntity[];
     result.push({
       id: page.id,
-      abridgement: page.abridgement,
+      title: page.title,
       createdAt: page.createdAt,
       updatedAt: page.updatedAt,
+      isStarting: page.isStarting,
       isEnding: page.isEnding,
-      description: page.content,
+      backgroundImage: {
+        url: getImagePathOrNull(page.backgroundImage?.url ?? undefined),
+      },
+      contents: page.contents,
       depth,
       choices: childChoices,
     });
@@ -57,13 +62,18 @@ export const toGetAllResMapper = (
         choice.parentPageId !== page.id && choice.childPageId !== page.id,
     ),
   );
+
   for (const page of unconnectedPages) {
     result.push({
       id: page.id,
-      abridgement: page.abridgement,
+      title: page.title,
       createdAt: page.createdAt,
       updatedAt: page.updatedAt,
-      description: page.content,
+      contents: page.contents,
+      backgroundImage: {
+        url: getImagePathOrNull(page.backgroundImage?.url ?? undefined),
+      },
+      isStarting: page.isStarting,
       isEnding: page.isEnding,
       depth: -1,
       choices: [],

@@ -1,12 +1,27 @@
+import { Transform, Type } from 'class-transformer';
+import { IsBoolean, IsString, Length } from 'class-validator';
+
 export class UpdatePageReqDto {
-  abridgement: string;
-  content: string;
+  @IsString()
+  @Length(1, 30)
+  title: string;
+
+  @Transform(({ value }) => JSON.parse(value))
+  contents: {
+    content: string;
+  }[];
+
+  @IsBoolean()
+  @Transform(({ value }) => {
+    console.log(value);
+    return JSON.parse(value) == true;
+  })
   isEnding: boolean;
 }
 
 export class UpdatePageResDto {
   id: number;
-  abridgement?: string;
-  content: string;
+  title?: string;
+  contents: string;
   isEnding: boolean;
 }

@@ -11,7 +11,7 @@ export class GetMyBuildedGamesEntity {
     thumbnail: {
       url: string | null;
     };
-    firstPageAbridgement: string;
+    description: string;
     genre: string;
     createdAt: Date;
     updatedAt: Date;
@@ -37,7 +37,7 @@ export class GetMyBuildedGamesEntity {
         thumbnail: {
           url: getImagePathOrNull(game.thumbnail?.url),
         },
-        firstPageAbridgement: startingPage.abridgement,
+        description: game.description,
         genre: game.genre,
         createdAt: game.createdAt,
         updatedAt: game.updatedAt,

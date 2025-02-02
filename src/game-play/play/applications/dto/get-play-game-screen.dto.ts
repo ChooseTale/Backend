@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client';
+
 export interface GetPlayGameScreenDto {
   playId: number;
   gameIntroData: {
@@ -23,8 +25,8 @@ export interface GetPlayGameScreenDto {
   };
   page: {
     id: number;
-    description: string;
-    tempDescription: string;
+    contents: Prisma.JsonArray;
+
     choices: {
       id: number;
       title: string;

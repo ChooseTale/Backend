@@ -7,12 +7,12 @@ export const toGetPlayGameResultMapper = (
   return {
     endingPage: {
       id: entity.endingPage.id,
-      abridgement: entity.endingPage.abridgement,
+      title: entity.endingPage.title,
     },
     choosenPages: entity.choosenPages.map((choosenPage) => {
       return {
         id: choosenPage.id,
-        abridgement: choosenPage.abridgement,
+        title: choosenPage.title,
         choices: choosenPage.choices,
       };
     }),

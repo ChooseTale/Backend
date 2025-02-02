@@ -1,24 +1,43 @@
 import { ConflictException } from '@nestjs/common';
+import { PageImage, Prisma } from '@prisma/client';
 
 export class PageDomainEntity {
+  public backgroundImage: {
+    url: string | null;
+  } = { url: null };
+
   constructor(
     public id: number,
-    public content: string,
-    public abridgement: string,
+    public contents: { content: string }[],
+    public title: string,
     public gameId: number,
     public isStarting: boolean,
     public isEnding: boolean,
     public version: number,
     public createdAt: Date,
     public updatedAt: Date,
+    public backgroundImageId: number | null,
   ) {}
 
-  public setContent(content: string) {
-    this.content = content;
+  public setContent(
+    contents: {
+      content: string;
+    }[],
+  ) {
+    this.contents = contents;
   }
 
-  public setAbridgement(abridgement: string) {
-    this.abridgement = abridgement;
+  public setTitle(title: string) {
+    this.title = title;
+  }
+
+  public setIsEnding(isEnding: boolean) {
+    this.isEnding = isEnding;
+  }
+
+  public setBackgroundImage(backgroundImage: PageImage) {
+    this.backgroundImage = backgroundImage;
+    this.backgroundImage.url = backgroundImage.url;
   }
 
   public checkIsEnding() {
@@ -31,29 +50,5 @@ export class PageDomainEntity {
     if (this.isStarting) {
       throw new ConflictException('스타팅 페이지에 적용할 수 없는 요청');
     }
-  }
-
-  private checkEqualUpdateContent(content: string) {
-    return this.content === content; // 내용이 변경되었는지 확인
-  }
-
-  private checkEqualUpdateAbridgement(abridgement: string) {
-    return this.abridgement === abridgement;
-  }
-
-  public checkShouldUpdateAbridgement(content: string, abridgement: string) {
-    return (
-      !this.checkEqualUpdateContent(content) &&
-      this.checkEqualUpdateAbridgement(abridgement)
-    );
-  }
-
-  public checkCanUpdateByUpdatedData(content: string, abridgement: string) {
-    return (
-      (!this.checkEqualUpdateContent(content) &&
-        !this.checkEqualUpdateAbridgement(abridgement)) ||
-      (this.checkEqualUpdateContent(content) &&
-        !this.checkEqualUpdateAbridgement(abridgement))
-    );
   }
 }

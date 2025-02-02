@@ -95,7 +95,7 @@ export class ChoiceRepository implements IChoiceRepository {
           gameId,
           toPageId: createChoiceReqDto.childPageId ?? null,
           title: createChoiceReqDto.title,
-          description: createChoiceReqDto.description,
+          description: '',
           order,
           fromPageId: createChoiceReqDto.parentPageId,
         },
@@ -144,7 +144,14 @@ export class ChoiceRepository implements IChoiceRepository {
     return toDomain(updatedChoice);
   }
 
-  async delete(
+  async deleteMany(
+    query: Prisma.ChoicePageDeleteManyArgs,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<void> {
+    await (transaction ?? this.prisma).choicePage.deleteMany(query);
+  }
+
+  async deleteById(
     choiceId: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<void> {

@@ -16,8 +16,18 @@ export class PageRepository implements IPageRepository {
   ): Promise<PageDomainEntity[]> {
     const pages = await (transaction ?? this.prisma).page.findMany({
       where: { gameId },
+      include: {
+        backgroundImage: true,
+      },
     });
-    return pages.map(toDomain);
+
+    return pages.map((page) => {
+      const pageDomainEntity = toDomain(page);
+      if (page.backgroundImage) {
+        pageDomainEntity.setBackgroundImage(page.backgroundImage);
+      }
+      return pageDomainEntity;
+    });
   }
 
   async getOneById(
@@ -57,7 +67,7 @@ export class PageRepository implements IPageRepository {
     const pageEntity = toEntity(page);
     const updatedPage = await (transaction ?? this.prisma).page.update({
       where: { id: page.id },
-      data: pageEntity,
+      data: pageEntity as any,
     });
     return toDomain(updatedPage);
   }

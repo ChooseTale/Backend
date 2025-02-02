@@ -6,8 +6,7 @@ export const mapPageDataToResDto = (
 ): GetPlayGameScreenDto['page'] => {
   return {
     id: page.id,
-    description: page.content,
-    tempDescription: '이제 곧 없앰',
+    contents: page.contents,
     choices: page.choices.map((choice) => ({
       id: choice.id,
       title: choice.title,

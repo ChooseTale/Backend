@@ -12,7 +12,7 @@ export class GetContinuedGameListResDto {
     createdAt: Date;
     page: {
       id: number;
-      abridgement: string;
+      title: string;
     };
   };
 }

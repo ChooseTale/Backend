@@ -123,7 +123,7 @@ export class ChoiceService implements IChoiceService {
       throw new NotFoundException('해당 선택지가 존재하지 않습니다.');
     }
 
-    await this.choiceRepository.delete(choiceId, transaction);
+    await this.choiceRepository.deleteById(choiceId, transaction);
     await this.updateOrder(choice.parentPageId, transaction);
   }
 }

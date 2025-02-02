@@ -10,7 +10,7 @@ export class GetEndedGroupGameListResDto {
     endings: {
       playId: number;
       endingNumber: number;
-      abridgement: string;
+      title: string;
       reachedEndingAt: Date;
     }[];
   };

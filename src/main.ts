@@ -7,6 +7,8 @@ import session from 'express-session';
 import { AllExceptionsFilter } from './common/middleware/exceptions/execption-handller';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import { PrismaClient } from '@prisma/client';
+import { SwaggerModule } from '@nestjs/swagger';
+import fs from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -39,6 +41,14 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   });
+
+  if (process.env.NODE_ENV === 'development') {
+    const swaggerDocument = JSON.parse(
+      fs.readFileSync('./nestia/swagger.json', 'utf8'),
+    );
+
+    SwaggerModule.setup('api-docs', app, swaggerDocument);
+  }
 
   if (process.env.NODE_ENV === 'production') {
     app.useGlobalGuards(new JwtAuthGuard());

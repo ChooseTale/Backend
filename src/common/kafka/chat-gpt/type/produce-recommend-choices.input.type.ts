@@ -1,5 +1,8 @@
 export type ProduceRecommendChoicesInputType = {
-  abridgement: string;
+  title: string;
+  contents: {
+    content: string;
+  }[];
   choices: {
     title: string;
     description: string;

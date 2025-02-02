@@ -10,7 +10,7 @@ export const toGetMyBuildedGameMapper = (
         id: game.id,
         title: game.title,
         thumbnail: game.thumbnail,
-        firstPageAbridgement: game.firstPageAbridgement,
+        description: game.description,
         genre: game.genre,
         createdAt: game.createdAt,
         updatedAt: game.updatedAt,

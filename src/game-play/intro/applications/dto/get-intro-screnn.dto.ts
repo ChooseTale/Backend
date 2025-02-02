@@ -25,7 +25,7 @@ export interface Play {
   id: number | null;
   page: {
     id: number;
-    abridgement: string;
+    title: string;
   } | null;
 }
 

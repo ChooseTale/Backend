@@ -18,7 +18,7 @@ export class GetContinuedGameListEntity {
       createdAt: Date;
       page: {
         id: number;
-        abridgement: string;
+        title: string;
       };
     };
   }[];
@@ -54,7 +54,7 @@ export class GetContinuedGameListEntity {
           createdAt: playGame.createdAt,
           page: {
             id: page.id,
-            abridgement: page.toPage.abridgement,
+            title: page.toPage.title,
           },
         },
       });

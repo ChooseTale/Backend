@@ -7,12 +7,18 @@ type Choice = {
 
 type Page = {
   id: number;
-  abridgement: string;
-  description: string;
+  title: string;
+  contents: {
+    content: string;
+  }[];
   createdAt: Date;
   updatedAt: Date;
   depth: number;
+  isStarting: boolean;
   isEnding: boolean;
+  backgroundImage: {
+    url: string | null;
+  };
   choices: Choice[];
 };
 

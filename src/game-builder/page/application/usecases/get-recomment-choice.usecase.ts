@@ -20,10 +20,11 @@ export class GetRecommentChoiceUsecase {
     if (!page) {
       throw new NotFoundException('Page not found');
     }
-    const abridgement = page.abridgement;
+    const title = page.title;
 
     await this.kafkaService.produceRecommendChoices({
-      abridgement,
+      title: title,
+      contents: page.contents,
       choices: choices.map((choice) => {
         return { title: choice.title, description: choice.description };
       }),

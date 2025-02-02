@@ -115,9 +115,12 @@ model Game {
 model Page {
   id Int @id @default(autoincrement())
 
-  content String
+  contents Json[] @default([])
 
-  abridgement String
+  title String
+
+  backgroundImage   PageImage? @relation(fields: [backgroundImageId], references: [id])
+  backgroundImageId Int?       @unique
 
   Game   Game @relation(fields: [gameId], references: [id])
   gameId Int
@@ -156,6 +159,16 @@ model ChoicePage {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   deletedAt  DateTime?
+}
+
+model PageImage {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  Page      Page?
 }
 
 model Image {

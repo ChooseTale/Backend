@@ -15,7 +15,9 @@ export class UpdateGameUseCase {
     userId: number,
     updateGameReqDto: UpdateGameReqDto,
   ) {
-    await this.imageService.getOneOrThrow(updateGameReqDto.thumbnailImageId);
+    if (updateGameReqDto.thumbnailImageId) {
+      await this.imageService.getOneOrThrow(updateGameReqDto.thumbnailImageId);
+    }
 
     const updatedGame = await this.gameService.update(
       gameId,
