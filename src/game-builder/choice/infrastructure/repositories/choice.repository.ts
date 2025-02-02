@@ -95,7 +95,7 @@ export class ChoiceRepository implements IChoiceRepository {
           gameId,
           toPageId: createChoiceReqDto.childPageId ?? null,
           title: createChoiceReqDto.title,
-          description: createChoiceReqDto.description,
+          description: '',
           order,
           fromPageId: createChoiceReqDto.parentPageId,
         },

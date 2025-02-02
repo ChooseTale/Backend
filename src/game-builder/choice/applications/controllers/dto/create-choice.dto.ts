@@ -14,10 +14,10 @@ export class CreateChoiceReqDto {
   @Length(1, 30)
   title: string;
 
-  @IsNotEmpty()
-  @IsString()
-  @Length(1, 200)
-  description: string;
+  // @IsNotEmpty()
+  // @IsString()
+  // @Length(1, 200)
+  // description: string;
 }
 
 export class CreateChoiceResDto {

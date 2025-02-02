@@ -48,6 +48,7 @@ export class ChoiceController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: CreateChoiceReqDto,
   ): Promise<CreateChoiceResDto> {
+    console.log(body);
     return await this.createChoiceUsecase.execute(gameId, body);
   }
 
@@ -67,6 +68,7 @@ export class ChoiceController {
     @Param('choiceId', ParseIntPipe) choiceId: number,
     @Body() body: UpdateChoiceReqDto,
   ): Promise<UpdateChoiceResDto> {
+    console.log(body);
     return await this.updateChoiceUsecase.execute(gameId, choiceId, body);
   }
 

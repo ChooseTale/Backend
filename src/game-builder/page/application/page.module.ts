@@ -29,9 +29,9 @@ import multer from 'multer';
     KafkaModule,
     ImageModule,
     MulterModule.register({
-      dest: config.files.userImage.dest,
+      dest: config.files.pageImage.dest,
       storage: multer.diskStorage({
-        destination: config.files.userImage.dest,
+        destination: config.files.pageImage.dest,
         filename: (req, file, cb) => {
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);

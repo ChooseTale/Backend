@@ -37,7 +37,11 @@ export class AppController {
       fs.mkdirSync('test-uploads');
     }
 
-    const dirNames = ['game-thumnail-images', 'profile-images'];
+    const keys = Object.keys(config.files);
+    const dirNames = keys.map(
+      (key) => config.files[key].savePath.split('/')[2],
+    );
+
     dirNames.forEach((dirName) => {
       fs.mkdirSync(`uploads/${dirName}`);
     });

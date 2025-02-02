@@ -10,7 +10,6 @@ export class UpdateChoiceReqDto {
   title: string;
 
   @IsString()
-  @IsNotEmpty()
   description: string;
 
   @IsNumber()

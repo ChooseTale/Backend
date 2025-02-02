@@ -33,7 +33,7 @@ export class GetPageUseCase {
       isEnding: page.isEnding,
       choices: choices.map((choice) => ({
         id: choice.id,
-        text: choice.description,
+        text: choice.title,
         nextPageId: choice.childPageId,
       })),
       backgroundImage: {

@@ -16,8 +16,18 @@ export class PageRepository implements IPageRepository {
   ): Promise<PageDomainEntity[]> {
     const pages = await (transaction ?? this.prisma).page.findMany({
       where: { gameId },
+      include: {
+        backgroundImage: true,
+      },
     });
-    return pages.map(toDomain);
+
+    return pages.map((page) => {
+      const pageDomainEntity = toDomain(page);
+      if (page.backgroundImage) {
+        pageDomainEntity.setBackgroundImage(page.backgroundImage);
+      }
+      return pageDomainEntity;
+    });
   }
 
   async getOneById(

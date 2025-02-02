@@ -14,7 +14,11 @@ type Page = {
   createdAt: Date;
   updatedAt: Date;
   depth: number;
+  isStarting: boolean;
   isEnding: boolean;
+  backgroundImage: {
+    url: string | null;
+  };
   choices: Choice[];
 };
 
