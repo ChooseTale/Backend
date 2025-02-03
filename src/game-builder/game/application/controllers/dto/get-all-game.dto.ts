@@ -2,6 +2,7 @@ type Choice = {
   id: number;
   fromPageId: number;
   toPageId: number | null;
+  title: string;
   createdAt: Date;
 };
 
