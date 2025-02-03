@@ -45,6 +45,7 @@ jobs:
           git fetch --all
           git pull origin ${{ env.BRANCH }}
 
+          docker container prune -f
           docker-compose -f dev.docker-compose.yml build --no-cache
           docker-compose -f dev.docker-compose.yml up -d
           docker image prune -f
