@@ -1,5 +1,12 @@
 import { Genres } from '@prisma/client';
-import { IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
+import { Transform } from 'class-transformer';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export class CreateGameReqDto {
   @IsNotEmpty()
@@ -15,6 +22,11 @@ export class CreateGameReqDto {
   @IsNotEmpty()
   @IsEnum(Genres)
   genre: Genres;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value))
+  thumbnailFileIdx: number;
 }
 
 export class CreateGameResDto {

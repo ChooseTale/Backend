@@ -18,5 +18,6 @@ export interface IGameService {
     id: number,
     userId: number,
     updateGameReqDto: UpdateGameReqDto,
+    transaction?: Prisma.TransactionClient,
   ): Promise<GameDomainEntity>;
 }

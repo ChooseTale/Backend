@@ -30,8 +30,13 @@ export class GameService implements IGameService {
     return newGame;
   }
 
-  async update(id: number, userId: number, updateGameReqDto: UpdateGameReqDto) {
-    const game = await this.gameRepository.getById(id);
+  async update(
+    id: number,
+    userId: number,
+    updateGameReqDto: UpdateGameReqDto,
+    transaction?: Prisma.TransactionClient,
+  ) {
+    const game = await this.gameRepository.getById(id, transaction);
     if (!game) {
       throw new NotFoundException('Game not found');
     }
@@ -48,6 +53,6 @@ export class GameService implements IGameService {
       new Date(),
     );
 
-    return await this.gameRepository.update(gameDomainEntity);
+    return await this.gameRepository.update(gameDomainEntity, transaction);
   }
 }

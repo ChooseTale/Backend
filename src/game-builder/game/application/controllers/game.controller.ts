@@ -31,6 +31,7 @@ import { GetRecommentImageDto } from './dto/get-recomment-image.dto';
 import { GetDataGameResDto } from './dto/get-data-game.dto';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 import { IsMyGameGuard } from '@@src/game-builder/guard/is-my-game.guard';
+import { PublishGameUsecase } from '../usecases/publish.usecase';
 
 @Controller('game')
 @UseGuards(AuthSerializeGuard)
@@ -43,6 +44,7 @@ export class GameController {
     private readonly uploadImagesUsecase: UploadImagesUseCase,
     private readonly deleteImageUsecase: DeleteGameUseCase,
     private readonly updateGameUsecase: UpdateGameUseCase,
+    private readonly publishUsecase: PublishGameUsecase,
   ) {}
 
   /**
@@ -104,26 +106,9 @@ export class GameController {
    * @summary 🟢(241229) 게임 생성하기
    */
   @Post()
+  @UseInterceptors(FilesInterceptor('images'))
   async create(
     @Req() req: any,
-    @Body() createGameReqDto: CreateGameReqDto,
-  ): Promise<CreateGameResDto> {
-    return await this.createGameUsecase.excute(req.user.id, createGameReqDto);
-  }
-
-  /**
-   * 게임 썸네일 이미지 업로드
-   *
-   * 게임의 썸네일 이미지를 업로드합니다.
-   *
-   * @tag Game
-   * @summary 🟢(240812) 게임 썸네일 이미지 업로드
-   */
-  @Post(':gameId/upload-thumbnail')
-  @UseGuards(IsMyGameGuard)
-  @UseInterceptors(FilesInterceptor('images'))
-  async uploadImages(
-    @Param('gameId', ParseIntPipe) gameId: number,
     @UploadedFiles(
       new ParseFilePipe({
         validators: [
@@ -138,10 +123,47 @@ export class GameController {
         fileIsRequired: false,
       }),
     )
-    files: Array<Express.Multer.File>,
-  ) {
-    return await this.uploadImagesUsecase.execute(gameId, files);
+    files: Express.Multer.File[],
+    @Body() createGameReqDto: CreateGameReqDto,
+  ): Promise<CreateGameResDto> {
+    return await this.createGameUsecase.excute(
+      req.user.id,
+      createGameReqDto,
+      files,
+    );
   }
+
+  /**
+   * 게임 썸네일 이미지 업로드
+   *
+   * 게임의 썸네일 이미지를 업로드합니다.
+   *
+   * @tag Game
+   * @summary 🟢(240812) 게임 썸네일 이미지 업로드
+   */
+  // @Post(':gameId/upload-thumbnail')
+  // @UseGuards(IsMyGameGuard)
+  // @UseInterceptors(FilesInterceptor('images'))
+  // async uploadImages(
+  //   @Param('gameId', ParseIntPipe) gameId: number,
+  //   @UploadedFiles(
+  //     new ParseFilePipe({
+  //       validators: [
+  //         // jpeg와 png, gif 허용
+  //         new FileTypeValidator({
+  //           fileType: /jpeg|png|gif/,
+  //         }),
+  //         new MaxFileSizeValidator({
+  //           maxSize: 3 * 1024 * 1024,
+  //         }),
+  //       ],
+  //       fileIsRequired: false,
+  //     }),
+  //   )
+  //   files: Array<Express.Multer.File>,
+  // ) {
+  //   return await this.uploadImagesUsecase.execute(gameId, files);
+  // }
 
   /**
    * 게임 정보 수정
@@ -160,6 +182,14 @@ export class GameController {
   ): Promise<UpdateGameResDto> {
     return await this.updateGameUsecase.execute(gameId, req.user.id, body);
   }
+
+  // @Patch(':gameId/publish')
+  // @UseGuards(IsMyGameGuard)
+  // async publish(
+  //   @Param('gameId', ParseIntPipe) gameId: number,
+  // ): Promise<UpdateGameResDto> {
+  //   // return await this.publishUsecase.execute(gameId);
+  // }
 
   /**
    * 게임 추천 썸네일 이미지 생성

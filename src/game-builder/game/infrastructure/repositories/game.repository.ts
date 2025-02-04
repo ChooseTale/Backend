@@ -10,8 +10,8 @@ import { GameDomainEntity } from '../../domain/entities/game.entity';
 export class GameRepository implements IGameRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getById(id: number) {
-    const game = await this.prisma.game.findUnique({
+  async getById(id: number, transaction?: Prisma.TransactionClient) {
+    const game = await (transaction ?? this.prisma).game.findUnique({
       where: { id },
     });
     return game ? toDomain(game) : null;
@@ -27,8 +27,8 @@ export class GameRepository implements IGameRepository {
     return toDomain(newGame);
   }
 
-  async update(game: GameDomainEntity) {
-    const updatedGame = await this.prisma.game.update({
+  async update(game: GameDomainEntity, transaction?: Prisma.TransactionClient) {
+    const updatedGame = await (transaction ?? this.prisma).game.update({
       where: { id: game.id },
       data: game,
     });

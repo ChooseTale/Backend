@@ -19,6 +19,7 @@ import { UploadImagesUseCase } from './usecases/upload-images.usecase';
 import { DeleteGameUseCase } from './usecases/delete-game.usecase';
 import { UpdateGameUseCase } from './usecases/update-game.usecase';
 import multer from 'multer';
+import { PublishGameUsecase } from './usecases/publish.usecase';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import multer from 'multer';
       storage: multer.diskStorage({
         destination: config.files.gameThumnailImage.dest,
         filename: (req, file, cb) => {
+          console.log(file);
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
           cb(
@@ -53,6 +55,7 @@ import multer from 'multer';
     UploadImagesUseCase,
     UpdateGameUseCase,
     DeleteGameUseCase,
+    PublishGameUsecase,
 
     GameService,
     {
