@@ -41,6 +41,22 @@ export class UpdatePageUsecase {
       });
       backgroundImageId = uploadedImages.id;
     }
+
+    const page = await this.pageService.getOneById(pageId);
+    if (!page) {
+      throw new NotFoundException('페이지를 찾을 수 없습니다.');
+    }
+
+    if (page.gameId !== gameId) {
+      throw new BadRequestException('게임과 페이지가 일치하지 않습니다.');
+    }
+
+    if (page.isStarting && body.isEnding) {
+      throw new BadRequestException(
+        '시작 페이지는 종료 페이지가 될 수 없습니다.',
+      );
+    }
+
     const updatedPage = await this.pageService.update(
       pageId,
       body,
