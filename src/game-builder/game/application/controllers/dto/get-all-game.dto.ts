@@ -21,6 +21,7 @@ type Page = {
     url: string | null;
   };
   choices: Choice[];
+  fromPageIds: number[];
 };
 
 export class GetAllGameResDto {
