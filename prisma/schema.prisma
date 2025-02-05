@@ -151,9 +151,9 @@ model ChoicePage {
   game   Game @relation(fields: [gameId], references: [id])
   gameId Int  @default(1)
 
-  title       String
-  description String
-  order       Int
+  title String
+
+  order Int
 
   UserChoice UserChoice[]
   createdAt  DateTime     @default(now())

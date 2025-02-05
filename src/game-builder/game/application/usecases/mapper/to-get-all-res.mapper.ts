@@ -17,7 +17,6 @@ export const toGetAllResMapper = (
     fromPageId: choice.parentPageId,
     toPageId: choice.childPageId,
     title: choice.title,
-    description: choice.description,
     createdAt: choice.createdAt,
   }));
 

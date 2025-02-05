@@ -95,7 +95,6 @@ export class ChoiceRepository implements IChoiceRepository {
           gameId,
           toPageId: createChoiceReqDto.childPageId ?? null,
           title: createChoiceReqDto.title,
-          description: '',
           order,
           fromPageId: createChoiceReqDto.parentPageId,
         },
@@ -131,8 +130,6 @@ export class ChoiceRepository implements IChoiceRepository {
     const updatedChoice = await (transaction ?? this.prisma).choicePage.update({
       data: {
         title: choice.title,
-        description: choice.description,
-        fromPageId: choice.parentPageId,
         toPageId: choice.childPageId,
         order: choice.order,
       },

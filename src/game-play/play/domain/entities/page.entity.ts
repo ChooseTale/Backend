@@ -7,7 +7,6 @@ export class PlayPageEntity {
   choices: {
     id: number;
     title: string;
-    description: string;
     childPageId: number | null;
   }[];
   isEnding: boolean;
@@ -20,7 +19,6 @@ export class PlayPageEntity {
     this.choices = choices.map((choice) => ({
       id: choice.id,
       title: choice.title,
-      description: choice.description,
       childPageId: choice.toPageId,
     }));
     this.isEnding = page.isEnding;

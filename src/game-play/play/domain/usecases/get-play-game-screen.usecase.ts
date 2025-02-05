@@ -44,7 +44,6 @@ export class GetPlayGameScreenUsecase {
         game: {
           id: introEntity.game.id,
           title: introEntity.game.title,
-          description: introEntity.game.description,
           genre: introEntity.game.genre,
           thumbnailUrl: introEntity.game.thumbnailUrl,
           producer: {

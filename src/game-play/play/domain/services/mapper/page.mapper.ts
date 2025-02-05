@@ -10,7 +10,6 @@ export const mapPageDataToResDto = (
     choices: page.choices.map((choice) => ({
       id: choice.id,
       title: choice.title,
-      description: choice.description,
       toPageId: choice.childPageId,
     })),
     isEnding: page.isEnding,

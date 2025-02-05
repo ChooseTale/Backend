@@ -46,7 +46,7 @@ export class UpdateChoiceUseCase {
 
     const pageChoice = await this.choiceService.getAllByToPageId(parentPage.id);
 
-    if (pageChoice.length < 1) {
+    if (pageChoice.length < 1 && !parentPage.isStarting) {
       throw new ConflictException(
         '부모 페이지가 없으면 선택지를 만들 수 없습니다.',
       );
@@ -80,7 +80,6 @@ export class UpdateChoiceUseCase {
     return {
       id: newChoice.id,
       title: newChoice.title,
-      description: newChoice.description,
       parentPageId: newChoice.parentPageId,
       childPageId: newChoice.childPageId,
     };

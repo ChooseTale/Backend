@@ -6,7 +6,6 @@ export interface GetPlayGameScreenDto {
     game: {
       id: number;
       title: string;
-      description: string;
       genre: string;
       thumbnailUrl: string;
       producer: {
@@ -30,7 +29,6 @@ export interface GetPlayGameScreenDto {
     choices: {
       id: number;
       title: string;
-      description: string;
       toPageId: number | null;
     }[];
     isEnding: boolean;
