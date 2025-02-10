@@ -183,13 +183,11 @@ export class GameController {
     return await this.updateGameUsecase.execute(gameId, req.user.id, body);
   }
 
-  // @Patch(':gameId/publish')
-  // @UseGuards(IsMyGameGuard)
-  // async publish(
-  //   @Param('gameId', ParseIntPipe) gameId: number,
-  // ): Promise<UpdateGameResDto> {
-  //   // return await this.publishUsecase.execute(gameId);
-  // }
+  @Patch(':gameId/publish')
+  @UseGuards(IsMyGameGuard)
+  async publish(@Param('gameId', ParseIntPipe) gameId: number): Promise<void> {
+    return await this.publishUsecase.execute(gameId);
+  }
 
   /**
    * 게임 추천 썸네일 이미지 생성

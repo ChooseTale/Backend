@@ -12,7 +12,6 @@ export class ChooseChoiceUsecase {
   async execute(
     playGameId: number,
     choiceId: number,
-    userId: number,
   ): Promise<ChooseChoiceResDto> {
     const chooseChoiceEntity = await this.chooseChoiceComponent.chooseChoice(
       choiceId,

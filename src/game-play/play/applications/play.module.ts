@@ -10,6 +10,8 @@ import { ChooseChoiceComponent } from '../components/choose-choice.component';
 import { UserChoiceRepositoryModule } from '@@src/common/infrastructure/repositories/user-choice/user-choice.module';
 import { ChoicePageRepositoryModule } from '@@src/common/infrastructure/repositories/choice-page/choice-page.module';
 import { PlayGameRepositoryModule } from '@@src/common/infrastructure/repositories/play-game/play-game.repository.module';
+import { PageImageRepository } from '@@src/game-builder/page/infrastructure/repositories/page-image.repository';
+import { PrismaService } from '@@prisma/prisma.service';
 
 @Module({
   imports: [
@@ -23,7 +25,11 @@ import { PlayGameRepositoryModule } from '@@src/common/infrastructure/repositori
   providers: [
     GetPlayGameScreenUsecase,
     ChooseChoiceUsecase,
-
+    PrismaService,
+    {
+      provide: 'PageImageRepository',
+      useClass: PageImageRepository,
+    },
     {
       provide: 'GetPageDataComponent',
       useClass: GetPageDataComponent,

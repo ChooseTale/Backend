@@ -35,17 +35,12 @@ export class PlayController {
    * @param pageId
    * @returns
    */
-  @Get('/:gameId/page/:pageId')
+  @Get('/:playId')
   async getPlayGameScreen(
-    @Param('gameId', ParseIntPipe) gameId: number,
-    @Param('pageId', ParseIntPipe) pageId: number,
+    @Param('playId', ParseIntPipe) playId: number,
     @Req() req: any,
   ): Promise<GetPlayGameScreenDto> {
-    return await this.getPlayGameScreenUsecase.execute(
-      gameId,
-      req.user.id,
-      pageId,
-    );
+    return await this.getPlayGameScreenUsecase.execute(playId, req.user.id);
   }
 
   /**
@@ -64,12 +59,7 @@ export class PlayController {
   async chooseChoice(
     @Param('playId', ParseIntPipe) playId: number,
     @Param('choiceId', ParseIntPipe) choiceId: number,
-    @Req() req: any,
   ): Promise<ChooseChoiceResDto> {
-    return await this.chooseChoiceUsecase.execute(
-      playId,
-      choiceId,
-      req.user.id,
-    );
+    return await this.chooseChoiceUsecase.execute(playId, choiceId);
   }
 }

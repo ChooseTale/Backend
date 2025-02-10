@@ -24,8 +24,9 @@ export interface GetPlayGameScreenDto {
   };
   page: {
     id: number;
+    title: string;
     contents: Prisma.JsonArray;
-
+    backgroundImageUrl: string;
     choices: {
       id: number;
       title: string;
