@@ -26,6 +26,20 @@ export class GameResultComponent {
     if (!play) {
       throw new NotFoundException('Play not found');
     }
+    const totalPlay = await this.playRepository.getAllByUserIdAndGameId(
+      userId,
+      play?.gameId,
+    );
+
+    const totalEnding = await this.pageRepository.getAll({
+      select: {
+        id: true,
+      },
+      where: {
+        isEnding: true,
+        gameId: play.gameId,
+      },
+    });
 
     const userChoices = await this.userChoiceRepository.getAllByPlayId(playId);
 
@@ -46,12 +60,24 @@ export class GameResultComponent {
 
     const pages = await this.pageRepository.getAllByGameId(play.gameId);
 
-    return new GamePlayResultEntity(
+    const gamePlayResultEntity = new GamePlayResultEntity(
       pages,
       choicePagesToChooseByUser,
       allUserChoices,
       userChoices,
       choicePagesEqualFromPage,
     );
+
+    gamePlayResultEntity.setGameId(play.gameId);
+    const uniqueTotalPlay = totalPlay.filter(
+      (play, index, self) =>
+        index === self.findIndex((p) => p.endingPageId === play.endingPageId),
+    );
+
+    gamePlayResultEntity.setTotalPlayCount(totalPlay.length);
+    gamePlayResultEntity.setTotalEndingCount(totalEnding.length);
+    gamePlayResultEntity.setReachEndingCount(uniqueTotalPlay.length);
+
+    return gamePlayResultEntity;
   }
 }

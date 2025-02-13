@@ -17,12 +17,7 @@ export class ChooseChoiceUsecase {
       choiceId,
       playGameId,
     );
-    if (chooseChoiceEntity.checkIsEnding()) {
-      await this.chooseChoiceComponent.updateEndingToPlayGame(
-        playGameId,
-        chooseChoiceEntity.toPage.id,
-      );
-    }
+
     return {
       playId: playGameId,
       page: {

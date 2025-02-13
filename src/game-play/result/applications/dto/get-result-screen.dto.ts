@@ -10,6 +10,13 @@ export interface GetResultScreenDto {
       id: number;
       title: string;
       percentage: number;
+      isSelected: boolean;
     }[];
   }[];
+  enrich: {
+    gameId: number;
+    totalPlayCount: number;
+    totalEndingCount: number;
+    reachEndingCount: number;
+  };
 }
