@@ -26,7 +26,7 @@ export class GetRecommentChoiceUsecase {
       title: title,
       contents: page.contents,
       choices: choices.map((choice) => {
-        return { title: choice.title, description: choice.description };
+        return { title: choice.title };
       }),
     });
 

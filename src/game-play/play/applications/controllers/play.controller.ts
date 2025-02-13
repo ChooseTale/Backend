@@ -12,6 +12,7 @@ import { ChooseChoiceResDto } from '../dto/choose-choice.dto';
 import { GetPlayGameScreenUsecase } from '../../domain/usecases/get-play-game-screen.usecase';
 import { ChooseChoiceUsecase } from '../../domain/usecases/choose-choice.usecase';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
+import { EndPlayUsecase } from '../../domain/usecases/end-play.usecase';
 
 @Controller('/play')
 @UseGuards(AuthSerializeGuard)
@@ -19,6 +20,7 @@ export class PlayController {
   constructor(
     private readonly getPlayGameScreenUsecase: GetPlayGameScreenUsecase,
     private readonly chooseChoiceUsecase: ChooseChoiceUsecase,
+    private readonly endPlayUsecase: EndPlayUsecase,
   ) {}
 
   /**
@@ -35,17 +37,12 @@ export class PlayController {
    * @param pageId
    * @returns
    */
-  @Get('/:gameId/page/:pageId')
+  @Get('/:playId')
   async getPlayGameScreen(
-    @Param('gameId', ParseIntPipe) gameId: number,
-    @Param('pageId', ParseIntPipe) pageId: number,
+    @Param('playId', ParseIntPipe) playId: number,
     @Req() req: any,
   ): Promise<GetPlayGameScreenDto> {
-    return await this.getPlayGameScreenUsecase.execute(
-      gameId,
-      req.user.id,
-      pageId,
-    );
+    return await this.getPlayGameScreenUsecase.execute(playId, req.user.id);
   }
 
   /**
@@ -64,12 +61,26 @@ export class PlayController {
   async chooseChoice(
     @Param('playId', ParseIntPipe) playId: number,
     @Param('choiceId', ParseIntPipe) choiceId: number,
-    @Req() req: any,
   ): Promise<ChooseChoiceResDto> {
-    return await this.chooseChoiceUsecase.execute(
-      playId,
-      choiceId,
-      req.user.id,
-    );
+    return await this.chooseChoiceUsecase.execute(playId, choiceId);
+  }
+
+  /**
+   *
+   * 게임 종료
+   *
+   * 게임을 종료하기 위한 API
+   *
+   * @summary 게임 종료 🟡(250210)
+   * @tag Play-Game
+   * @param playId
+   * @returns
+   */
+  @Post('/:playId/page/:pageId/end')
+  async endPlay(
+    @Param('playId', ParseIntPipe) playId: number,
+    @Param('pageId', ParseIntPipe) pageId: number,
+  ) {
+    return await this.endPlayUsecase.execute(playId, pageId);
   }
 }

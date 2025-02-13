@@ -1,5 +1,17 @@
 import { Transform, Type } from 'class-transformer';
-import { IsBoolean, IsString, Length } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsString,
+  Length,
+  ValidateNested,
+} from 'class-validator';
+
+interface Choice {
+  id: number;
+  title: string;
+  childPageId: number | null;
+}
 
 export class UpdatePageReqDto {
   @IsString()
@@ -17,6 +29,10 @@ export class UpdatePageReqDto {
     return JSON.parse(value) == true;
   })
   isEnding: boolean;
+
+  @ValidateNested({ each: true })
+  @Transform(({ value }) => JSON.parse(value))
+  choices: Choice[];
 }
 
 export class UpdatePageResDto {

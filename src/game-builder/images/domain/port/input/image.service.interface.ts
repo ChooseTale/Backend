@@ -1,4 +1,4 @@
-import { PageImage } from '@prisma/client';
+import { PageImage, Prisma } from '@prisma/client';
 import { GameThumbnailDomainEntity } from '../../entities/game-thumnail.entity';
 
 export interface IImageService {
@@ -7,6 +7,7 @@ export interface IImageService {
   uploadImageForGameThumbnail(
     gameId: number,
     file: Array<{ url: string }>,
+    transaction?: Prisma.TransactionClient,
   ): Promise<GameThumbnailDomainEntity[]>;
   uploadImageForPage(file: { url: string }): Promise<PageImage>;
   deleteImageGameThumbnail(imageId: number, gameId: number): Promise<void>;

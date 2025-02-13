@@ -32,11 +32,19 @@ export class ChooseChoiceComponent implements ChooseChoiceComponentInterface {
       );
     }
 
+    const currentPage = await this.pageRepository.getByIdOrThrow(
+      choice.fromPageId,
+    );
+
+    if (!currentPage) {
+      throw new BadRequestException('현재 페이지가 없습니다.');
+    }
+
     await this.userChoiceRepository.create(playGameId, choice.id);
 
     const toPage = await this.pageRepository.getByIdOrThrow(choice.toPageId);
 
-    return new ChooseChoiceEntity(choice, toPage);
+    return new ChooseChoiceEntity(choice, toPage, currentPage);
   }
 
   async updateEndingToPlayGame(

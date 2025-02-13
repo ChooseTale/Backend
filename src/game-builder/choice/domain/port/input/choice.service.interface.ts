@@ -23,10 +23,12 @@ export interface IChoiceService {
   create(
     gameId: number,
     createChoiceReqDto: CreateChoiceReqDto,
+    transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity>;
   update(
     choiceId: number,
     updateChoiceReqDto: UpdateChoiceReqDto,
+    transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity>;
   delete(
     choiceId: number,

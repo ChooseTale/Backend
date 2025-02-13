@@ -12,6 +12,14 @@ export class GetResultScreenUsecase {
       userId,
     );
 
-    return result;
+    return {
+      ...result,
+      enrich: {
+        gameId: result.gameId,
+        totalEndingCount: result.totalEndingCount,
+        reachEndingCount: result.reachEndingCount,
+        totalPlayCount: result.totalPlayCount,
+      },
+    };
   }
 }

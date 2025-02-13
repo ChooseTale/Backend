@@ -6,7 +6,6 @@ export interface IChatGPTKafkaPort {
     }[];
     choices: {
       title: string;
-      description: string;
     }[];
   }): Promise<void>;
 }

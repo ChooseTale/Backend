@@ -17,7 +17,6 @@ export const toGetAllResMapper = (
     fromPageId: choice.parentPageId,
     toPageId: choice.childPageId,
     title: choice.title,
-    description: choice.description,
     createdAt: choice.createdAt,
   }));
 
@@ -25,7 +24,11 @@ export const toGetAllResMapper = (
     throw new NotFoundException('Starting page not found');
   }
 
-  const dfs = (page: PageDomainEntity, depth: number) => {
+  const dfs = (
+    page: PageDomainEntity,
+    depth: number,
+    fromPageIds: number[],
+  ) => {
     if (!page) {
       return;
     }
@@ -47,12 +50,15 @@ export const toGetAllResMapper = (
       },
       contents: page.contents,
       depth,
+      fromPageIds,
       choices: childChoices,
     });
-    childPages.forEach((childPage) => dfs(childPage, depth + 1));
+    childPages.forEach((childPage) =>
+      dfs(childPage, depth + 1, [...fromPageIds, page.id]),
+    );
   };
 
-  dfs(startingPage, 1);
+  dfs(startingPage, 1, []);
 
   // 선택지가 연결되지 않은 페이지
   // parentId와 childId가 모두 존재하지 않는 페이지
@@ -77,6 +83,7 @@ export const toGetAllResMapper = (
       isEnding: page.isEnding,
       depth: -1,
       choices: [],
+      fromPageIds: [],
     });
   }
 
