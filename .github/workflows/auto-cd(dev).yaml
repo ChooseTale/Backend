@@ -29,6 +29,30 @@ jobs:
           echo ${{ env.DEPLOY_PATH }}
           echo ${{ env.BRANCH }}
 
+      - name: create env
+        run: |
+          echo ${{ env.DEV_CONFIG }} > src/config/development.ts
+
+      - name: aws login
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: aws ecr get-login-password
+        id: login-password
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URI }}
+
+      - name: aws ecr build
+        run: |
+          docker build -f dev.dockerfile -t ${{ secrets.AWS_ECR_URI }}/choosetale:backend .
+
+      - name: aws ecr push
+        run: |
+          docker push ${{ secrets.AWS_ECR_URI }}/choosetale:backend
+
       - name: Set up SSH key with passphrase
         uses: webfactory/ssh-agent@v0.5.3
         with:
@@ -37,22 +61,8 @@ jobs:
 
       - name: 원격 서버에 배포
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << 'EOF'
-
-
-          cd ${{ env.DEPLOY_PATH }}
-          git restore
-          git fetch --all
-          git pull origin ${{ env.BRANCH }}
-
-          docker container prune -f
-          docker-compose -f dev.docker-compose.yml build --no-cache
-          docker-compose -f dev.docker-compose.yml up -d
-          docker image prune -f
-
-          nohup ${{ inputs.dev_command }} > output.log 2>&1 &
-          sleep 5
-          EOF
+          docker pull ${{ secrets.AWS_ECR_URI }}/choosetale:backend
+          docker run -d -p 5001:5001 -p 5002:5002 -e NODE_ENV=development ${{ secrets.AWS_ECR_URI }}/choosetale:backend
 
       - name: 슬랙 메시지 전송
         env:

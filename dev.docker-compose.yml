@@ -35,15 +35,15 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
-  server:
-    build:
-      context: .
-      dockerfile: dev.dockerfile
-    ports:
-      - '5001:5001'
-      - '5002:5002'
-    depends_on:
-      - db
-      - kafka
-      - zookeeper
-    command: ['sh', '-c', 'yarn prisma migrate dev && yarn dev:docker']
+  # server:
+  #   build:
+  #     context: .
+  #     dockerfile: dev.dockerfile
+  #   ports:
+  #     - '5001:5001'
+  #     - '5002:5002'
+  #   depends_on:
+  #     - db
+  #     - kafka
+  #     - zookeeper
+  #   command: ['sh', '-c', 'yarn prisma migrate dev && yarn dev:docker']
