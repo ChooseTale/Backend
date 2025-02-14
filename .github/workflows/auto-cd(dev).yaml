@@ -63,6 +63,7 @@ jobs:
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URI }}
           docker rm -f choosetale-backend
+          docker rmi ${{ secrets.AWS_ECR_URI }}/choosetale:backend
           docker pull ${{ secrets.AWS_ECR_URI }}/choosetale:backend
           docker run -d -p 5001:5001 -p 5002:5002 -e NODE_ENV=development --name choosetale-backend ${{ secrets.AWS_ECR_URI }}/choosetale:backend
 
