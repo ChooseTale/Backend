@@ -62,8 +62,8 @@ jobs:
       - name: 원격 서버에 배포
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URI }}
-          docker rm -f choosetale-backend
-          docker rmi ${{ secrets.AWS_ECR_URI }}/choosetale:backend
+          docker ps -q --filter "name=choosetale-backend" | grep -q . && docker rm -f choosetale-backend || echo "컨테이너가 없습니다."
+          docker images ${{ secrets.AWS_ECR_URI }}/choosetale:backend && docker rmi ${{ secrets.AWS_ECR_URI }}/choosetale:backend || echo "이미지가 없습니다."
           docker pull ${{ secrets.AWS_ECR_URI }}/choosetale:backend
           docker run -d -p 5001:5001 -p 5002:5002 -e NODE_ENV=development --name choosetale-backend ${{ secrets.AWS_ECR_URI }}/choosetale:backend
 
