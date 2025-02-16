@@ -31,7 +31,7 @@ jobs:
 
       - name: create env
         run: |
-          echo "${{ secrets.DEV_CONFIG }}" > src/config/development.ts
+          echo "${{ secrets.DEV_CONFIG }}" > src/config/docker.development.ts
 
       - name: aws login
         uses: aws-actions/configure-aws-credentials@v2
