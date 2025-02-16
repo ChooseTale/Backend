@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   db:
@@ -38,6 +38,10 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     networks:
       - choosetale-network
+
+networks:
+  choosetale-network:
+    driver: choosetale-network
 
   # server:
   #   build:
