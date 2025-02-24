@@ -62,11 +62,8 @@ export const toGetAllResMapper = (
 
   // 선택지가 연결되지 않은 페이지
   // parentId와 childId가 모두 존재하지 않는 페이지
-  const unconnectedPages = pages.filter((page) =>
-    choices.every(
-      (choice) =>
-        choice.parentPageId !== page.id && choice.childPageId !== page.id,
-    ),
+  const unconnectedPages = pages.filter(
+    (page) => !result.some((r) => r.id === page.id),
   );
 
   for (const page of unconnectedPages) {
@@ -82,7 +79,7 @@ export const toGetAllResMapper = (
       isStarting: page.isStarting,
       isEnding: page.isEnding,
       depth: -1,
-      choices: [],
+      choices: resChoices.filter((choice) => choice.fromPageId === page.id),
       fromPageIds: [],
     });
   }

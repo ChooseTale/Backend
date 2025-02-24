@@ -31,6 +31,7 @@ export class GetMyBuildedGamesEntity {
       if (!startingPage) {
         throw new ConflictException('Starting page not found');
       }
+
       return {
         id: game.id,
         title: game.title,

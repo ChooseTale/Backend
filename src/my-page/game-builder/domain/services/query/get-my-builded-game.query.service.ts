@@ -1,20 +1,42 @@
 import { Genres, Prisma } from '@prisma/client';
 
 export type GetMyBuildedGameInclude = {
-  Page: true;
+  Page: {
+    where: {
+      deletedAt: null;
+    };
+  };
   thumbnail: true;
-  ChoicePage: true;
-  PlayGame: true;
+  ChoicePage: {
+    where: {
+      deletedAt: null;
+    };
+  };
+  PlayGame: {
+    where: {
+      deletedAt: null;
+    };
+  };
 };
 
 export class GetMyBuildedGameQueryService {
   private query: Prisma.GameFindManyArgs = { where: {}, include: {} };
   constructor(userId: number) {
     const include: GetMyBuildedGameInclude = {
-      Page: true,
+      Page: {
+        where: {
+          deletedAt: null,
+        },
+      },
       thumbnail: true,
-      ChoicePage: true,
-      PlayGame: true,
+      ChoicePage: {
+        where: {
+          deletedAt: null,
+        },
+      },
+      PlayGame: {
+        where: { deletedAt: null },
+      },
     };
     this.query.where = {
       userId,
