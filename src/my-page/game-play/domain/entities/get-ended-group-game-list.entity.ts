@@ -12,6 +12,10 @@ export class GetEndedGroupGameListEntity {
       totalEndingCount: number;
       thumbnailUrl: string | null;
     };
+    author: {
+      id: number;
+      name: string;
+    };
     endings: {
       playId: number;
       endingNumber: number;
@@ -33,6 +37,10 @@ export class GetEndedGroupGameListEntity {
           genre: playGame.game.genre,
           totalEndingCount: playGame.game.Page.length,
           thumbnailUrl: getImagePathOrNull(playGame.game.thumbnail?.url),
+        },
+        author: {
+          id: playGame.game.User.id,
+          name: playGame.game.User.nickname,
         },
         endings: playGame.game.PlayGame.map((p) => {
           const endingPage = p.UserChoice[0].choicePage.toPage;

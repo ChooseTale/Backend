@@ -32,6 +32,7 @@ import { GetDataGameResDto } from './dto/get-data-game.dto';
 import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 import { IsMyGameGuard } from '@@src/game-builder/guard/is-my-game.guard';
 import { PublishGameUsecase } from '../usecases/publish.usecase';
+import { Genres } from '@prisma/client';
 
 @Controller('game')
 @UseGuards(AuthSerializeGuard)
@@ -198,11 +199,14 @@ export class GameController {
    * @summary 🟡(240726) 게임 추천 썸네일 이미지 생성
    */
   @Post(':gameId/recommend-image')
-  @UseGuards(IsMyGameGuard)
   async recommendImage(
     @Param('gameId', ParseIntPipe) gameId: number,
+    @Body() body: { title: string; description: string; genre: Genres },
   ): Promise<GetRecommentImageDto> {
-    return await this.getRecommandImageUseCase.execute(gameId);
+    return {
+      url: 'https://oaidalleapiprodscus.blob.core.windows.net/private/org-XyZTnjNifxUU5reDbdFFMkGG/user-7T71nvcI6lYXV6RIPeFEKyLz/img-UTKIe4S0m7qjfMBg6MnUo4n2.png?st=2025-02-24T11%3A17%3A25Z&se=2025-02-24T13%3A17%3A25Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-02-24T05%3A52%3A53Z&ske=2025-02-25T05%3A52%3A53Z&sks=b&skv=2024-08-04&sig=T5ODHUJygh1ZlMYVfSDo4WPUBDglVY2qUHpMfa5Y9T8%3D',
+    };
+    // return await this.getRecommandImageUseCase.execute(body);
   }
 
   /**

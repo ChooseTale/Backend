@@ -5,6 +5,7 @@ export type EndedGroupGameInclude = {
   game: {
     include: {
       thumbnail: true;
+      User: true;
       PlayGame: {
         where: {
           deletedAt: null;
@@ -52,6 +53,7 @@ export class GetEndedGroupGameListQueryService extends ListParentQueryService {
       game: {
         include: {
           thumbnail: true,
+          User: true,
           PlayGame: {
             distinct: ['endingPageId'],
             orderBy: {

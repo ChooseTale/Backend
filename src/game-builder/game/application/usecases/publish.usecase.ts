@@ -36,7 +36,13 @@ export class PublishGameUsecase {
 
       const trees = toGetAllResMapper(game, pages, choices);
 
+      let endingCount = 0;
+
       for (const page of trees.pages) {
+        if (page.isEnding && page.depth !== -1) {
+          endingCount++;
+        }
+
         const notExistLinkChoice = page.choices.filter(
           (choice) => !choice.toPageId,
         );
@@ -57,8 +63,8 @@ export class PublishGameUsecase {
       );
 
       await Promise.all(
-        unConnectedPages.map((page) => {
-          this.pageService.delete(page.id, transaction);
+        unConnectedPages.map(async (page) => {
+          await this.pageService.delete(page.id, transaction);
         }),
       );
 
@@ -68,6 +74,10 @@ export class PublishGameUsecase {
 
       if (!game.thumbnailId) {
         throw new ConflictException('썸네일 이미지가 없습니다.');
+      }
+
+      if (endingCount === 0) {
+        throw new ConflictException('연결된 엔딩 페이지가 존재하지 않습니다.');
       }
 
       await this.gameService.update(
