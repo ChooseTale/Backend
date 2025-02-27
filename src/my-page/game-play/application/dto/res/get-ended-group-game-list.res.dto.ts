@@ -7,6 +7,10 @@ export class GetEndedGroupGameListResDto {
     thumbnail: {
       url: string | null;
     };
+    author: {
+      id: number;
+      name: string;
+    };
     endings: {
       playId: number;
       endingNumber: number;

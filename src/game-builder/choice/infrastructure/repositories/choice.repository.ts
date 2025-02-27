@@ -73,21 +73,6 @@ export class ChoiceRepository implements IChoiceRepository {
   ): Promise<ChoiceDomainEntity> {
     try {
       // 페이지 버전 업데이트
-      const updatedPage = await (transaction ?? this.prisma).page.update({
-        data: {
-          version: {
-            increment: 1,
-          },
-        },
-        where: {
-          id: createChoiceReqDto.parentPageId,
-          version: fromPageVersion,
-        },
-      });
-
-      if (!updatedPage) {
-        throw new ConflictException('페이지가 업데이트 되지 않음.');
-      }
 
       // 선택지 생성
       await (transaction ?? this.prisma).choicePage.create({
@@ -118,6 +103,7 @@ export class ChoiceRepository implements IChoiceRepository {
 
       return toDomain(createdFromPage);
     } catch (err) {
+      console.log(err);
       throw new BadRequestException(`선택지 생성 실패`);
     }
   }
