@@ -25,7 +25,7 @@ export class GetListQuery extends ListParentQueryService {
       // 최근 업데이트 된 순서
       case 'LATEST':
         this.query.orderBy = {
-          createdAt: 'desc',
+          id: 'desc',
         };
         break;
       // 플레이 게임 수가 많은 순으로 정렬
