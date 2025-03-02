@@ -17,10 +17,19 @@ export class GetContinuedGameUsecase {
     query.setGenres(reqQuery.genre);
     query.setOrder(reqQuery.order);
 
+    const countQuery = new GetContinuedGameQueryService(userId);
+    countQuery.setGenres(reqQuery.genre);
+
     const games =
       await this.getContinuedGameListComponent.getContinuedGameListEntity(
         query.getQuery,
       );
-    return toGetContinuedGameListResDto(games);
+
+    const counts =
+      await this.getContinuedGameListComponent.getContinuedGameListEntity(
+        countQuery.getQuery,
+      );
+
+    return toGetContinuedGameListResDto(games, counts.list.length);
   }
 }

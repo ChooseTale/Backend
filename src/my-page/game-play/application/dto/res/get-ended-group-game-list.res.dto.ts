@@ -1,21 +1,24 @@
 export class GetEndedGroupGameListResDto {
-  game: {
-    id: number;
-    title: string;
-    genre: string;
-    totalEndingCount: number;
-    thumbnail: {
-      url: string | null;
-    };
-    author: {
+  list: {
+    game: {
       id: number;
-      name: string;
-    };
-    endings: {
-      playId: number;
-      endingNumber: number;
       title: string;
-      reachedEndingAt: Date;
+      genre: string;
+      totalEndingCount: number;
+      thumbnail: {
+        url: string | null;
+      };
+      author: {
+        id: number;
+        name: string;
+      };
+      endings: {
+        playId: number;
+        endingNumber: number;
+        title: string;
+        reachedEndingAt: Date;
+      }[];
     }[];
   };
+  count: number;
 }

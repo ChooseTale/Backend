@@ -21,6 +21,13 @@ export class GetEndedGroupGameListUsecase {
         query.getQuery,
       );
 
-    return toGetEndedGroupGameListResDto(result);
+    const countQuery = new GetEndedGroupGameListQueryService(userId);
+    countQuery.setGenres(reqQuery.genre);
+    const count =
+      await this.getEndedGameListComponent.getEndedGroupGameListEntity(
+        countQuery.getQuery,
+      );
+
+    return toGetEndedGroupGameListResDto(result, count.list.length);
   }
 }
