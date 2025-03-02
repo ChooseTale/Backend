@@ -10,6 +10,7 @@ import { GetEndedGameListResDto } from './dto/res/get-ended-game-list.res.dto';
 import { GetContinuedGameListResDto } from './dto/res/get-continued-game-list.res.dto';
 import { GetEndedGroupGameListUsecase } from '../domain/usecases/get-ended-group-game-list.usecase';
 import { GetEndedGroupGameListResDto } from './dto/res/get-ended-group-game-list.res.dto';
+import { ListConditionDto } from './dto/req/list-condition.dto';
 
 @Controller('my-page')
 @UseGuards(AuthSerializeGuard)
@@ -33,7 +34,7 @@ export class MyPageController {
   async getContinuedGameList(
     @Req() req: any,
     @Query() query: GetContinuedGameListQueryDto,
-  ): Promise<GetContinuedGameListResDto[]> {
+  ): Promise<GetContinuedGameListResDto> {
     return this.getContinuedGameUsecase.execute(req.user.id, query);
   }
 
@@ -68,7 +69,7 @@ export class MyPageController {
   async getEndedGroupGameList(
     @Req() req: any,
     @Query() query: GetEndedGroupGameListQueryDto,
-  ): Promise<GetEndedGroupGameListResDto[]> {
+  ): Promise<GetEndedGroupGameListResDto> {
     return await this.getEndedGroupGameListUsecase.execute(req.user.id, query);
   }
 }
