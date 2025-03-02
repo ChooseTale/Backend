@@ -3,8 +3,10 @@ import { GetMyBuildedGamesEntity } from '../../entities/get-my-builded-games.ent
 
 export const toGetMyBuildedGameMapper = (
   game: GetMyBuildedGamesEntity,
+  count: number,
 ): GetMyBuildedGameResDto => {
   return {
+    count,
     games: game.list.map((game) => {
       return {
         id: game.id,

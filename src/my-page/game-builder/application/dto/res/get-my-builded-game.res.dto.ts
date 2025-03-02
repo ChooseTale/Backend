@@ -16,4 +16,5 @@ export class GetMyBuildedGameResDto {
       reachEndingPlayerCount: number | null;
     };
   }[];
+  count: number;
 }

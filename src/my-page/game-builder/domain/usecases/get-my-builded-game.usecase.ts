@@ -20,6 +20,14 @@ export class GetMyBuildedGameUsecase {
     const games = await this.getGameListComponent.getMyBuildedGameListEntity(
       query.getQuery,
     );
-    return toGetMyBuildedGameMapper(games);
+
+    const countQuery = new GetMyBuildedGameQueryService(userId);
+    countQuery.setStatus(reqQuery.status);
+
+    countQuery.setGenre(reqQuery.genre);
+    const count = await this.getGameListComponent.getMyBuildedGameListEntity(
+      countQuery.getQuery,
+    );
+    return toGetMyBuildedGameMapper(games, count.list.length);
   }
 }
