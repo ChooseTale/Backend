@@ -67,7 +67,7 @@ jobs:
             docker images ${{ secrets.AWS_ECR_URI }}/choosetale:backend && docker rmi ${{ secrets.AWS_ECR_URI }}/choosetale:backend || echo "이미지가 없습니다."
             docker pull ${{ secrets.AWS_ECR_URI }}/choosetale:backend
             docker run -d -p 5001:5001 -p 5002:5002 -e NODE_ENV=development --net choosetale-network --name choosetale-backend ${{ secrets.AWS_ECR_URI }}/choosetale:backend
-            docker-compose -f dev.docker-compose.yml up -d
+
           EOF
 
       - name: 슬랙 메시지 전송
