@@ -112,7 +112,7 @@ export class ChatGPT implements IChatGPTPagePort {
         responseType: 'stream',
       });
       const fileName = `${new Date().getTime()}-${title.slice(0, 10)}.png`;
-      const filePath = config.files.gameThumnailImage.dest + `/${fileName}`;
+      const filePath = config.files.gameThumnailImage.savePath + `/${fileName}`;
       response.data.pipe(fs.createWriteStream(filePath)).on('error', (err) => {
         console.error('파일 저장 중 오류 발생:', err);
       });

@@ -20,7 +20,7 @@ export class CreateGameUsecase {
   async excute(
     userId: number,
     createGameReqDto: CreateGameReqDto,
-    imageFiles: Express.Multer.File[],
+    imageFiles: any,
   ): Promise<CreateGameResDto> {
     return await this.prismaService.$transaction(async (transaction) => {
       const newGame = await this.gameService.create(
@@ -42,7 +42,7 @@ export class CreateGameUsecase {
       const uploadedThumbnailImage =
         await this.imageService.uploadImageForGameThumbnail(
           newGame.id,
-          [{ url: '/' + thumbnailFile.path }],
+          [{ url: thumbnailFile.key }],
           transaction,
         );
       await this.gameService.update(
@@ -58,13 +58,11 @@ export class CreateGameUsecase {
         transaction,
       );
 
-      // 나머지 게임 이미지 업로드
-
       await this.imageService.uploadImageForGameThumbnail(
         newGame.id,
         imageFiles
-          .filter((file) => file.filename != thumbnailFile.filename)
-          .map((file) => ({ url: file.path })),
+          .filter((file) => file.originalname != thumbnailFile.originalname)
+          .map((file) => ({ url: file.key })),
         transaction,
       );
 

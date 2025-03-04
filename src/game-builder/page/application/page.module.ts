@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Logger, Module, forwardRef } from '@nestjs/common';
 import { PageController } from './controllers/page.controller';
 import { PageService } from '../domain/page.service';
 import { PageRepository } from '../infrastructure/repositories/page.repository';
@@ -20,7 +20,7 @@ import { ImageService } from '@@src/game-builder/images/domain/image.service';
 import { ImageModule } from '@@src/game-builder/images/image.module';
 import { MulterModule } from '@nestjs/platform-express';
 import config from '@@src/config';
-import multer from 'multer';
+import { getS3Config } from '@@src/common/aws/upload-s3';
 
 @Module({
   imports: [
@@ -28,23 +28,18 @@ import multer from 'multer';
     forwardRef(() => ChoiceModule),
     KafkaModule,
     ImageModule,
-    MulterModule.register({
-      dest: config.files.pageImage.dest,
-      storage: multer.diskStorage({
-        destination: config.files.pageImage.dest,
-        filename: (req, file, cb) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          cb(
-            null,
-            file.fieldname +
-              '-' +
-              uniqueSuffix +
-              '.' +
-              file.mimetype.split('/')[1],
-          );
-        },
-      }),
+    MulterModule.registerAsync({
+      useFactory: () => {
+        const logger = new Logger('MulterModule');
+        try {
+          const s3Config = getS3Config(config.files.pageImage.savePath);
+
+          return s3Config;
+        } catch (error) {
+          logger.error(`S3 설정 로드 오류: ${error.message}`, error.stack);
+          throw error;
+        }
+      },
     }),
   ],
   controllers: [PageController],

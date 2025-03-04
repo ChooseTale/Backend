@@ -24,7 +24,7 @@ export class GetPageUseCase {
     }
 
     const choices = await this.choiceService.getAllByFromPageId(pageId);
-
+    console.log(getImagePathOrNull(page.backgroundImage?.url ?? undefined));
     return {
       id: page.id,
       gameId: page.gameId,
