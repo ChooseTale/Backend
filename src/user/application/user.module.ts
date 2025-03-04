@@ -1,35 +1,30 @@
-import { Injectable, Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { GoogleSocialLoginUsecase } from '../domain/usecases/google-social-login.usecase';
 import { UserComponent } from '../components/user.component';
 import { UserRepositoryModule } from '@@src/common/infrastructure/repositories/user/user.repository.module';
 import { GetMeUsecase } from '../domain/usecases/get-me.usecase';
 import { MulterModule } from '@nestjs/platform-express';
-import config from '@@src/config';
-import multer from 'multer';
 import { UpdateUserUsecase } from '../domain/usecases/update-user.usecase';
 import { DeleteUserUsecase } from '../domain/usecases/delete-user.usecase';
+import { getS3Config, UploadS3Service } from '@@src/common/aws/upload-s3';
+import config from '@@src/config';
 
 @Module({
   imports: [
     UserRepositoryModule,
-    MulterModule.register({
-      dest: config.files.userImage.dest,
-      storage: multer.diskStorage({
-        destination: config.files.userImage.dest,
-        filename: (req, file, cb) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          cb(
-            null,
-            file.fieldname +
-              '-' +
-              uniqueSuffix +
-              '.' +
-              file.mimetype.split('/')[1],
-          );
-        },
-      }),
+    MulterModule.registerAsync({
+      useFactory: () => {
+        const logger = new Logger('MulterModule');
+        try {
+          const s3Config = getS3Config(config.files.userImage.savePath);
+
+          return s3Config;
+        } catch (error) {
+          logger.error(`S3 설정 로드 오류: ${error.message}`, error.stack);
+          throw error;
+        }
+      },
     }),
   ],
   controllers: [UserController],
@@ -38,6 +33,7 @@ import { DeleteUserUsecase } from '../domain/usecases/delete-user.usecase';
     GetMeUsecase,
     UpdateUserUsecase,
     DeleteUserUsecase,
+    UploadS3Service,
     {
       provide: 'UserComponent',
       useClass: UserComponent,

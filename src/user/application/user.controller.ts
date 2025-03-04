@@ -144,6 +144,7 @@ export class UserController {
     },
   ) {
     const userId = request.user.id;
+
     const updatedUser = await this.updateUserUsecase.execute(
       userId,
       body,

@@ -15,6 +15,8 @@
     "type-publish": "chmod 775 ./scripts/types-publish.sh && ./scripts/types-publish.sh"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.758.0",
+    "@aws-sdk/lib-storage": "^3.758.0",
     "@nestia/core": "^3.2.1",
     "@nestia/e2e": "^0.4.3",
     "@nestia/fetcher": "^3.2.1",
@@ -31,6 +33,8 @@
     "@testcontainers/postgresql": "^10.9.0",
     "@types/express-session": "^1.18.0",
     "@types/multer": "^1.4.11",
+    "@types/multer-s3": "^3.0.3",
+    "aws-sdk": "^2.1692.0",
     "axios": "^1.7.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -39,6 +43,7 @@
     "hanspell": "^0.9.7",
     "ioredis": "^5.4.1",
     "kafkajs": "^2.2.4",
+    "multer-s3": "^3.0.1",
     "openai": "^4.53.1",
     "prisma": "^5.17.0",
     "reflect-metadata": "^0.1.13",

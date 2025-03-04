@@ -28,7 +28,7 @@ export class UpdatePageUsecase {
     gameId: number,
     pageId: number,
     body: UpdatePageReqDto,
-    file: Express.Multer.File,
+    file: any,
   ): Promise<UpdatePageResDto> {
     return await this.prisma.$transaction(async (transaction) => {
       const game = await this.gameService.getById(gameId, transaction);
@@ -40,7 +40,7 @@ export class UpdatePageUsecase {
 
       if (file) {
         const uploadedImages = await this.imageService.uploadImageForPage({
-          url: `/${file.path}`,
+          url: file.key,
         });
         backgroundImageId = uploadedImages.id;
       }

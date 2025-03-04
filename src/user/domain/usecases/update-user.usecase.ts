@@ -8,7 +8,7 @@ export class UpdateUserUsecase {
     private readonly userComponent: UserComponent,
   ) {}
 
-  async execute(userId: number, body: any, image: Express.Multer.File | null) {
+  async execute(userId: number, body: any, image: any) {
     const user = await this.userComponent.getUserEntityByIdOrThrow(userId);
 
     const newNickname = await this.userComponent.getNewNickname(
@@ -19,7 +19,7 @@ export class UpdateUserUsecase {
 
     user.updateNickname(newNickname);
     if (image) {
-      user.updateProfileImageUrl(image.path);
+      user.updateProfileImageUrl(image.key);
     }
     await this.userComponent.updateByUserEntity(user);
     return user;

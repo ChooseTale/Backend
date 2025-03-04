@@ -10,6 +10,15 @@ export type ConfigType = {
     sessionSecret: string;
     sessionMaxAge: number;
   };
+  aws: {
+    accessKeyId: string;
+    secretAccessKey: string;
+    region: string;
+    s3: {
+      bucketName: string;
+      url: string;
+    };
+  };
   db: {
     username: string;
     password: string;
@@ -23,15 +32,12 @@ export type ConfigType = {
   };
   files: {
     gameThumnailImage: {
-      dest: string;
       savePath: string;
     };
     userImage: {
-      dest: string;
       savePath: string;
     };
     pageImage: {
-      dest: string;
       savePath: string;
     };
   };
