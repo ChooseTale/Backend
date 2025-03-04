@@ -34,6 +34,6 @@ export class UserEntity {
   }
 
   updateProfileImageUrl(multerImagePath: string) {
-    this.profileImageUrl = '/' + multerImagePath;
+    this.profileImageUrl = multerImagePath;
   }
 }
