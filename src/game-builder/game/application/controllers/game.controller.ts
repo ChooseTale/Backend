@@ -115,7 +115,7 @@ export class GameController {
         validators: [
           // jpeg와 png, gif 허용
           new FileTypeValidator({
-            fileType: /jpeg|png|gif/,
+            fileType: /jpeg|png|gif|webp|jpg/,
           }),
           new MaxFileSizeValidator({
             maxSize: 3 * 1024 * 1024,
