@@ -10,6 +10,7 @@ export type EndedGroupGameInclude = {
         where: {
           deletedAt: null;
           userId: number;
+          endingPageId: { not: null };
         };
         orderBy: {
           lastPlayedAt: 'desc';
@@ -61,6 +62,7 @@ export class GetEndedGroupGameListQueryService extends ListParentQueryService {
             },
             where: {
               deletedAt: null,
+              endingPageId: { not: null },
               userId,
             },
             include: {
