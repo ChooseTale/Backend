@@ -25,7 +25,6 @@ export class UpdatePageReqDto {
 
   @IsBoolean()
   @Transform(({ value }) => {
-    console.log(value);
     return JSON.parse(value) == true;
   })
   isEnding: boolean;

@@ -103,7 +103,6 @@ export class ChoiceRepository implements IChoiceRepository {
 
       return toDomain(createdFromPage);
     } catch (err) {
-      console.log(err);
       throw new BadRequestException(`선택지 생성 실패`);
     }
   }

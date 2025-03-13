@@ -8,7 +8,7 @@ export class CreatePageUsecase {
     @Inject('IPageService') private readonly pageService: IPageService,
   ) {}
 
-  public async create(gameId: number, body: CreatePageReqDto) {
+  public async create(gameId: number) {
     const pages = await this.pageService.getAllByGameId(gameId);
     const isStarting = pages.length === 0;
 
