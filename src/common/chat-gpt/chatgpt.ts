@@ -96,7 +96,7 @@ export class ChatGPT implements IChatGPTPagePort {
           },
         ],
       });
-      console.log(promptGPT.choices[0].message.content);
+
       if (promptGPT.choices[0].message.content === 'error') {
         return '';
       }
@@ -107,7 +107,7 @@ export class ChatGPT implements IChatGPTPagePort {
         n: 1,
         size: '1024x1024',
       });
-      console.log(imageResponse.data[0].url);
+
       const response = await axios.get(imageResponse.data[0].url ?? '', {
         responseType: 'stream',
       });

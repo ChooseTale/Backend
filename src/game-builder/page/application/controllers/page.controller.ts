@@ -136,7 +136,7 @@ export class PageController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: CreatePageReqDto,
   ): Promise<CreatePageResDto> {
-    return await this.createPageUsecase.create(gameId, body);
+    return await this.createPageUsecase.create(gameId);
   }
 
   /**
