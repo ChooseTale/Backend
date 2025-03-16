@@ -31,7 +31,7 @@ jobs:
 
       - name: create env
         run: |
-          echo "${{ secrets.DEV_CONFIG }}" > src/config/docker.development.ts
+          echo "${{ secrets.DEV_CONFIG }}" > src/config/production.ts
 
       - name: aws login
         uses: aws-actions/configure-aws-credentials@v2
@@ -66,7 +66,7 @@ jobs:
             docker ps -q --filter "name=choosetale-backend" | grep -q . && docker rm -f choosetale-backend || echo "컨테이너가 없습니다."
             docker images ${{ secrets.AWS_ECR_URI }}/choosetale:backend && docker rmi ${{ secrets.AWS_ECR_URI }}/choosetale:backend || echo "이미지가 없습니다."
             docker pull ${{ secrets.AWS_ECR_URI }}/choosetale:backend
-            docker run -d -p 5001:5001 -p 5002:5002 -e NODE_ENV=development --net choosetale-network --name choosetale-backend ${{ secrets.AWS_ECR_URI }}/choosetale:backend
+            docker run -d -p 5001:5001 -p 5002:5002 -e NODE_ENV=production --net choosetale-network --name choosetale-backend ${{ secrets.AWS_ECR_URI }}/choosetale:backend
 
           EOF
 

@@ -8,6 +8,7 @@
   "scripts": {
     "build": "nest build",
     "dev": "NODE_ENV=development nest start --watch ",
+    "dev:prod": "NODE_ENV=production nest start --watch",
     "dev:docker": "NODE_ENV=dockerDevelopment nest start --watch",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "docker:setup": "npx ts-node ./scripts/docker-setting.ts ",

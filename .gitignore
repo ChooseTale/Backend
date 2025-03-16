@@ -46,6 +46,7 @@ lerna-debug.log*
 /src/config/development.ts
 /src/config/development-test.ts
 /src/config/docker.development.ts
+/src/config/production.ts
 
 # nestia
 /nestia
