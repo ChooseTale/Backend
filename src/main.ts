@@ -36,7 +36,8 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AllExceptionsFilter());
   app.enableCors({
-    origin: config.allowCorsList,
+    // origin: config.allowCorsList,
+    origin: '*',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -51,7 +52,7 @@ async function bootstrap() {
   }
 
   if (process.env.NODE_ENV === 'production') {
-    app.useGlobalGuards(new JwtAuthGuard());
+    // app.useGlobalGuards(new JwtAuthGuard());
   }
 
   await app.listen(config.port);
