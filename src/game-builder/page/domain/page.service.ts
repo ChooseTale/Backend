@@ -48,9 +48,13 @@ export class PageService implements IPageService {
   async create(
     gameId: number,
     isStarting: boolean,
+    blocks: { content: string }[],
     transaction?: Prisma.TransactionClient,
   ): Promise<PageDomainEntity> {
     const page = new CreatePageDomainEntity(gameId, isStarting);
+    blocks.forEach((block) => {
+      page.addContent(block.content);
+    });
     const newPage = await this.pageRepository.create(page, transaction);
     return newPage;
   }

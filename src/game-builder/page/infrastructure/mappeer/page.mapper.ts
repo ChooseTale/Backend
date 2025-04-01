@@ -19,18 +19,23 @@ export const toDomain = (page: Page): PageDomainEntity => {
 
 export const toEntity = (
   page: PageDomainEntity,
-): Omit<Page, 'deletedAt' | 'version'> => {
-  return {
+): Omit<Page, 'deletedAt' | 'version' | 'backgroundImageId'> => {
+  const pageEntity = {
     id: page.id,
     contents: page.contents as { content: string }[],
     title: page.title,
     gameId: page.gameId,
     isStarting: page.isStarting,
     isEnding: page.isEnding,
-    backgroundImageId: page.backgroundImageId,
+
     createdAt: page.createdAt ?? new Date(),
     updatedAt: page.updatedAt ?? new Date(),
   };
+
+  if (page.backgroundImageId) {
+    Object.assign(pageEntity, { backgroundImageId: page.backgroundImageId });
+  }
+  return pageEntity;
 };
 
 export const toEntityForCreate = (

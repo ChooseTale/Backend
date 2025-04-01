@@ -5,6 +5,7 @@ export class GetPageResDto {
   contents: {
     content: string;
   }[];
+  isStarting: boolean;
   isEnding: boolean;
   choices: {
     id: number;
