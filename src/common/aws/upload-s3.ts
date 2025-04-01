@@ -32,6 +32,7 @@ export const getS3Config = (filePath: string): MulterOptions => {
         },
         key: (req, file, cb) => {
           // 파일명 중복 방지를 위해 타임스탬프 추가
+
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
           const extension = file.originalname.split('.').pop();
@@ -39,7 +40,7 @@ export const getS3Config = (filePath: string): MulterOptions => {
         },
       }),
       limits: {
-        fileSize: 1024 * 1024 * 5, // 5MB
+        fileSize: 1024 * 1024 * 7, // 5MB
       },
     };
   } catch (error) {
@@ -73,6 +74,10 @@ export class UploadS3Service {
       const key = `${uniqueSuffix}.${extension}`;
 
       this.logger.log(`파일 업로드 시작: ${key}`);
+
+      if (!file.filename.includes('/images')) {
+        throw new Error('Invalid file type');
+      }
 
       const upload = new Upload({
         client: this.s3Client,

@@ -7,8 +7,10 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-interface Choice {
+class Choice {
   id: number;
+  @IsString()
+  @Length(1, 20)
   title: string;
   childPageId: number | null;
 }

@@ -30,6 +30,7 @@ export class GetPageUseCase {
       gameId: page.gameId,
       title: page.title,
       contents: page.contents,
+      isStarting: page.isStarting,
       isEnding: page.isEnding,
       choices: choices.map((choice) => ({
         id: choice.id,

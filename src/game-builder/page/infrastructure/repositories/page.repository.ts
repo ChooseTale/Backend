@@ -55,7 +55,7 @@ export class PageRepository implements IPageRepository {
     transaction: Prisma.TransactionClient,
   ): Promise<PageDomainEntity> {
     const newPage = await (transaction ?? this.prisma).page.create({
-      data: page,
+      data: { ...page, contents: page.contents },
     });
     return toDomain(newPage);
   }

@@ -164,7 +164,7 @@ export class PageController {
             fileType: /jpeg|png|gif|webp|jpg/,
           }),
           new MaxFileSizeValidator({
-            maxSize: 3 * 1024 * 1024,
+            maxSize: 7 * 1024 * 1024,
           }),
         ],
         fileIsRequired: false,

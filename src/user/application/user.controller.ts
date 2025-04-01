@@ -21,6 +21,7 @@ import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 import { UpdateUserUsecase } from '../domain/usecases/update-user.usecase';
 import { LoginResDto } from './dto/login.res.dto';
 import { DeleteUserUsecase } from '../domain/usecases/delete-user.usecase';
+import { MaxLength } from 'class-validator';
 
 @Controller('user')
 export class UserController {
@@ -46,6 +47,7 @@ export class UserController {
   async getMe(@Req() request: any): Promise<MeResDto> {
     const userId = request.user.id;
     const meEntity = await this.getMeUsecase.execute(userId);
+    console.log(meEntity);
     return meEntity;
   }
 
