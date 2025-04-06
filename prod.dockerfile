@@ -27,6 +27,8 @@ ENV NODE_ENV=production
 
 COPY scripts/server-start.sh ./server-start.sh
 
+COPY .env ./
+
 RUN chmod +x ./server-start.sh
 
 CMD ["./server-start.sh"]
