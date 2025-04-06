@@ -25,4 +25,7 @@ COPY --from=builder /app/src/config ./src/config
 
 ENV NODE_ENV=production
 
-CMD ["node", "dist/src/main.js"]
+COPY scripts/server-start.sh ./server-start.sh
+RUN chmod +x ./server-start.sh
+
+CMD ["./server-start.sh"]
