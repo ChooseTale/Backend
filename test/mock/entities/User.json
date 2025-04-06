@@ -1,42 +1,72 @@
 [
   {
     "id": 1,
-    "email": "test1@test.com"
+    "email": "test1@test.com",
+    "nickname": "test1",
+    "imageLink": "https://upload.wikimedia.org/wikipedia/ko/4/4a/%EC%8B%A0%EC%A7%B1%EA%B5%AC.png",
+    "profileImageUrl": "/test-uploads/profile-images/test1.png"
   },
   {
     "id": 2,
-    "email": "test2@test.com"
+    "email": "test2@test.com",
+    "nickname": "test2",
+    "imageLink": "https://i.namu.wiki/i/5Veq9acZq3uqIUMsQbKyf4wjHiuk500_e7LUTtdWvG_2m7Wax-Anb5bFATOMsQReegqabE05_P6Swl9h9vUl3g.webp",
+    "profileImageUrl": "/test-uploads/profile-images/test2.png"
   },
   {
     "id": 3,
-    "email": "test3@test.com"
+    "email": "test3@test.com",
+    "nickname": "test3",
+    "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt5JWDbHt2Q8gy6TarppHq5SwZtnE6Ip30xQ&s",
+    "profileImageUrl": "/test-uploads/profile-images/test3.png"
   },
   {
     "id": 4,
-    "email": "test4@test.com"
+    "email": "test4@test.com",
+    "nickname": "test4",
+    "imageLink": "https://i.namu.wiki/i/juhQa1tQn3DOIPcThzEgnexWJM6al63pByGqxwUiZaqlif8r6-iPRe-HXCZjL6SftqCxqgESfnPNzZsLDIAxWg.webp",
+    "profileImageUrl": "/test-uploads/profile-images/test4.png"
   },
   {
     "id": 5,
-    "email": "test5@test.com"
+    "email": "test5@test.com",
+    "nickname": "test5",
+    "imageLink": "https://i.namu.wiki/i/hWLEwQhnjvdoRZQhrgHMKAZjiSVPO5D86_nBD6OCVLHamm0dM7Ssv2KTfYgjJj-V_X3hMsgV-LeIgI7lmbqzhA.webp",
+    "profileImageUrl": "/test-uploads/profile-images/test5.png"
   },
   {
     "id": 6,
-    "email": "test6@test.com"
+    "email": "test6@test.com",
+    "nickname": "test6",
+    "imageLink": "https://i.namu.wiki/i/mB9k1WBSZ2j-HRJVOg_xjlXmeQInjYttK-IzT0U3751T9keQdBMTWA_GpDwUXgqGKWDupWUnfwmWaLtbYzULVA.webp",
+    "profileImageUrl": "/test-uploads/profile-images/test6.png"
   },
   {
     "id": 7,
-    "email": "test7@test.com"
+    "email": "test7@test.com",
+    "nickname": "test7",
+    "imageLink": "https://i.namu.wiki/i/qgDxgrY_2WwPW6k-cF-8lFFYIJeixq3luzgsni6l8Sjc5hOihdc4frsvthCwTvFk8Y4BoL1rmqujFus9E-T9kg.webp",
+    "profileImageUrl": "/test-uploads/profile-images/test7.png"
   },
   {
     "id": 8,
-    "email": "test8@test.com"
+    "email": "test8@test.com",
+    "nickname": "test8",
+    "imageLink": "https://i.namu.wiki/i/usOYyKQ8HldPpFsPW2bL33ac09STFiHoEbPe8vv5uEk3wPqU85QbcHHm0YEHeyX2FqZ91FgnQz5pYosRhfNCKA.webp",
+    "profileImageUrl": "/test-uploads/profile-images/test8.png"
   },
   {
     "id": 9,
-    "email": "test9@test.com"
+    "email": "test9@test.com",
+    "nickname": "test9",
+    "imageLink": "https://i.namu.wiki/i/2fNrcbaqn-sIts901EGPGlLtdt8HFmpWPriKRyfxigBgkW0QC7lJxAlFkvnIwe3pH31Gx5j8bSt_PC1_HlLuuw.webp",
+    "profileImageUrl": "/test-uploads/profile-images/test9.png"
   },
   {
     "id": 10,
-    "email": "test10@test.com"
+    "email": "test10@test.com",
+    "nickname": "test10",
+    "imageLink": "https://i.namu.wiki/i/rTB50C6q3i-wOFksoUiQGWko1aG7baHIBM0847qYxfwifAjHOvsFfnCebGXPc_XyNHA4b3Xx-AjNh6AUHsHypA.webp",
+    "profileImageUrl": "/test-uploads/profile-images/test10.png"
   }
 ]

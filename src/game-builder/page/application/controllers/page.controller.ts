@@ -2,11 +2,18 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseIntPipe,
   Patch,
   Post,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreatePageReqDto, CreatePageResDto } from './dto/create-page.dto';
 import {
@@ -20,14 +27,21 @@ import { UpdatePageUsecase } from '../usecases/update-page.usecase';
 import { DeletePageUseCase } from '../usecases/delete-page.usecase';
 import hanspell from 'hanspell';
 import { GetRecommentChoiceUsecase } from '../usecases/get-recomment-choice.usecase';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
+import { IsMyGameGuard } from '@@src/game-builder/guard/is-my-game.guard';
+import { GetPageUseCase } from '../usecases/get-page.usecase';
+import { GetPageResDto } from './dto/get-page.dto';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('/game/:gameId/page')
+@UseGuards(AuthSerializeGuard, IsMyGameGuard)
 export class PageController {
   constructor(
     private readonly createPageUsecase: CreatePageUsecase,
     private readonly updatePageUsecase: UpdatePageUsecase,
     private readonly deletePageUsecase: DeletePageUseCase,
     private readonly getRecommentChoiceUsecase: GetRecommentChoiceUsecase,
+    private readonly getPageUsecase: GetPageUseCase,
   ) {}
 
   /**
@@ -40,6 +54,7 @@ export class PageController {
    * @tag Page
    * @summary 선택지 추천받기 🟡(2407329)
    */
+  // 241229 페이지가 블럭단위로 변경됨에 따라 추천 방식을 변경해야 함.
   @Get(':pageId/recommend-choices')
   async recommendChoicesByExternalService(
     @Param('gameId', ParseIntPipe) gameId: number,
@@ -60,6 +75,7 @@ export class PageController {
    * @tag Page
    * @summary 맞춤법 검사하기 🟡(240730)
    */
+  // chatgpt를 사용하는 방안으로 변경
   @Post('/check-spelling')
   async checkSpellingByExternalService(
     @Param('gameId', ParseIntPipe) gameId: number,
@@ -97,6 +113,15 @@ export class PageController {
     };
   }
 
+  /** 페이지 조회하기 */
+  @Get('/:pageId')
+  async getPage(
+    @Param('gameId', ParseIntPipe) gameId: number,
+    @Param('pageId', ParseIntPipe) pageId: number,
+  ): Promise<GetPageResDto> {
+    return await this.getPageUsecase.execute(gameId, pageId);
+  }
+
   /**
    * 페이지 생성하기
    *
@@ -111,7 +136,7 @@ export class PageController {
     @Param('gameId', ParseIntPipe) gameId: number,
     @Body() body: CreatePageReqDto,
   ): Promise<CreatePageResDto> {
-    return await this.createPageUsecase.create(gameId, body);
+    return await this.createPageUsecase.create(gameId);
   }
 
   /**
@@ -121,16 +146,34 @@ export class PageController {
    * 페이지의 내용을 수정합니다.
    *
    * 240826 페이지에 선택지가 있다면 엔딩 페이지로 지정할 수 없음
+   * 250101 페이지 수정 기능에 contents 추가
+   * 250122 이미지 업로드 기능 추가
    * @tag Page
-   * @summary 페이지 수정하기 🟢(240721)
+   * @summary 페이지 수정하기 🟢(250101)
    */
   @Patch('/:pageId')
+  @UseInterceptors(FileInterceptor('image'))
   async update(
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          // jpeg와 png, gif 허용
+          new FileTypeValidator({
+            fileType: /jpeg|png|gif|webp|jpg/,
+          }),
+          new MaxFileSizeValidator({
+            maxSize: 7 * 1024 * 1024,
+          }),
+        ],
+        fileIsRequired: false,
+      }),
+    )
+    file: Express.Multer.File,
     @Body() body: UpdatePageReqDto,
   ): Promise<UpdatePageResDto> {
-    return await this.updatePageUsecase.excute(gameId, pageId, body);
+    return await this.updatePageUsecase.excute(gameId, pageId, body, file);
   }
 
   /**
@@ -146,7 +189,8 @@ export class PageController {
   async delete(
     @Param('gameId', ParseIntPipe) gameId: number,
     @Param('pageId', ParseIntPipe) pageId: number,
+    @Req() req: any,
   ): Promise<{ message: string }> {
-    return await this.deletePageUsecase.execute(gameId, pageId, 1);
+    return await this.deletePageUsecase.execute(gameId, pageId, req.user.id);
   }
 }

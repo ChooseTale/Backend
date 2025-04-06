@@ -13,12 +13,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
+}
+
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  nickname        String    @unique
+  profileImageUrl String    @default("")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
 
   Game     Game[]
   PlayGame PlayGame[]
@@ -70,12 +79,14 @@ model PlayGame {
   user   User @relation(fields: [userId], references: [id])
   userId Int
 
-  isEnded Boolean @default(false)
+  endingPage   Page? @relation(fields: [endingPageId], references: [id])
+  endingPageId Int?
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  deletedAt  DateTime?
-  UserChoice UserChoice[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  lastPlayedAt DateTime     @default(now())
+  deletedAt    DateTime?
+  UserChoice   UserChoice[]
 }
 
 model Game {
@@ -97,15 +108,19 @@ model Game {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  PlayGame PlayGame[]
+  PlayGame   PlayGame[]
+  ChoicePage ChoicePage[]
 }
 
 model Page {
   id Int @id @default(autoincrement())
 
-  content String
+  contents Json[] @default([])
 
-  abridgement String
+  title String
+
+  backgroundImage   PageImage? @relation(fields: [backgroundImageId], references: [id])
+  backgroundImageId Int?       @unique
 
   Game   Game @relation(fields: [gameId], references: [id])
   gameId Int
@@ -118,9 +133,10 @@ model Page {
   isStarting Boolean @default(false)
   isEnding   Boolean @default(false)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   deletedAt DateTime?
+  PlayGame  PlayGame[]
 }
 
 model ChoicePage {
@@ -132,14 +148,27 @@ model ChoicePage {
   toPage   Page? @relation("toPage", fields: [toPageId], references: [id])
   toPageId Int?
 
-  title       String
-  description String
-  order       Int
+  game   Game @relation(fields: [gameId], references: [id])
+  gameId Int  @default(1)
+
+  title String
+
+  order Int
 
   UserChoice UserChoice[]
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   deletedAt  DateTime?
+}
+
+model PageImage {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  Page      Page?
 }
 
 model Image {

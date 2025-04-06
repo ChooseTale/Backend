@@ -5,7 +5,6 @@ export const toDomain = (choice: ChoicePage): ChoiceDomainEntity => {
   return new ChoiceDomainEntity(
     choice.id,
     choice.title,
-    choice.description,
     choice.fromPageId,
     choice.toPageId,
     choice.order,
@@ -15,15 +14,16 @@ export const toDomain = (choice: ChoicePage): ChoiceDomainEntity => {
 };
 
 export const toEntity = (
+  gameId: number,
   choice: ChoiceDomainEntity,
 ): Omit<ChoicePage, 'deletedAt'> => {
   return {
     id: choice.id,
     title: choice.title,
-    description: choice.description,
     fromPageId: choice.parentPageId,
     toPageId: choice.childPageId,
     order: choice.order,
+    gameId,
     createdAt: choice.createdAt,
     updatedAt: choice.updatedAt,
   };

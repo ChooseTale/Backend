@@ -20,6 +20,7 @@ export interface IChoiceRepository {
     transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity | null>;
   create(
+    gameId: number,
     order: number,
     createChoiceReqDto: CreateChoiceReqDto,
     pageVersion: number,
@@ -30,7 +31,11 @@ export interface IChoiceRepository {
     choice: ChoiceDomainEntity,
     transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity>;
-  delete(
+  deleteMany(
+    query: Prisma.ChoicePageDeleteManyArgs,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<void>;
+  deleteById(
     choiceId: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<void>;

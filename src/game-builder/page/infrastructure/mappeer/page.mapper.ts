@@ -4,25 +4,26 @@ import { PageDomainEntity } from '../../domain/entities/page.entity';
 export const toDomain = (page: Page): PageDomainEntity => {
   const pageDomainEntity = new PageDomainEntity(
     page.id,
-    page.content,
-    page.abridgement,
+    page.contents as { content: string }[],
+    page.title,
     page.gameId,
     page.isStarting,
     page.isEnding,
     page.version,
     page.createdAt,
     page.updatedAt,
+    page.backgroundImageId,
   );
   return pageDomainEntity;
 };
 
 export const toEntity = (
   page: PageDomainEntity,
-): Omit<Page, 'deletedAt' | 'version'> => {
-  return {
+): Omit<Page, 'deletedAt' | 'version' | 'backgroundImageId'> => {
+  const pageEntity = {
     id: page.id,
-    content: page.content,
-    abridgement: page.abridgement,
+    contents: page.contents as { content: string }[],
+    title: page.title,
     gameId: page.gameId,
     isStarting: page.isStarting,
     isEnding: page.isEnding,
@@ -30,17 +31,23 @@ export const toEntity = (
     createdAt: page.createdAt ?? new Date(),
     updatedAt: page.updatedAt ?? new Date(),
   };
+
+  if (page.backgroundImageId) {
+    Object.assign(pageEntity, { backgroundImageId: page.backgroundImageId });
+  }
+  return pageEntity;
 };
 
 export const toEntityForCreate = (
   page: PageDomainEntity,
 ): Omit<Page, 'id' | 'deletedAt' | 'version'> => {
   return {
-    content: page.content,
-    abridgement: page.abridgement,
+    contents: page.contents as { content: string }[],
+    title: page.title,
     gameId: page.gameId,
     isStarting: page.isStarting,
     isEnding: page.isEnding,
+    backgroundImageId: page.backgroundImageId,
     createdAt: new Date(),
     updatedAt: new Date(),
   };

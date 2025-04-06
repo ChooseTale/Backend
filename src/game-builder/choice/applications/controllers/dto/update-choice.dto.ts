@@ -9,10 +9,6 @@ export class UpdateChoiceReqDto {
   @IsNotEmpty()
   title: string;
 
-  @IsString()
-  @IsNotEmpty()
-  description: string;
-
   @IsNumber()
   @IsNotEmpty()
   parentPageId: number;
@@ -25,7 +21,7 @@ export class UpdateChoiceReqDto {
 export class UpdateChoiceResDto {
   id: number;
   title: string;
-  description: string;
+
   parentPageId: number;
   childPageId: number | null;
 }

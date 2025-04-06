@@ -1,9 +1,11 @@
 export interface IChatGPTKafkaPort {
   produceRecommendChoices(message: {
-    abridgement: string;
+    title: string;
+    contents: {
+      content: string;
+    }[];
     choices: {
       title: string;
-      description: string;
     }[];
   }): Promise<void>;
 }

@@ -1,11 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PageRepositoryPort } from '../port/page.repository.interface';
 import { PrismaService } from '@@prisma/prisma.service';
-import { Page } from '@prisma/client';
+import { Page, Prisma } from '@prisma/client';
 
 @Injectable()
 export class PageRepository implements PageRepositoryPort {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async getAll(query: Prisma.PageFindManyArgs): Promise<Page[]> {
+    return this.prismaService.page.findMany(query);
+  }
 
   async getAllByGameId(gameId: number): Promise<Page[]> {
     return this.prismaService.page.findMany({

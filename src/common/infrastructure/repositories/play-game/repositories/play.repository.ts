@@ -1,18 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { PlayRepositoryPort } from '../port/play.repository.interface';
 import { PrismaService } from '@@prisma/prisma.service';
-import { PlayGame } from '@prisma/client';
+import { PlayGame, Prisma } from '@prisma/client';
 
 @Injectable()
 export class PlayRepository implements PlayRepositoryPort {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async getAll(query: Prisma.PlayGameFindManyArgs<any>) {
+    return this.prismaService.playGame.findMany(query);
+  }
 
   async getContinuePlayGame(
     userId: number,
     gameId: number,
   ): Promise<PlayGame | null> {
     return this.prismaService.playGame.findFirst({
-      where: { userId, gameId, isEnded: false },
+      where: { userId, gameId, endingPageId: null },
+    });
+  }
+
+  async getAllByUserIdAndGameId(
+    userId: number,
+    gameId: number,
+  ): Promise<PlayGame[]> {
+    return this.prismaService.playGame.findMany({
+      where: { userId, gameId },
     });
   }
 

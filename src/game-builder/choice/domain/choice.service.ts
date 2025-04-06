@@ -42,10 +42,13 @@ export class ChoiceService implements IChoiceService {
   }
 
   async create(
+    gameId: number,
     createChoiceReqDto: CreateChoiceReqDto,
+    transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity> {
     const fromPage = await this.pageService.getOneById(
       createChoiceReqDto.parentPageId,
+      transaction,
     );
 
     if (!fromPage) {
@@ -56,6 +59,7 @@ export class ChoiceService implements IChoiceService {
     if (createChoiceReqDto.childPageId) {
       const childPage = await this.pageService.getOneById(
         createChoiceReqDto.childPageId,
+        transaction,
       );
       if (!childPage) {
         throw new NotFoundException('해당 페이지가 존재하지 않습니다.');
@@ -64,6 +68,7 @@ export class ChoiceService implements IChoiceService {
 
     const pageChoices = await this.choiceRepository.getAllByFromPageId(
       createChoiceReqDto.parentPageId,
+      transaction,
     );
 
     const pageChoice = new PageChoice(
@@ -74,9 +79,11 @@ export class ChoiceService implements IChoiceService {
     pageChoice.checkChoiceLength();
 
     const choice = await this.choiceRepository.create(
+      gameId,
       pageChoices.length + 1,
       createChoiceReqDto,
       fromPage.version,
+      transaction,
     );
     return choice;
   }
@@ -84,6 +91,7 @@ export class ChoiceService implements IChoiceService {
   async update(
     choiceId: number,
     updateChoiceReqDto: UpdateChoiceReqDto,
+    transaction?: Prisma.TransactionClient,
   ): Promise<ChoiceDomainEntity> {
     const choice = await this.choiceRepository.getOneById(choiceId);
     if (!choice) {
@@ -92,7 +100,7 @@ export class ChoiceService implements IChoiceService {
 
     choice.updateChoice(updateChoiceReqDto);
 
-    return this.choiceRepository.update(choiceId, choice);
+    return this.choiceRepository.update(choiceId, choice, transaction);
   }
 
   async updateOrder(
@@ -121,7 +129,7 @@ export class ChoiceService implements IChoiceService {
       throw new NotFoundException('해당 선택지가 존재하지 않습니다.');
     }
 
-    await this.choiceRepository.delete(choiceId, transaction);
+    await this.choiceRepository.deleteById(choiceId, transaction);
     await this.updateOrder(choice.parentPageId, transaction);
   }
 }

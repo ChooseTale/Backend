@@ -1,6 +1,15 @@
-import config from '@@src/config';
+import { getImagePath } from '@@src/common/components/images/get-path.component';
 import { ConflictException } from '@nestjs/common';
-import { Game, Page, User, Image, PlayGame, UserChoice } from '@prisma/client';
+import {
+  Game,
+  Page,
+  User,
+  Image,
+  PlayGame,
+  UserChoice,
+  ChoicePage,
+  Prisma,
+} from '@prisma/client';
 
 export class IntroEntity {
   game: {
@@ -12,8 +21,8 @@ export class IntroEntity {
     updatedAt: Date;
     pages: {
       id: number;
-      abridgement: string;
-      content: string;
+      title: string;
+      contents: Prisma.JsonArray;
       isEnding: boolean;
       isStarting: boolean;
     }[];
@@ -24,21 +33,21 @@ export class IntroEntity {
     };
     firstPage: {
       id: number;
-      abridgement: string;
+      title: string;
     };
   };
 
   playGameDatas: {
     id: number | null;
-    isEnded: boolean;
+    endingPageId: number | null;
   }[];
 
   currentPlayGameData: {
     id: number;
     page: {
       id: number;
-      abridgement: string;
-      content: string;
+      title: string;
+      contents: Prisma.JsonArray;
       isEnding: boolean;
       isStarting: boolean;
     };
@@ -50,13 +59,17 @@ export class IntroEntity {
     playGameId: number;
   }[];
 
+  choicePages: {
+    id: number;
+    fromPageId: number;
+    toPageId: number | null;
+  }[];
+
   getThumbnailUrl(thumbnailUrl: Image | null) {
     if (!thumbnailUrl) {
       return '';
     }
-    return thumbnailUrl.url.includes('http')
-      ? thumbnailUrl.url
-      : config.apiHost + thumbnailUrl.url;
+    return getImagePath(thumbnailUrl.url);
   }
 
   constructor(
@@ -66,6 +79,7 @@ export class IntroEntity {
     playGameDatas: PlayGame[],
     thumbnailImage: Image | null,
     userChoices: UserChoice[],
+    choicePages: ChoicePage[],
   ) {
     this.game = {
       id: game.id,
@@ -77,29 +91,37 @@ export class IntroEntity {
       pages: pages,
       producer: {
         userId: producer.id,
-        nickname: '추가 예정',
-        profileImageUrl: '추가 예정',
+        nickname: producer.nickname,
+        profileImageUrl: producer.profileImageUrl,
       },
       firstPage: pages.filter((page) => page.isStarting === true)[0],
     };
     this.playGameDatas = playGameDatas.map((play) => {
       return {
         id: play.id,
-        isEnded: play.isEnded,
+        endingPageId: play.endingPageId,
       };
     });
     this.userChoices = userChoices.map((userChoice) => {
       return {
         id: userChoice.id,
         choicePageId: userChoice.choicePageId,
+
         playGameId: userChoice.playGameId,
+      };
+    });
+    this.choicePages = choicePages.map((choicePage) => {
+      return {
+        id: choicePage.id,
+        fromPageId: choicePage.fromPageId,
+        toPageId: choicePage.toPageId,
       };
     });
     this.getPlayGameData(playGameDatas, pages);
   }
 
   private getPlayGameData(play: PlayGame[], pages: Page[]) {
-    const currentPlayGame = play.find((p) => p.isEnded === false);
+    const currentPlayGame = play.find((p) => p.endingPageId === null);
     if (!currentPlayGame) {
       this.currentPlayGameData = null;
       return;
@@ -124,11 +146,16 @@ export class IntroEntity {
       return;
     }
 
+    const currentPlayGameFromPageId = this.choicePages.find(
+      (choicePage) =>
+        choicePage.id ===
+        currentGameChoices.sort((a, b) => b.id - a.id)[0].choicePageId,
+    )?.toPageId;
+
     const currentPage = pages.find(
-      (page) =>
-        page.id ===
-        currentGameChoices.sort((a, b) => a.id - b.id)[0].choicePageId,
+      (page) => page.id === currentPlayGameFromPageId,
     );
+
     if (!currentPage) {
       throw new ConflictException('현재 페이지를 찾을 수 없습니다.');
     }

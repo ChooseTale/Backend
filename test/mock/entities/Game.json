@@ -8,12 +8,104 @@
     "userId": 1,
     "thumbnailId": 1
   },
+
   {
-    "id": 2,
-    "title": "축구왕 테스터",
-    "description": "축구왕이 되기 위해선 어떻게 해야할까?",
+    "id": 3,
+    "title": "마법사의 여정",
+    "description": "마법의 힘을 얻은 주인공이 왕국을 구하기 위한 여정을 떠난다. 어떤 선택이 그를 승리로 이끌 것인가?",
+    "isPrivate": false,
+    "genre": "FANTASY",
+    "userId": 1,
+    "thumbnailId": 3
+  },
+  {
+    "id": 4,
+    "title": "용의 계승자",
+    "description": "고대의 용의 힘을 계승한 주인공이 혼란에 빠진 제국을 구하기 위해 떠나는 모험을 그린 판타지 스토리.",
+    "isPrivate": false,
+    "genre": "FANTASY",
+    "userId": 1,
+    "thumbnailId": 4
+  },
+  {
+    "id": 5,
+    "title": "운명적인 만남",
+    "description": "서로 다른 삶을 살던 두 사람이 운명적으로 만나 사랑에 빠지는 로맨틱한 이야기.",
+    "isPrivate": false,
+    "genre": "ROMANCE",
+    "userId": 1,
+    "thumbnailId": 5
+  },
+  {
+    "id": 6,
+    "title": "첫눈에 반하다",
+    "description": "첫눈에 반한 두 사람의 만남과 그 후에 일어나는 일들을 다룬 로맨틱한 이야기.",
     "isPrivate": true,
-    "genre": "DRAMA",
-    "userId": 1
+    "genre": "ROMANCE",
+    "userId": 1,
+    "thumbnailId": 6
+  },
+  {
+    "id": 7,
+    "title": "사랑은 타이밍",
+    "description": "두 사람은 서로에게 끌리지만, 타이밍이 맞지 않아 사랑을 이어가는 것이 쉽지 않은 이야기를 다룬 로맨스.",
+    "isPrivate": false,
+    "genre": "ROMANCE",
+    "userId": 1,
+    "thumbnailId": 7
+  },
+  {
+    "id": 8,
+    "title": "추격의 밤",
+    "description": "어두운 밤, 주인공은 무언가에게 쫓기고 있다. 숨막히는 추격전이 펼쳐지며 탈출을 시도하는 긴박한 이야기.",
+    "isPrivate": false,
+    "genre": "THRILLER",
+    "userId": 1,
+    "thumbnailId": 8
+  },
+  {
+    "id": 9,
+    "title": "그림자 속의 진실",
+    "description": "한 탐정이 도시의 어두운 뒷골목에서 일어나는 연쇄 실종 사건을 추적하는 미스터리한 이야기.",
+    "isPrivate": true,
+    "genre": "THRILLER",
+    "userId": 1,
+    "thumbnailId": 9
+  },
+  {
+    "id": 10,
+    "title": "불굴의 혁명가",
+    "description": "한 남자가 시대의 억압에 맞서 싸우며 독립과 자유를 위해 헌신한 이야기. 그의 희생과 끊임없는 노력은 역사를 바꿨다.",
+    "isPrivate": false,
+    "genre": "BIOGRAPHY",
+    "userId": 1,
+    "thumbnailId": 10
+  },
+  {
+    "id": 11,
+    "title": "위대한 학자의 여정",
+    "description": "한 학자가 평생을 바쳐 학문을 연구하고, 인류의 발전에 기여한 감동적인 이야기. 그가 직면한 도전과 성공의 순간들이 담겨있다.",
+    "isPrivate": false,
+    "genre": "BIOGRAPHY",
+    "userId": 1,
+    "thumbnailId": 11
+  },
+  {
+    "id": 12,
+    "title": "슈퍼히어로의 탄생",
+    "description": "평범한 소년이 불의의 사고로 초능력을 얻게 되면서 벌어지는 다양한 사건들을 다룬 이야기. 자신의 힘을 어떻게 사용할 것인지 선택해야 한다.",
+    "isPrivate": true,
+    "genre": "COMIC",
+    "userId": 1,
+    "thumbnailId": 14
+  },
+  {
+    "id": 13,
+    "title": "시간 여행자의 모험",
+    "description": "한 젊은 과학자가 시간 여행 기계를 만들어 과거와 미래를 탐험하며 펼쳐지는 신비로운 이야기. 각 선택에 따라 역사가 달라질 수 있다.",
+    "isPrivate": false,
+    "genre": "COMIC",
+    "userId": 1,
+    "thumbnailId": 13
   }
 ]

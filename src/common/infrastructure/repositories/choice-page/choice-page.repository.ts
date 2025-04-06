@@ -25,6 +25,12 @@ export class ChoicePageRepository implements ChoicePageRepositoryPort {
     });
   }
 
+  async getAllByGameId(gameId: number): Promise<ChoicePage[]> {
+    return this.prisma.choicePage.findMany({
+      where: { gameId },
+    });
+  }
+
   async getAllByPageId(pageId: number): Promise<ChoicePage[]> {
     return this.prisma.choicePage.findMany({
       where: { fromPageId: pageId },

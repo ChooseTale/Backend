@@ -1,0 +1,88 @@
+name: auto-cd(v2)
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        type: choice
+        required: true
+        description: '테스트 서버 배포 또는 운영 서버 배포'
+        options:
+          - dev
+          - prod
+
+env:
+  SERVER_HOST: ${{ secrets.DEV_SERVER_HOST }}
+  SERVER_USER: ${{ secrets.DEV_SERVER_USER }}
+  SERVER_SSH_KEY: ${{ secrets.DEV_SERVER_SSH_KEY }}
+  SERVER_SSH_PASSPHRASE: ${{ secrets.DEV_SERVER_SSH_PASSPHRASE }}
+  SERVER_PORT: ${{ inputs.command == 'prod' && '-p 4001:4001 -p 4002:4002' || '-p 5001:5001 -p 5002:5002' }}
+  SERVER_NAME: ${{ inputs.command == 'prod' && 'choosetale-backend' || 'choosetale-backend-dev' }}
+  SERVER_NETWORK: ${{ inputs.command == 'prod' && 'choosetale-network' || 'choosetale-network' }}
+  SERVER_DATABASE_URL: ${{ inputs.command == 'prod' && secrets.PROD_DATABASE_URL || secrets.DEV_DATABASE_URL }}
+  SERVER_CONFIG: ${{ inputs.command == 'prod' && secrets.PROD_CONFIG || secrets.DEV_CONFIG }}
+  AWS_ECR_URI: ${{ secrets.AWS_ECR_URI }}
+  DOCKER_IMAGE_TAG: ${{ inputs.command == 'prod' && '' || '-dev' }}
+  DEPLOY_PATH: choose-tale/Backend
+  BRANCH: ${{github.ref_name}}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: echo env
+        run: |
+          echo ${{ env.DEPLOY_PATH }}
+          echo ${{ env.BRANCH }}
+
+      - name: create env
+        run: |
+          echo "${{ env.SERVER_CONFIG }}" > src/config/production.ts
+
+      - name: aws login
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: aws ecr get-login-password
+        id: login-password
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URI }}
+
+      - name: aws ecr build
+        run: |
+          docker build -f dev.dockerfile -t ${{ secrets.AWS_ECR_URI }}/choosetale${{ env.DOCKER_IMAGE_TAG }}:backend .
+
+      - name: aws ecr push
+        run: |
+          docker push ${{ secrets.AWS_ECR_URI }}/choosetale${{ env.DOCKER_IMAGE_TAG }}:backend
+
+      - name: Set up SSH key with passphrase
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ env.SERVER_SSH_KEY }}
+          ssh-passphrase: ${{ env.SERVER_SSH_PASSPHRASE }}
+
+      - name: 원격 서버에 배포
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << 'EOF'
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ECR_URI }}
+            docker ps -q --filter "name=${{ env.SERVER_NAME }}" | grep -q . && docker rm -f ${{ env.SERVER_NAME }} || echo "컨테이너가 없습니다."
+            docker images ${{ env.AWS_ECR_URI }}/choosetale${{ env.DOCKER_IMAGE_TAG }}:backend && docker rmi ${{ env.AWS_ECR_URI }}/choosetale${{ env.DOCKER_IMAGE_TAG }}:backend || echo "이미지가 없습니다."
+            docker pull ${{ env.AWS_ECR_URI }}/choosetale${{ env.DOCKER_IMAGE_TAG }}:backend
+            docker run -d ${{ env.SERVER_PORT }} -e NODE_ENV=production -e DATABASE_URL=${{ env.SERVER_DATABASE_URL }} --net ${{ env.SERVER_NETWORK }} --name ${{ env.SERVER_NAME }} ${{ env.AWS_ECR_URI }}/choosetale:backend
+
+          EOF
+
+      - name: 슬랙 메시지 전송
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL_WEBHOOK }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"백엔드 배포가 완료되었습니다. port: 5001 , branch: ${{ env.BRANCH }}"}' $SLACK_WEBHOOK_URL
+
+      - name: SSH 키 정리
+        run: rm -rf ~/.ssh

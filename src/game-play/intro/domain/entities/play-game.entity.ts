@@ -5,7 +5,7 @@ export class PlayGameEntity {
     id: number;
     userId: number;
     gameId: number;
-    isEnded: boolean;
+    endingPageId: number | null;
     createdAt: Date;
     updatedAt: Date;
   };

@@ -48,11 +48,13 @@ export class KafkaService implements IChatGPTKafkaPort {
 
               // message의 타입 확인
               if (typeof messageValue !== 'object') return;
-              if (!messageValue.abridgement) return;
+              if (!messageValue.title) return;
+              if (!messageValue.contents) return;
               if (!messageValue.choices) return;
 
               const result = await this.chatGpt.getRecommandedChoices(
-                messageValue.abridgement,
+                messageValue.title,
+                messageValue.contents,
                 messageValue.choices,
               );
 

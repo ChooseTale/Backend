@@ -1,10 +1,11 @@
+import { Prisma } from '@prisma/client';
+
 export interface GetPlayGameScreenDto {
   playId: number;
   gameIntroData: {
     game: {
       id: number;
       title: string;
-      description: string;
       genre: string;
       thumbnailUrl: string;
       producer: {
@@ -23,12 +24,12 @@ export interface GetPlayGameScreenDto {
   };
   page: {
     id: number;
-    description: string;
-    tempDescription: string;
+    title: string;
+    contents: Prisma.JsonArray;
+    backgroundImageUrl: string;
     choices: {
       id: number;
       title: string;
-      description: string;
       toPageId: number | null;
     }[];
     isEnding: boolean;

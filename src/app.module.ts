@@ -12,6 +12,11 @@ import { GamePlayModule } from './game-play/game-play.module';
 import { JwtService } from '@nestjs/jwt';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { UserModule } from './user/application/user.module';
+import { MyPageModule } from './my-page/game-play/application/my-page.module';
+import { GameBuilderMyPageModule } from './my-page/game-builder/application/game-builder-my-page.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './common/middleware/exceptions/execption-handller';
 
 @Module({
   imports: [
@@ -19,13 +24,29 @@ import { join } from 'path';
       rootPath: join(process.cwd(), 'uploads'), // 파일이 저장된 디렉토리
       serveRoot: '/uploads', // 클라이언트가 접근할 URL 경로
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'test-uploads'), // 파일이 저장된 디렉토리
+      serveRoot: '/test-uploads', // 클라이언트가 접근할 URL 경로
+    }),
+
+    UserModule,
     GameModule,
     GamePlayModule,
     PageModule,
     ChoiceModule,
+    MyPageModule,
+    GameBuilderMyPageModule,
     KafkaModule,
   ],
   controllers: [AppController],
-  providers: [PrismaService, AppGateGateway, JwtService],
+  providers: [
+    PrismaService,
+    AppGateGateway,
+    JwtService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule {}

@@ -4,10 +4,11 @@ export class CreateGameDomainEntity {
   public createdAt: Date = new Date();
   public updatedAt: Date = new Date();
   public isPrivate: boolean = true;
-  public genre: Genres = 'OTHER';
-  public description: string = '';
+
   constructor(
     public userId: number,
     public title: string,
+    public description: string,
+    public genre: Genres,
   ) {}
 }

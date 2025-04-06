@@ -4,6 +4,7 @@ import { PrismaService } from '@@prisma/prisma.service';
 import { GameThumbnailDomainEntity } from '../domain/entities/game-thumnail.entity';
 import { toCreateEntity, toDomainEntity } from './mapper/game-thumbnail.mapper';
 import { CreateGameThumbnailEntity } from '../domain/entities/create-game-thumbnail.entity';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ImageRepository implements IImageRepository {
@@ -34,9 +35,10 @@ export class ImageRepository implements IImageRepository {
 
   async uploadImageForGameThumbnail(
     gameThumbnail: CreateGameThumbnailEntity,
+    transaction?: Prisma.TransactionClient,
   ): Promise<GameThumbnailDomainEntity> {
     const image = toCreateEntity(gameThumbnail);
-    const newImage = await this.prisma.image.create({
+    const newImage = await (transaction ?? this.prisma).image.create({
       data: {
         ...image,
       },

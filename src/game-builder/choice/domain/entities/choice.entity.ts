@@ -4,7 +4,6 @@ export class ChoiceDomainEntity {
   constructor(
     public id: number,
     public title: string,
-    public description: string,
     public parentPageId: number,
     public childPageId: number | null,
     public order: number,
@@ -14,10 +13,6 @@ export class ChoiceDomainEntity {
 
   setTitle(title: string) {
     this.title = title;
-  }
-
-  setDescription(description: string) {
-    this.description = description;
   }
 
   setParentPageId(parentPageId: number) {
@@ -34,8 +29,6 @@ export class ChoiceDomainEntity {
 
   updateChoice(updateChoiceReqDto: UpdateChoiceReqDto) {
     this.setTitle(updateChoiceReqDto.title);
-    this.setDescription(updateChoiceReqDto.description);
-    this.setParentPageId(updateChoiceReqDto.parentPageId);
     this.setChildPageId(updateChoiceReqDto.childPageId);
   }
 }

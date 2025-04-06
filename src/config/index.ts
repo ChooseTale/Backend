@@ -17,6 +17,9 @@ class ConfigLoader {
       case 'developmentTest':
         this.configFileName = 'development-test';
         break;
+      case 'dockerDevelopment':
+        this.configFileName = 'docker.development';
+        break;
       case 'production':
         this.configFileName = 'production';
         break;

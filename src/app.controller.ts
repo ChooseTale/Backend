@@ -1,4 +1,13 @@
-import { Controller, Get, ParseIntPipe, Post, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  ParseIntPipe,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { PrismaService } from '@@prisma/prisma.service';
 import OpenAI from 'openai';
 
@@ -6,6 +15,7 @@ import config from '@@src/config/index';
 import { createMockData } from 'test/mock/create-mock';
 import fs from 'fs';
 import { JwtService } from '@nestjs/jwt';
+import { AuthSerializeGuard } from './common/guard/auth.serielize.guard';
 
 @Controller()
 export class AppController {
@@ -15,18 +25,33 @@ export class AppController {
   ) {}
 
   @Post('/mock')
+  // @UseGuards(AuthSerializeGuard)
   async mock() {
-    await createMockData(this.prismaService);
-
-    // uploads 폴더 초기화
+    // uploads의 default 폴더를 제외하고 초기화
     fs.rmSync('uploads', { recursive: true, force: true });
 
     fs.mkdirSync('uploads');
 
-    const dirNames = ['game-thumnail-images'];
+    // test-uploads 폴더가 없으면 생성
+    if (!fs.existsSync('test-uploads')) {
+      fs.mkdirSync('test-uploads');
+    }
+
+    const keys = Object.keys(config.files);
+    const dirNames = keys.map(
+      (key) => config.files[key].savePath.split('/')[2],
+    );
+
     dirNames.forEach((dirName) => {
       fs.mkdirSync(`uploads/${dirName}`);
     });
+    dirNames.forEach((dirName) => {
+      if (!fs.existsSync(`test-uploads/${dirName}`)) {
+        fs.mkdirSync(`test-uploads/${dirName}`);
+      }
+    });
+    await createMockData(this.prismaService);
+
     return 'success';
   }
 
@@ -52,10 +77,33 @@ export class AppController {
       await this.prismaService.user.create({
         data: {
           email: `test${i}@test.com`,
+          nickname: `test${i}`,
         },
       });
     }
     return 'success';
+  }
+
+  @Get('/test-user/login')
+  async testUserLogin(
+    @Query('userId', ParseIntPipe) userId: number,
+    @Req() request: any,
+  ) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('유저가 존재하지 않습니다.');
+    }
+
+    request.session.userId = user.id;
+    request.session.type = 'google';
+
+    return {
+      message: 'success',
+      isFirstLogin: false,
+    };
   }
 
   @Get('/ping')
@@ -70,6 +118,7 @@ export class AppController {
   }
 
   @Post('/openai')
+  @UseGuards(AuthSerializeGuard)
   async openai() {
     const openai = new OpenAI({
       apiKey: config.openAi.openAiApiKey,

@@ -1,5 +1,5 @@
 import { PrismaService } from '@@prisma/prisma.service';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { UserRepositoryPort } from '../port/user.repository.interface';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
@@ -13,5 +13,35 @@ export class UserRepository implements UserRepositoryPort {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
     }
     return user;
+  }
+
+  async getUserByNickname(nickname: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({ where: { nickname } });
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    return user;
+  }
+
+  async createUser(user: Prisma.UserCreateInput): Promise<User> {
+    const newUser = await this.prisma.user.create({ data: user });
+    return newUser;
+  }
+
+  async updateUser(
+    userId: number,
+    user: Prisma.UserUpdateInput,
+  ): Promise<User> {
+    const updatedUser = await this.prisma.user.update({
+      where: { id: userId },
+      data: user,
+    });
+    return updatedUser;
+  }
+
+  async deleteUser(userId: number): Promise<void> {
+    await this.prisma.user.delete({ where: { id: userId } });
   }
 }

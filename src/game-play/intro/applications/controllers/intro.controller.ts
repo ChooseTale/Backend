@@ -1,11 +1,20 @@
-import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { GetIntroScreenResDto } from '../dto/get-intro-screnn.dto';
 import { FirstStartGameResDto } from '../dto/first-start-game.dto';
-import { ContinueGameResDto } from '../dto/countinue-game.dto';
 import { GetIntroScreenUsecase } from '../../domain/usecases/get-intro-screen.usecase';
 import { FirstStartGameUsecase } from '../../domain/usecases/first-start-game.usecase';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
 
 @Controller('/intro')
+@UseGuards(AuthSerializeGuard)
 export class IntroController {
   constructor(
     private readonly getIntroScreenUsecase: GetIntroScreenUsecase,
@@ -25,9 +34,10 @@ export class IntroController {
    */
   @Get('/:gameId')
   async getIntroScreen(
+    @Req() req: any,
     @Param('gameId', ParseIntPipe) gameId: number,
   ): Promise<GetIntroScreenResDto> {
-    return await this.getIntroScreenUsecase.execute(gameId, 1);
+    return await this.getIntroScreenUsecase.execute(gameId, req.user.id);
   }
 
   /**
@@ -42,7 +52,8 @@ export class IntroController {
   @Post('/:gameId/first-start')
   async firstStartGame(
     @Param('gameId', ParseIntPipe) gameId: number,
+    @Req() req: any,
   ): Promise<FirstStartGameResDto> {
-    return await this.firstStartGameUsecase.execute(gameId, 1);
+    return await this.firstStartGameUsecase.execute(gameId, req.user.id);
   }
 }

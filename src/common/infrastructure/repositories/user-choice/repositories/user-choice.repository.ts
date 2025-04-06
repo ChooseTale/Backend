@@ -43,4 +43,12 @@ export class UserChoiceRepository implements UserChoiceRepositoryPort {
       data: { playGameId, choicePageId: pageId },
     });
   }
+
+  async deleteAllByPlayId(playGameId: number): Promise<void> {
+    await this.prismaService.userChoice.deleteMany({
+      where: {
+        playGameId,
+      },
+    });
+  }
 }

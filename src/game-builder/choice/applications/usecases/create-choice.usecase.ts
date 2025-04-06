@@ -16,7 +16,10 @@ export class CreateChoiceUseCase {
     const game = await this.gameService.getById(gameId);
     if (!game) throw new NotFoundException(`game is null`);
 
-    const newChoice = await this.choiceService.create(createChoiceReqDto);
+    const newChoice = await this.choiceService.create(
+      gameId,
+      createChoiceReqDto,
+    );
 
     return {
       id: newChoice.id,

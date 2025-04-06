@@ -2,13 +2,17 @@ import { PageChoice } from '@@src/game-builder/choice/domain/entities/page-choic
 import { ChoicePage, Page, UserChoice } from '@prisma/client';
 
 export class GamePlayResultEntity {
+  public gameId: number;
+  public totalPlayCount: number;
+  public totalEndingCount: number;
+  public reachEndingCount: number;
   public readonly endingPage: {
     id: number;
-    abridgement: string;
+    title: string;
   };
   public readonly choosenPages: {
     id: number;
-    abridgement: string;
+    title: string;
     choices: {
       id: number;
       title: string;
@@ -16,6 +20,22 @@ export class GamePlayResultEntity {
       isSelected: boolean;
     }[];
   }[];
+
+  public setGameId(gameId: number) {
+    this.gameId = gameId;
+  }
+
+  public setTotalPlayCount(totalPlayCount: number) {
+    this.totalPlayCount = totalPlayCount;
+  }
+
+  public setTotalEndingCount(totalEndingCount: number) {
+    this.totalEndingCount = totalEndingCount;
+  }
+
+  public setReachEndingCount(reachEndingCount: number) {
+    this.reachEndingCount = reachEndingCount;
+  }
 
   constructor(
     pages: Page[],
@@ -36,7 +56,7 @@ export class GamePlayResultEntity {
 
     this.endingPage = {
       id: endingPage.id,
-      abridgement: endingPage.abridgement,
+      title: endingPage.title,
     };
 
     this.choosenPages = userChoices
@@ -83,7 +103,7 @@ export class GamePlayResultEntity {
 
         return {
           id: page.id,
-          abridgement: page?.abridgement,
+          title: page?.title,
           choices: choices,
         };
       });

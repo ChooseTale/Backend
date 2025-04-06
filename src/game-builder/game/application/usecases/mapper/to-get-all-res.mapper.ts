@@ -3,6 +3,7 @@ import { GetAllGameResDto } from '../../controllers/dto/get-all-game.dto';
 import { GameDomainEntity } from '@@src/game-builder/game/domain/entities/game.entity';
 import { ChoiceDomainEntity } from '@@src/game-builder/choice/domain/entities/choice.entity';
 import { NotFoundException } from '@nestjs/common';
+import { getImagePathOrNull } from '@@src/common/components/images/get-path.component';
 
 export const toGetAllResMapper = (
   game: GameDomainEntity,
@@ -16,7 +17,6 @@ export const toGetAllResMapper = (
     fromPageId: choice.parentPageId,
     toPageId: choice.childPageId,
     title: choice.title,
-    description: choice.description,
     createdAt: choice.createdAt,
   }));
 
@@ -24,7 +24,11 @@ export const toGetAllResMapper = (
     throw new NotFoundException('Starting page not found');
   }
 
-  const dfs = (page: PageDomainEntity, depth: number) => {
+  const dfs = (
+    page: PageDomainEntity,
+    depth: number,
+    fromPageIds: number[],
+  ) => {
     if (!page) {
       return;
     }
@@ -36,37 +40,47 @@ export const toGetAllResMapper = (
     ) as PageDomainEntity[];
     result.push({
       id: page.id,
-      abridgement: page.abridgement,
+      title: page.title,
       createdAt: page.createdAt,
       updatedAt: page.updatedAt,
+      isStarting: page.isStarting,
       isEnding: page.isEnding,
-      description: page.content,
+      backgroundImage: {
+        url: getImagePathOrNull(page.backgroundImage?.url ?? undefined),
+      },
+      contents: page.contents,
       depth,
+      fromPageIds,
       choices: childChoices,
     });
-    childPages.forEach((childPage) => dfs(childPage, depth + 1));
+    childPages.forEach((childPage) =>
+      dfs(childPage, depth + 1, [...fromPageIds, page.id]),
+    );
   };
 
-  dfs(startingPage, 1);
+  dfs(startingPage, 1, []);
 
   // 선택지가 연결되지 않은 페이지
   // parentId와 childId가 모두 존재하지 않는 페이지
-  const unconnectedPages = pages.filter((page) =>
-    choices.every(
-      (choice) =>
-        choice.parentPageId !== page.id && choice.childPageId !== page.id,
-    ),
+  const unconnectedPages = pages.filter(
+    (page) => !result.some((r) => r.id === page.id),
   );
+
   for (const page of unconnectedPages) {
     result.push({
       id: page.id,
-      abridgement: page.abridgement,
+      title: page.title,
       createdAt: page.createdAt,
       updatedAt: page.updatedAt,
-      description: page.content,
+      contents: page.contents,
+      backgroundImage: {
+        url: getImagePathOrNull(page.backgroundImage?.url ?? undefined),
+      },
+      isStarting: page.isStarting,
       isEnding: page.isEnding,
       depth: -1,
-      choices: [],
+      choices: resChoices.filter((choice) => choice.fromPageId === page.id),
+      fromPageIds: [],
     });
   }
 

@@ -65,6 +65,7 @@ export class ChoiceRepository implements IChoiceRepository {
   }
 
   async create(
+    gameId: number,
     order: number,
     createChoiceReqDto: CreateChoiceReqDto,
     fromPageVersion: number,
@@ -72,28 +73,13 @@ export class ChoiceRepository implements IChoiceRepository {
   ): Promise<ChoiceDomainEntity> {
     try {
       // 페이지 버전 업데이트
-      const updatedPage = await (transaction ?? this.prisma).page.update({
-        data: {
-          version: {
-            increment: 1,
-          },
-        },
-        where: {
-          id: createChoiceReqDto.parentPageId,
-          version: fromPageVersion,
-        },
-      });
-
-      if (!updatedPage) {
-        throw new ConflictException('페이지가 업데이트 되지 않음.');
-      }
 
       // 선택지 생성
       await (transaction ?? this.prisma).choicePage.create({
         data: {
+          gameId,
           toPageId: createChoiceReqDto.childPageId ?? null,
           title: createChoiceReqDto.title,
-          description: createChoiceReqDto.description,
           order,
           fromPageId: createChoiceReqDto.parentPageId,
         },
@@ -129,8 +115,6 @@ export class ChoiceRepository implements IChoiceRepository {
     const updatedChoice = await (transaction ?? this.prisma).choicePage.update({
       data: {
         title: choice.title,
-        description: choice.description,
-        fromPageId: choice.parentPageId,
         toPageId: choice.childPageId,
         order: choice.order,
       },
@@ -142,7 +126,14 @@ export class ChoiceRepository implements IChoiceRepository {
     return toDomain(updatedChoice);
   }
 
-  async delete(
+  async deleteMany(
+    query: Prisma.ChoicePageDeleteManyArgs,
+    transaction?: Prisma.TransactionClient,
+  ): Promise<void> {
+    await (transaction ?? this.prisma).choicePage.deleteMany(query);
+  }
+
+  async deleteById(
     choiceId: number,
     transaction?: Prisma.TransactionClient,
   ): Promise<void> {

@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import {
   CreateChoiceReqDto,
@@ -19,8 +20,11 @@ import {
 import { CreateChoiceUseCase } from '../usecases/create-choice.usecase';
 import { UpdateChoiceUseCase } from '../usecases/update-choice.usecase';
 import { DeleteChoiceUseCase } from '../usecases/delete-choice.usecase';
+import { AuthSerializeGuard } from '@@src/common/guard/auth.serielize.guard';
+import { IsMyGameGuard } from '@@src/game-builder/guard/is-my-game.guard';
 
 @Controller('/game/:gameId/choice')
+@UseGuards(AuthSerializeGuard, IsMyGameGuard)
 export class ChoiceController {
   constructor(
     private readonly createChoiceUsecase: CreateChoiceUseCase,

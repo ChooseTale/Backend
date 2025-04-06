@@ -3,7 +3,7 @@ import { GetDataGameResDto } from '../../controllers/dto/get-data-game.dto';
 import { PageDomainEntity } from '@@src/game-builder/page/domain/entities/page.entity';
 import { ChoiceDomainEntity } from '@@src/game-builder/choice/domain/entities/choice.entity';
 import { GameThumbnailDomainEntity } from '@@src/game-builder/images/domain/entities/game-thumnail.entity';
-import config from '@@src/config';
+import { getImagePath } from '@@src/common/components/images/get-path.component';
 
 export const toGetDataRes = (
   game: GameDomainEntity,
@@ -15,7 +15,7 @@ export const toGetDataRes = (
     .filter((image) => image.id !== game.thumbnailId)
     .map((image) => ({
       id: image.id,
-      url: image.url.includes('http') ? image.url : config.apiHost + image.url,
+      url: getImagePath(image.url),
     }));
 
   if (game.thumbnailId) {
@@ -23,7 +23,7 @@ export const toGetDataRes = (
     if (thumbnail) {
       thumbnails.unshift({
         id: thumbnail.id,
-        url: thumbnail.url,
+        url: getImagePath(thumbnail.url),
       });
     }
   }

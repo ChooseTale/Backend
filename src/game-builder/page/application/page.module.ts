@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Logger, Module, forwardRef } from '@nestjs/common';
 import { PageController } from './controllers/page.controller';
 import { PageService } from '../domain/page.service';
 import { PageRepository } from '../infrastructure/repositories/page.repository';
@@ -13,12 +13,34 @@ import { ChoiceModule } from '@@src/game-builder/choice/applications/choice.modu
 
 import { AppGateGateway } from '@@src/common/socketio/gate/chat-gpt.gateway';
 import { KafkaModule } from '@@src/common/kafka/chat-gpt/kafka.module';
+import { ChoiceRepository } from '@@src/game-builder/choice/infrastructure/repositories/choice.repository';
+import { GetPageUseCase } from './usecases/get-page.usecase';
+
+import { ImageService } from '@@src/game-builder/images/domain/image.service';
+import { ImageModule } from '@@src/game-builder/images/image.module';
+import { MulterModule } from '@nestjs/platform-express';
+import config from '@@src/config';
+import { getS3Config } from '@@src/common/aws/upload-s3';
 
 @Module({
   imports: [
     forwardRef(() => GameModule),
     forwardRef(() => ChoiceModule),
     KafkaModule,
+    ImageModule,
+    MulterModule.registerAsync({
+      useFactory: () => {
+        const logger = new Logger('MulterModule');
+        try {
+          const s3Config = getS3Config(config.files.pageImage.savePath);
+
+          return s3Config;
+        } catch (error) {
+          logger.error(`S3 설정 로드 오류: ${error.message}`, error.stack);
+          throw error;
+        }
+      },
+    }),
   ],
   controllers: [PageController],
   providers: [
@@ -26,6 +48,8 @@ import { KafkaModule } from '@@src/common/kafka/chat-gpt/kafka.module';
     UpdatePageUsecase,
     DeletePageUseCase,
     GetRecommentChoiceUsecase,
+    GetPageUseCase,
+    ImageService,
     ChatGPT,
     AppGateGateway,
     {
@@ -39,6 +63,10 @@ import { KafkaModule } from '@@src/common/kafka/chat-gpt/kafka.module';
     {
       provide: 'IChatGPTPagePort',
       useClass: ChatGPT,
+    },
+    {
+      provide: 'IChoicePageRepository',
+      useClass: ChoiceRepository,
     },
     PrismaService,
   ],

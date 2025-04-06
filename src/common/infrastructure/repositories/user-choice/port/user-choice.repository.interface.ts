@@ -5,4 +5,5 @@ export interface UserChoiceRepositoryPort {
   getAllByPlayIds(playGameIds: number[]): Promise<UserChoice[]>;
   getAllByChoicePageIds(choicePageIds: number[]): Promise<UserChoice[]>;
   create(playGameId: number, pageId: number): Promise<UserChoice>;
+  deleteAllByPlayId(playGameId: number): Promise<void>;
 }

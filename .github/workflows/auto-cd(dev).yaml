@@ -9,7 +9,6 @@ on:
         description: 'dev command'
         options:
           - yarn dev
-          - yarn dev:test
 
 env:
   SERVER_HOST: ${{ secrets.DEV_SERVER_HOST }}
@@ -30,6 +29,30 @@ jobs:
           echo ${{ env.DEPLOY_PATH }}
           echo ${{ env.BRANCH }}
 
+      - name: create env
+        run: |
+          echo "${{ secrets.DEV_CONFIG }}" > src/config/production.ts
+
+      - name: aws login
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: aws ecr get-login-password
+        id: login-password
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URI }}
+
+      - name: aws ecr build
+        run: |
+          docker build -f dev.dockerfile -t ${{ secrets.AWS_ECR_URI }}/choosetale:backend .
+
+      - name: aws ecr push
+        run: |
+          docker push ${{ secrets.AWS_ECR_URI }}/choosetale:backend
+
       - name: Set up SSH key with passphrase
         uses: webfactory/ssh-agent@v0.5.3
         with:
@@ -39,39 +62,19 @@ jobs:
       - name: 원격 서버에 배포
         run: |
           ssh -o StrictHostKeyChecking=no ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << 'EOF'
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # nvm을 현재 세션에서 사용하기 위해 로드
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URI }}
+            docker ps -q --filter "name=choosetale-backend" | grep -q . && docker rm -f choosetale-backend || echo "컨테이너가 없습니다."
+            docker images ${{ secrets.AWS_ECR_URI }}/choosetale:backend && docker rmi ${{ secrets.AWS_ECR_URI }}/choosetale:backend || echo "이미지가 없습니다."
+            docker pull ${{ secrets.AWS_ECR_URI }}/choosetale:backend
+            docker run -d -p 5001:5001 -p 5002:5002 -e NODE_ENV=production --net choosetale-network --name choosetale-backend ${{ secrets.AWS_ECR_URI }}/choosetale:backend
 
-          nvm install 18
-          nvm use 18
-          cd ${{ env.DEPLOY_PATH }}
-          git fetch --all
-          git pull origin ${{ env.BRANCH }}
-          yarn install --frozen-lockfile
-
-
-          if [ "${{ inputs.dev_command }}" = "yarn dev:test" ]; then
-            lsof -ti:6001 | xargs kill -9 || true
-          elif [ "${{ inputs.dev_command }}" = "yarn dev" ]; then
-            lsof -ti:5001 | xargs kill -9 || true
-          fi
-          nohup ${{ inputs.dev_command }} > output.log 2>&1 &
-          sleep 5
           EOF
 
       - name: 슬랙 메시지 전송
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL_WEBHOOK }}
         run: |
-          if [ "${{ inputs.dev_command }}" = "yarn dev:test" ]; then
-            PORT=6001
-          elif [ "${{ inputs.dev_command }}" = "yarn dev" ]; then
-            PORT=5001
-          else
-            PORT="알 수 없음"
-          fi
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"배포가 완료되었습니다. port: ${{ env.PORT }} , branch: ${{ env.BRANCH }}"}' $SLACK_WEBHOOK_URL
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"백엔드 배포가 완료되었습니다. port: 5001 , branch: ${{ env.BRANCH }}"}' $SLACK_WEBHOOK_URL
 
       - name: SSH 키 정리
         run: rm -rf ~/.ssh

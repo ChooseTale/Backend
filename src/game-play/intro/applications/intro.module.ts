@@ -11,6 +11,7 @@ import { GetIntroScreenUsecase } from '../domain/usecases/get-intro-screen.useca
 import { UserChoiceRepositoryModule } from '@@src/common/infrastructure/repositories/user-choice/user-choice.module';
 import { FirstStartGameUsecase } from '../domain/usecases/first-start-game.usecase';
 import { StartGameComponent } from '../domain/components/start-game.component';
+import { ChoicePageRepositoryModule } from '@@src/common/infrastructure/repositories/choice-page/choice-page.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { StartGameComponent } from '../domain/components/start-game.component';
     PageRepositoryModule,
     ImageRepositoryModule,
     UserChoiceRepositoryModule,
+    ChoicePageRepositoryModule,
   ],
   controllers: [IntroController],
   providers: [

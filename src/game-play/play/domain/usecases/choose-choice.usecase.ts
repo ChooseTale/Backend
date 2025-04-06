@@ -12,23 +12,17 @@ export class ChooseChoiceUsecase {
   async execute(
     playGameId: number,
     choiceId: number,
-    userId: number,
   ): Promise<ChooseChoiceResDto> {
     const chooseChoiceEntity = await this.chooseChoiceComponent.chooseChoice(
       choiceId,
       playGameId,
     );
-    if (chooseChoiceEntity.checkIsEnding()) {
-      await this.chooseChoiceComponent.updateEndingToPlayGame(
-        playGameId,
-        chooseChoiceEntity.toPage.id,
-      );
-    }
-    console.log(chooseChoiceEntity);
+
     return {
       playId: playGameId,
       page: {
         id: chooseChoiceEntity.toPage.id,
+        isEnding: chooseChoiceEntity.checkIsEnding(),
       },
     };
   }

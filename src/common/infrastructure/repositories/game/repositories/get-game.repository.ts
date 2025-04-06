@@ -1,11 +1,19 @@
 import { PrismaService } from '@@prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { GetGameRepositoryPort } from '../port/get-game.repository';
-import { Game } from '@prisma/client';
+import { Game, Prisma } from '@prisma/client';
 
 @Injectable()
 export class GetGameRepository implements GetGameRepositoryPort {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async getCount(query: Prisma.GameCountArgs): Promise<number> {
+    return this.prismaService.game.count(query);
+  }
+
+  async getGames(query: Prisma.GameFindManyArgs): Promise<Game[]> {
+    return this.prismaService.game.findMany(query);
+  }
 
   async getGameByIdOrThrow(gameId: number): Promise<Game> {
     const game = await this.prismaService.game.findUnique({

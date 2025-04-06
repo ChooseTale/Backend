@@ -3,49 +3,78 @@
     "id": 1,
     "userId": 1,
     "gameId": 1,
-    "isEnded": true
+    "endingPageId": 4,
+    "lastPlayedAt": "2024-10-16T09:03:37.761Z"
   },
   {
     "id": 2,
     "userId": 2,
     "gameId": 1,
-    "isEnded": true
+    "endingPageId": 6,
+    "lastPlayedAt": "2024-10-16T09:03:37.761Z"
   },
   {
     "id": 3,
     "userId": 3,
     "gameId": 1,
-    "isEnded": true
+    "endingPageId": 5,
+    "lastPlayedAt": "2024-10-12T09:03:37.761Z"
   },
 
   {
     "id": 4,
     "userId": 4,
     "gameId": 1,
-    "isEnded": false
+    "endingPageId": null,
+    "lastPlayedAt": "2024-10-12T09:03:37.761Z"
   },
   {
     "id": 5,
     "userId": 5,
     "gameId": 1,
-    "isEnded": false
+    "endingPageId": null,
+    "lastPlayedAt": "2024-10-10T09:03:37.761Z"
   },
   {
     "id": 6,
     "userId": 6,
     "gameId": 1,
-    "isEnded": true
+    "endingPageId": 5,
+    "lastPlayedAt": "2024-10-11T09:03:37.761Z"
   },
   {
     "id": 7,
     "userId": 7,
     "gameId": 1,
-    "isEnded": true
+    "endingPageId": 4,
+    "lastPlayedAt": "2024-10-12T09:03:37.761Z"
   },
   {
     "id": 8,
     "userId": 8,
     "gameId": 1,
-    "isEnded": true
+    "endingPageId": null,
+    "lastPlayedAt": "2024-10-12T09:03:37.761Z"
+  },
+  {
+    "id": 9,
+    "userId": 1,
+    "gameId": 1,
+    "endingPageId": null,
+    "lastPlayedAt": "2024-09-30T09:03:37.761Z"
+  },
+  {
+    "id": 10,
+    "userId": 1,
+    "gameId": 3,
+    "endingPageId": null,
+    "lastPlayedAt": "2024-09-25T09:03:37.761Z"
+  },
+  {
+    "id": 11,
+    "userId": 1,
+    "gameId": 4,
+    "endingPageId": 18,
+    "lastPlayedAt": "2024-09-25T09:03:37.761Z"
   }
 ]

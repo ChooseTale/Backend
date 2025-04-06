@@ -5,5 +5,5 @@ export interface ChooseChoiceComponentInterface {
     choiceId: number,
     playGameId: number,
   ): Promise<ChooseChoiceEntity>;
-  updateEndingToPlayGame(playGameId: number, endingId: number): Promise<void>;
+  updateEndingToPlayGame(playGameId: number, toPageId: number): Promise<void>;
 }

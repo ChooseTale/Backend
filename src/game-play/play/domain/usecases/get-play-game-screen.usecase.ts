@@ -8,6 +8,7 @@ import {
   getExpectPlayTime,
 } from '@@src/game-play/intro/domain/services/get-enrich-data.service';
 import { mapPageDataToResDto } from '../services/mapper/page.mapper';
+import { PlayRepositoryPort } from '@@src/common/infrastructure/repositories/play-game/port/play.repository.interface';
 
 @Injectable()
 export class GetPlayGameScreenUsecase {
@@ -16,15 +17,19 @@ export class GetPlayGameScreenUsecase {
     private readonly getIntroDataComponent: GetIntroDataComponentPort,
     @Inject('GetPageDataComponent')
     private readonly getPageDataComponent: GetPageDataComponentPort,
+    @Inject('PlayGameRepository')
+    private readonly playRepository: PlayRepositoryPort,
   ) {}
 
-  async execute(
-    gameId: number,
-    userId: number,
-    pageId: number,
-  ): Promise<GetPlayGameScreenDto> {
+  async execute(playId: number, userId: number): Promise<GetPlayGameScreenDto> {
+    const play = await this.playRepository.getPlayById(playId);
+
+    if (!play) {
+      throw new ConflictException('플레이 데이터가 없습니다.');
+    }
+
     const introEntity = await this.getIntroDataComponent.getIntroEntity(
-      gameId,
+      play.gameId,
       userId,
     );
 
@@ -34,8 +39,8 @@ export class GetPlayGameScreenUsecase {
     }
 
     const pageData = await this.getPageDataComponent.getPageEntity(
-      gameId,
-      pageId,
+      play.gameId,
+      introEntity.currentPlayGameData.page.id,
     );
 
     return {
@@ -44,7 +49,6 @@ export class GetPlayGameScreenUsecase {
         game: {
           id: introEntity.game.id,
           title: introEntity.game.title,
-          description: introEntity.game.description,
           genre: introEntity.game.genre,
           thumbnailUrl: introEntity.game.thumbnailUrl,
           producer: {
