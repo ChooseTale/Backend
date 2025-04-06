@@ -23,7 +23,7 @@ env:
   SERVER_CONFIG: ${{ inputs.command == 'prod' && secrets.PROD_CONFIG || secrets.DEV_CONFIG }}
   AWS_ECR_URI: ${{ secrets.AWS_ECR_URI }}
   DOCKER_FILE: ${{ inputs.command == 'prod' && 'prod.dockerfile' || 'dev.dockerfile' }}
-  DOCKER_IMAGE_TAG: ${{ inputs.command == 'prod' && '' || '-dev' }}
+  DOCKER_IMAGE_TAG: ${{ inputs.command == 'prod' && '-prod' || '-dev' }}
   DEPLOY_PATH: choose-tale/Backend
   BRANCH: ${{github.ref_name}}
 
