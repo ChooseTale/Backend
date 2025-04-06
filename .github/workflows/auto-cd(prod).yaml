@@ -73,7 +73,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << 'EOF'
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ECR_URI }}
-            docker ps -q --filter "name=${{ env.SERVER_NAME }}" | grep -q . && docker rm -f ${{ env.SERVER_NAME }} || echo "컨테이너가 없습니다."
+            docker ps -a -q --filter "name=${{ env.SERVER_NAME }}" | grep -q . && docker rm -f ${{ env.SERVER_NAME }} || echo "컨테이너가 없습니다."
             docker images ${{ env.AWS_ECR_URI }}/choosetale:backend${{ env.DOCKER_IMAGE_TAG }} && docker rmi ${{ env.AWS_ECR_URI }}/choosetale:backend${{ env.DOCKER_IMAGE_TAG }} || echo "이미지가 없습니다."
             docker pull ${{ env.AWS_ECR_URI }}/choosetale:backend${{ env.DOCKER_IMAGE_TAG }}
             docker run -d ${{ env.SERVER_PORT }} -e NODE_ENV=production  --net ${{ env.SERVER_NETWORK }} --name ${{ env.SERVER_NAME }} ${{ env.AWS_ECR_URI }}/choosetale:backend${{ env.DOCKER_IMAGE_TAG }}
