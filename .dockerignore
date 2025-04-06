@@ -3,5 +3,4 @@ dist
 .vscode
 .github
 nestia
-.env
-.env.local
+
