@@ -55,11 +55,11 @@ jobs:
 
       - name: aws ecr build
         run: |
-          docker build -f dev.dockerfile -t ${{ secrets.AWS_ECR_URI }}/choosetale${{ env.DOCKER_IMAGE_TAG }}:backend .
+          docker build -f dev.dockerfile -t ${{ secrets.AWS_ECR_URI }}/choosetale:backend${{ env.DOCKER_IMAGE_TAG }} .
 
       - name: aws ecr push
         run: |
-          docker push ${{ secrets.AWS_ECR_URI }}/choosetale${{ env.DOCKER_IMAGE_TAG }}:backend
+          docker push ${{ secrets.AWS_ECR_URI }}/choosetale:backend${{ env.DOCKER_IMAGE_TAG }}
 
       - name: Set up SSH key with passphrase
         uses: webfactory/ssh-agent@v0.5.3
@@ -72,9 +72,9 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} << 'EOF'
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ECR_URI }}
             docker ps -q --filter "name=${{ env.SERVER_NAME }}" | grep -q . && docker rm -f ${{ env.SERVER_NAME }} || echo "컨테이너가 없습니다."
-            docker images ${{ env.AWS_ECR_URI }}/choosetale${{ env.DOCKER_IMAGE_TAG }}:backend && docker rmi ${{ env.AWS_ECR_URI }}/choosetale${{ env.DOCKER_IMAGE_TAG }}:backend || echo "이미지가 없습니다."
-            docker pull ${{ env.AWS_ECR_URI }}/choosetale${{ env.DOCKER_IMAGE_TAG }}:backend
-            docker run -d ${{ env.SERVER_PORT }} -e NODE_ENV=production -e DATABASE_URL=${{ env.SERVER_DATABASE_URL }} --net ${{ env.SERVER_NETWORK }} --name ${{ env.SERVER_NAME }} ${{ env.AWS_ECR_URI }}/choosetale:backend
+            docker images ${{ env.AWS_ECR_URI }}/choosetale:backend${{ env.DOCKER_IMAGE_TAG }} && docker rmi ${{ env.AWS_ECR_URI }}/choosetale:backend${{ env.DOCKER_IMAGE_TAG }} || echo "이미지가 없습니다."
+            docker pull ${{ env.AWS_ECR_URI }}/choosetale:backend${{ env.DOCKER_IMAGE_TAG }}
+            docker run -d ${{ env.SERVER_PORT }} -e NODE_ENV=production -e DATABASE_URL=${{ env.SERVER_DATABASE_URL }} --net ${{ env.SERVER_NETWORK }} --name ${{ env.SERVER_NAME }} ${{ env.AWS_ECR_URI }}/choosetale:backend${{ env.DOCKER_IMAGE_TAG }}
 
           EOF
 
@@ -82,7 +82,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL_WEBHOOK }}
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"백엔드 배포가 완료되었습니다. port: 5001 , branch: ${{ env.BRANCH }}"}' $SLACK_WEBHOOK_URL
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"백엔드 배포가 완료되었습니다. ${{ env.SERVER_PORT}}"}' $SLACK_WEBHOOK_URL
 
       - name: SSH 키 정리
         run: rm -rf ~/.ssh
