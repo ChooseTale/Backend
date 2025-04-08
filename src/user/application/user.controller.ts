@@ -47,7 +47,6 @@ export class UserController {
   async getMe(@Req() request: any): Promise<MeResDto> {
     const userId = request.user.id;
     const meEntity = await this.getMeUsecase.execute(userId);
-    console.log(meEntity);
     return meEntity;
   }
 
