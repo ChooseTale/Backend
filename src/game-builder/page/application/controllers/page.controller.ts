@@ -160,9 +160,7 @@ export class PageController {
       new ParseFilePipe({
         validators: [
           // jpeg와 png, gif 허용
-          new FileTypeValidator({
-            fileType: /^image\/|jpeg|png|gif|webp|jpg$/,
-          }),
+
           new MaxFileSizeValidator({
             maxSize: 7 * 1024 * 1024,
           }),

@@ -134,11 +134,7 @@ export class UserController {
     @Req() request: any,
     @UploadedFile(
       new ParseFilePipe({
-        validators: [
-          new FileTypeValidator({
-            fileType: /^image\/|jpeg|png|gif|webp|jpg$/,
-          }),
-        ],
+        validators: [],
         fileIsRequired: false,
       }),
     )
