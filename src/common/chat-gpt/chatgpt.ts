@@ -108,7 +108,7 @@ export class ChatGPT implements IChatGPTPagePort {
         size: '1024x1024',
       });
 
-      const response = await axios.get(imageResponse.data[0].url ?? '', {
+      const response = await axios.get(imageResponse.data?.[0]?.url ?? '', {
         responseType: 'stream',
       });
       const fileName = `${new Date().getTime()}-${title.slice(0, 10)}.png`;
