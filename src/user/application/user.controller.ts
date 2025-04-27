@@ -135,7 +135,9 @@ export class UserController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new FileTypeValidator({ fileType: /jpeg|png|gif|webp|jpg|image\/*/ }),
+          new FileTypeValidator({
+            fileType: /^image\/|jpeg|png|gif|webp|jpg$/,
+          }),
         ],
         fileIsRequired: false,
       }),

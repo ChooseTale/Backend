@@ -161,7 +161,7 @@ export class PageController {
         validators: [
           // jpeg와 png, gif 허용
           new FileTypeValidator({
-            fileType: /jpeg|png|gif|webp|jpg|image\/*/,
+            fileType: /^image\/|jpeg|png|gif|webp|jpg$/,
           }),
           new MaxFileSizeValidator({
             maxSize: 7 * 1024 * 1024,
